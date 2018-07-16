@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+
+<html lang="en" dir="ltr">
+  <head>
+    <title>MakaNUS Home</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+
+    <div class="container">
+      <br>
+
+      <!-- Login or Signup button here if not authenticated-->
+      <div class="row" style="text-align:right;">
+        {% if user.is_authenticated %}
+        {% if user.userprofile.profile_pic.name == "" %}
+        {% else %}
+        <img src="{{user.userprofile.profile_pic.url}}">
+        {% endif %}
+        <h4> Welcome, {{user.first_name}}! </h4>
+        <a href="{% url "logout" %}">
+        <button type="button" class="btn btn-info" style="background-color: rgb(8, 0, 129);">Logout</button> </a>
+        <a href="{% url "profile" user.id %}">
+        <button type="button" class="btn btn-info" style="background-color: rgb(8, 0, 129);">My Profile</button> </a>
+
+        {% else %}
+
+        <a href="{% url "signup" %}">
+        <button type="button" class="btn btn-info pull-right" style="background-color: rgb(8, 0, 129);">Sign Up</button> </a>
+        <a href="{% url "login" %}">
+        <button type="button" class="btn btn-info pull-right" style="background-color: rgb(8, 0, 129);">Login</button> </a>
+
+        {% endif %}
+
+      </div>
+
+
+      <img src="{% static "images/logo.png" %}" alt="MakaNUS logo" class="img-responsive center-block" width="324" height="90">
+      <br>
+
+      <div class="imgContainer">
+        <img class="banner" src="{% static "images/banner.jpg" %}" alt="banner" style="width:100%;">
+        <div class="up-centered">
+          <h1 class="bigWords" style="font-size: 4vw;"> NUS eateries at your fingertips </h1>
+        </div>
+
+        <div class="centered">
+          <h2 class="bigWords" style="font-size: 2vw; text-align: center;"> Search for your favourite spots </h2>
+
+          <!-- Search form -->
+          <form action="{% url "search" %}" method="GET">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search by keyword, location, genre, etc.">
+              <div class="input-group-btn">
+                <button class="btn btn-default" type="submit">
+                  <i class="glyphicon glyphicon-search"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+
+        </div>
+      </div>
+
+      <br>
+      <p style="text-align:center;"> © 2018 MakaNUS, all rights reserved. </p>
+    </div>
+
+  </body>
+
+</html>
+
+<!-- Modal
+<div class="modal fade" id="loginForm" role="dialog">
+  <div class="modal-dialog">
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title title">Login to MakaNUS</h4>
+      </div>
+      <div class="modal-body">
+        <form "{% url "login" %}" method="POST">
+          <div class="form-group">
+            <label for="username" class="words">Username:</label>
+            <input type="text" class="form-control" id="username" placeholder="Enter username">
+          </div>
+          <div class="form-group">
+            <label for="pwd" class="words">Password:</label>
+            <input type="password" class="form-control" id="pwd" placeholder="Enter Password">
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox"> Remember me</label>
+          </div>
+          <div class="row">
+            <p class="small">New to ManaNUS? <a href="{% url "signup" %}"> Sign up </a> here!</p>
+          </div>
+          <button type="submit" class="btn btn-default formButton" style="background-color: rgb(8, 0, 129); color: rgb(255, 255, 255);">Login</button>
+          <button type="button" class="btn btn-default formButton" style="background-color: rgb(8, 0, 129); color: rgb(255, 255, 255);" data-dismiss="modal">Cancel</button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+-->

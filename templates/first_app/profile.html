@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>{{profile_user.first_name}}'s Profile</title>
+  </head>
+  <body>
+    <h1>{{profile_user.first_name}} {{profile_user.last_name}}'s Profile</h1>
+    <p><a href="{% url "index" %}">Home</a></p>
+    <p>
+      <form action="{% url "search" %}" method="GET">
+        {% csrf_token %}
+        <label>Search Function:</label>
+        <input type="text" placeholder="Search here!" name = "q">
+      </form>
+    </p>
+    {% if user.is_authenticated %}
+      <p><a href="{% url "profile" user.id %}">My Profile</a></p>
+      <p><a href="{% url "logout" %}">Logout</a></p>
+    {% else %}
+      <p><a href="{% url "signup" %}">Sign Up</a></p>
+      <p><a href="{% url "login" %}">Login</a></p>
+    {% endif %}
+
+    <p>Profile Picture:</p>
+    {% if profile_user.profile_pic.name == "" %}
+      <p><img src="{% static "images/default-profile.png" %}"></p>
+    {% else %}
+      <p><img src="{{profile_user.userprofile.profile_pic.url}}"></p>
+    {% endif %}
+    <p>Username: {{profile_user.username}}</p>
+    <p>Name: {{profile_user.first_name}} {{profile_user.last_name}}</p>
+    <p>Year: {{profile_user.userprofile.year}}</p>
+    <p>Faulty: {{profile_user.userprofile.faculty}}</p>
+    <p>Major: {{profile_user.userprofile.major}}</p>
+    <p>About me: {{profile_user.userprofile.about_me}}</p>
+
+    <h3>Restaurant Reviews:</h3>
+      {% for review in profile_user.restaurantreview_set.all %}
+        <p>Restaurant Name: <a>{{review.restaurant.name}}</p>
+        {% if review.restaurant.restaurant_profile_pic.name == "" %}
+          <p>Restaurant Profile Picture: <img src="{% static "images/default-restaurant-profile.png" %}"></p>
+        {% else %}
+          <p>Restaurant Profile Picture: <img src="{{review.restaurant.restaurant_profile_pic.url}}"></p>
+        {% endif %}
+        <p>Review: {{review.review}}</p>
+
+        {% if user.id == profile_user.id %}
+          <p><a href="{% url "edit_restaurant_review" review.id %}">Edit</a></p>
+          <p><a href="{% url "delete_restaurant_review" review.id %}">Delete</a></p>
+        {% endif %}
+
+      {% endfor %}
+
+    <h3>Dish Reviews:</h3>
+      {% for review in profile_user.dishreview_set.all %}
+        <p>Dish Name: {{review.dish.name}}</p>
+        <p>From Restaurant: <a>{{review.dish.restaurant.name}}</p>
+        {% if review.dish.dish_profile_pic.name == "" %}
+          <p>Dish Profile Picture: <img src="{% static "images/default-dish-profile.jpg" %}"></p>
+        {% else %}
+          <p>Dish Profile Picture: <img src="{{review.dish.dish_profile_pic.url}}"></p>
+        {% endif %}
+        <p>Review: {{review.review}}</p>
+
+        {% if user.id == profile_user.id %}
+          <p><a href="{% url "edit_dish_review" review.id %}">Edit</a></p>
+          <p><a href="{% url "delete_dish_review" review.id %}">Delete</a></p>
+        {% endif %}
+
+      {% endfor %}
+
+      <h3>Photos Uploaded:</h3>
+        {% for restaurant_photo in profile_user.restaurantphoto_set.all %}
+          <p>Restaurant: {{restaurant_photo.restaurant.name}}</p>
+          <p><img src="{{restaurant_photo.photo.url}}"></p>
+          {% if user.id == profile_user.id %}
+            <p><a href="{% url "delete_restaurant_photo" restaurant_photo.id %}">Delete</a></p>
+          {% endif %}
+
+        {% endfor %}
+
+
+  </body>
+</html>

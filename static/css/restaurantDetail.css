@@ -1,0 +1,45 @@
+p {
+  color: RGB(8,0,129);
+  font-size: 20px;
+}
+
+.reviewWord {
+   color: RGB(8,0,129);
+   text-decoration: underline;
+   font-size: 20px;
+   padding: 10px;
+ }
+
+.reviewBox {
+	border-radius: 8px;
+	border: 1px;
+	border-style: solid;
+	border-color: RGB(8, 0, 129);
+	padding: 15px;
+	margin: 40px;
+}
+
+p.rate {
+  color: RGB(8,0,129);
+  font-weight: bold;
+  text-indent: 10px;
+}
+
+p.time {
+  font-weight: bold;
+}
+
+a.tabs {
+  color: RGB(8,0,129);
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.textBox {
+	border-radius: 8px;
+	border: 1px;
+	border-style: solid;
+	border-color: RGB(8, 0, 129);
+	padding: 5px 15px;
+	margin: 30px;
+}

@@ -1,0 +1,52 @@
+.filterHeader {
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.resultBox {
+	border-radius: 8px;
+	border: 1px;
+	border-style: solid;
+	border-color: RGB(8, 0, 129);
+	padding: 10px 5px;
+	margin: 5px;
+	overflow: hidden;
+}
+
+.textBox {
+	border-radius: 8px;
+	border: 1px;
+	border-style: solid;
+	border-color: RGB(8, 0, 129);
+	padding: 5px 15px;
+	margin: 5px;
+}
+
+div.filterLinks{
+	padding: 3px;
+}
+
+.filterWords {
+	font-size: 15px;
+}
+
+.filterSmallWords {
+	font-size: 12px;
+	color: grey;
+}
+
+.filterCategory {
+	padding: 5px;
+}
+
+p.reviewWord {
+	font-weight: bold;
+	font-size: 16px;
+	text-decoration: underline;
+	color: RGB(8,0,129);
+}
+
+a.tags {
+	text-decoration: underline;
+	color: RGB(8,0,129);
+}

@@ -1,0 +1,73 @@
+p.small {
+  color: RGB(0 ,0, 0);
+  padding: 10px;
+  font-size: 14px;
+  text-indent: 10px;
+}
+
+
+.title {
+  color: RGB(8, 0, 129);
+}
+
+.words {
+  color: RGB(8, 0, 129);
+}
+
+.naviBarBackground {
+	background-color: RGB(8, 0, 129);
+	padding: 3px;
+}
+
+.naviBar {
+	color: RGB(255, 255, 255);
+	font-size: 16px;
+	padding: 10px;
+}
+
+.restaurantName {
+  font-weight: bold;
+  font-size: 22px;
+}
+
+img.topRight {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+
+.blueBannerWords {
+  color: RGB(255, 255, 255);
+  font-size: 1vw;
+}
+
+.bigWords {
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+  color: RGB(255, 255, 255);
+  white-space: nowrap;
+}
+
+.banner {
+    opacity: 0.5;
+    filter: alpha(opacity=50); /* For IE8 and earlier */
+}
+
+.imgContainer {
+    position: relative;
+    text-align: center;
+    color: white;
+}
+
+.centered {
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.up-centered {
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
