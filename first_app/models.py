@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.utils.timezone import localtime
+from datetime import timedelta
 
 # Create your models here.
 
@@ -29,6 +31,27 @@ class Restaurant(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_average_rating(self):
+        return sum(list(map(lambda x: x.rating, (self.restaurantrating_set.all()))))
+
+    def get_waiting_time_objects(self, mins = 10):
+        start, end = localtime() - timedelta(minutes = mins), localtime()
+        return list(filter(lambda obj: start < localtime(obj.created_at) < end, self.restaurantwaitingtime_set.all()))
+
+    def get_waiting_time(self, mins = 30):
+        start, end = localtime() - timedelta(minutes = mins), localtime()
+        lst = list(filter(lambda obj: start < localtime(obj.created_at) < end, self.restaurantwaitingtime_set.all()))
+        return round(sum(list(map(lambda obj: obj.waiting_time, lst)))/len(lst), 2) if len(lst) else ""
+
+    def get_crowd_condition_objects(self, mins = 10):
+        start, end = localtime() - timedelta(seconds = mins), localtime()
+        return list(filter(lambda obj: start < localtime(obj.created_at) < end, self.restaurantcrowdcondition_set.all()))
+
+    def get_crowd_condition(self, mins = 30):
+        start, end = localtime() - timedelta(seconds = mins), localtime()
+        lst = list(filter(lambda obj: start < localtime(obj.created_at) < end, self.restaurantcrowdcondition_set.all()))
+        return round(sum(list(map(lambda obj: obj.crowd_condition, lst)))/len(lst), 2) if len(lst) else ""
 
 class OpeningHours(models.Model):
     restaurant = models.OneToOneField(Restaurant, on_delete = models.CASCADE)
@@ -62,6 +85,8 @@ class RestaurantReview(models.Model):
     review = models.TextField()
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return "Restaurant Review: {}, {}".format(self.user, self.restaurant)
@@ -78,22 +103,25 @@ class RestaurantPhoto(models.Model):
     photo = models.ImageField(upload_to = 'restaurant_pics', blank = True)
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return "Restaurant Photo: {}, {}".format(self.user, self.restaurant)
 
 class RestaurantWaitingTime(models.Model):
-    waiting_time = models.DurationField()
+    waiting_time = models.PositiveIntegerField()
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return "Restaurant Waiting Time: {}, {}, {}".format(self.user, self.restaurant, self.waiting_time)
 
 class RestaurantCrowdCondition(models.Model):
-    crowd_condition = models.PositiveIntegerField(validators = [MinValueValidator(0), MaxValueValidator(10)])
+    crowd_condition = models.PositiveIntegerField()
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
             return "Restaurant Crowd Condition: {}, {}, {}".format(self.user, self.restaurant, self.waiting_time)
@@ -119,6 +147,8 @@ class DishReview(models.Model):
     review = models.TextField()
     dish = models.ForeignKey(Dish, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return "Dish Review: {}, {}".format(self.user, self.dish)

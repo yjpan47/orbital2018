@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Restaurant</title>
+  </head>
+  <body>
+    <h1>Name: {{restaurant.name}}</h1>
+    {% if restaurant.restaurant_profile_pic.name == "" %}
+      <h2>Profile Picture: <img src="{% static "images/default-restaurant-profile.png" %}"> </h2>
+    {% else %}
+      <h2>Profile Picture: <img src="{{restaurant.restaurant_profile_pic.url}}"> </h2>
+    {% endif %}
+    <h2>Rating: {{  restaurant.get_average_rating  }}</h2>
+    <h2>Estimated Waiting Time: {{ restaurant.get_waiting_time }}</h2>
+    <h2>Crowd Condition: {{ restaurant.get_crowd_condition }}</h2>
+    <h2>Opening Hours: </h2>
+      <h3>Monday: {{restaurant.openinghours.monday_from}} to {{restaurant.openinghours.monday_to}} </h2>
+      <h3>Tuesday: {{restaurant.openinghours.tuesday_from}} to {{restaurant.openinghours.tuesday_to}} </h2>
+      <h3>Wednesday: {{restaurant.openinghours.wednesday_from}} to {{restaurant.openinghours.wednesday_to}} </h2>
+      <h3>Thursday: {{restaurant.openinghours.thursday_from}} to {{restaurant.openinghours.thursday_to}} </h2>
+      <h3>Friday: {{restaurant.openinghours.friday_from}} to {{restaurant.openinghours.friday_to}} </h2>
+      <h3>Saturday: {{restaurant.openinghours.saturday_from}} to {{restaurant.openinghours.saturday_to}} </h2>
+      <h3>Sunday: {{restaurant.openinghours.sunday_from}} to {{restaurant.openinghours.sunday_to}} </h2>
+    <h2>Location: {{restaurant.location}}</h2>
+    <h2>Address: {{restaurant.address}}</h2>
+
+{% if user.is_authenticated %}
+    <h1>Contribute to Estimated Waiting Time</h1>
+      <form action="{% url "add_waiting_time" restaurant.id %}" method="POST">
+      {% csrf_token %}
+        <select name="waiting_time">
+          <option value = 1> 1 minute </option>
+          <option value = 2> 2 minute </option>
+          <option value = 3> 3 minute </option>
+          <option value = 4> 4 minute </option>
+          <option value = 5> 5 minute </option>
+        </select>
+        <input type="submit">
+      </form>
+
+      <h1>Contribute to Crowd Condition</h1>
+        <form action="{% url "add_crowd_condition" restaurant.id %}" method="POST">
+          {% csrf_token %}
+          <select name="crowd_condition">
+            <option value = 1> 1 minute </option>
+            <option value = 2> 2 minute </option>
+            <option value = 3> 3 minute </option>
+            <option value = 4> 4 minute </option>
+            <option value = 5> 5 minute </option>
+          </select>
+          <input type="submit">
+        </form>
+ {% endif %}
+
+
+
+  </body>
+</html>

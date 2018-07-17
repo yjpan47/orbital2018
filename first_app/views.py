@@ -149,6 +149,32 @@ def delete_restaurant_photo(request, pk):
     else:
             return HttpResponse("FAILED")
 
+def restaurant_page(request, pk):
+    restaurant = get_object_or_404(Restaurant, id = pk)
+    return render(request, "first_app/restaurant.html", {"restaurant": restaurant})
+
+def add_restaurant_waiting_time(request, pk):
+    if (request.method == "POST") and (request.user.is_authenticated):
+        restaurant = get_object_or_404(Restaurant, id = pk)
+        if request.user not in list(map(lambda obj: obj.user, restaurant.get_waiting_time_objects())):
+            new_waiting_time = RestaurantWaitingTime(waiting_time = int(request.POST.get("waiting_time")), restaurant = restaurant, user = request.user)
+            new_waiting_time.save()
+            return redirect("restaurant", pk = pk)
+        else:
+            return HttpResponse("You contributed a waiting time already")
+    return HttpResponse("Something went wrong")
+
+def add_crowd_condition(request, pk):
+    if (request.method == "POST") and (request.user.is_authenticated):
+        restaurant = get_object_or_404(Restaurant, id = pk)
+        if request.user not in list(map(lambda obj: obj.user, restaurant.get_crowd_condition_objects())):
+            new_crowd_condition = RestaurantCrowdCondition(crowd_condition = int(request.POST.get("crowd_condition")), restaurant = restaurant, user = request.user)
+            new_crowd_condition.save()
+            return redirect("restaurant", pk = pk)
+        else:
+            return HttpResponse("You contributed a crowd condition already")
+    return HttpResponse("Something went wrong")
+
 def search(request):
     if request.method == "GET":
         query = request.GET.get("q")
