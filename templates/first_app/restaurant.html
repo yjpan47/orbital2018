@@ -55,6 +55,28 @@
         </form>
  {% endif %}
 
+<h1>Restaurant Reviews</h1>
+{% for review in restaurant.restaurantreview_set.all %}
+  <h4>Name: {{review.user.first_name}}</h4>
+  {% if review.user.userprofile.profile_pic.name == "" %}
+    <h2><img src="{% static "images/default-profile.png" %}"> </h2>
+  {% else %}
+    <h4><img src="{{review.user.userprofile.profile_pic.url}}"></h4>
+  {% endif %}
+  <p>Review: {{review.review}}</p>
+
+{% endfor %}
+
+<h1>Menu</h1>
+{% for dish in restaurant.dish_set.all %}
+  <h4>Dish: {{dish.name}} </h4>
+  {% if dish.dish_profile_pic.name == "" %}
+    <h4>Dish Picture: <img src="{% static "images/default-dish-profile.jpg" %}"> </h4>
+  {% else %}
+    <h4>Dish Picture: <img src="{{dish.dish_profile_pic.url}}"> </h4>
+  {% endif %}
+{% endfor %}
+
 
 
   </body>

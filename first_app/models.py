@@ -36,11 +36,11 @@ class Restaurant(models.Model):
         return sum(list(map(lambda x: x.rating, (self.restaurantrating_set.all()))))
 
     def get_waiting_time_objects(self, mins = 10):
-        start, end = localtime() - timedelta(minutes = mins), localtime()
+        start, end = localtime() - timedelta(seconds = mins), localtime()
         return list(filter(lambda obj: start < localtime(obj.created_at) < end, self.restaurantwaitingtime_set.all()))
 
     def get_waiting_time(self, mins = 30):
-        start, end = localtime() - timedelta(minutes = mins), localtime()
+        start, end = localtime() - timedelta(seconds = mins), localtime()
         lst = list(filter(lambda obj: start < localtime(obj.created_at) < end, self.restaurantwaitingtime_set.all()))
         return round(sum(list(map(lambda obj: obj.waiting_time, lst)))/len(lst), 2) if len(lst) else ""
 
