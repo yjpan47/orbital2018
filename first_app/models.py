@@ -33,7 +33,8 @@ class Restaurant(models.Model):
         return self.name
 
     def get_average_rating(self):
-        return sum(list(map(lambda x: x.rating, (self.restaurantrating_set.all()))))
+        lst = list(map(lambda x: x.rating, (self.restaurantrating_set.all())))
+        return sum(lst)/len(lst) if lst else ""
 
     def get_waiting_time_objects(self, mins = 10):
         start, end = localtime() - timedelta(seconds = mins), localtime()
@@ -90,6 +91,10 @@ class RestaurantReview(models.Model):
 
     def __str__(self):
         return "Restaurant Review: {}, {}".format(self.user, self.restaurant)
+
+    def get_average_rating(self):
+        lst = list(map(lambda x: x.rating, (self.restaurantreviewrating_set.all())))
+        return sum(lst)/len(lst) if lst else ""
 
 class RestaurantReviewRating(models.Model):
     rating = models.PositiveIntegerField(validators = [MinValueValidator(0), MaxValueValidator(5)])

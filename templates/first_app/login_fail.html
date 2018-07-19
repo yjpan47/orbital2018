@@ -3,7 +3,7 @@
 
 <html lang="en" dir="ltr">
 	<head>
-	  <title>Sign Up error</title>
+	  <title>Login error</title>
 	  <meta charset="utf-8">
 	  <meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" type="text/css" href="{% static "css/signup.css" %}">
@@ -38,18 +38,9 @@
 				<div class="col-sm-1 col-sm-offset-2">
 					<br>
 					<br>
-					{% if user.is_authenticated %}
 
-	        <p>
-	          <a href="{% url "logout" %}">Logout</a>
-	        </p>
-
-	        {% else %}
-
-	        <a href="{% url "login" %}">
-	        <button type="button" class="btn btn-info pull-right" style="background-color: rgb(8, 0, 129);">Login</button> </a>
-
-	        {% endif %}
+					<a href="{% url "signup" %}">
+          <button type="button" class="btn btn-info pull-right" style="background-color: rgb(8, 0, 129);">Sign Up</button> </a>
 
 				</div>
 			</div>

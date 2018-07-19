@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
+from django.core.paginator import Paginator
 
 # Create your views here.
 
@@ -153,6 +154,31 @@ def restaurant_page(request, pk):
     restaurant = get_object_or_404(Restaurant, id = pk)
     return render(request, "first_app/restaurant.html", {"restaurant": restaurant})
 
+def add_restaurant_rating(request, pk):
+    if (request.method == "POST") and (request.user.is_authenticated):
+        restaurant = get_object_or_404(Restaurant, id = pk)
+        if request.user not in list(map(lambda obj: obj.user, restaurant.restaurantrating_set.all())):
+            new_restaurant_rating = RestaurantRating(rating = int(request.POST.get("restaurant_rating")), restaurant = restaurant, user = request.user)
+            new_restaurant_rating.save()
+            return redirect("restaurant", pk = pk)
+        else:
+            return HttpResponse("You already contributed a rating")
+    else:
+        return HttpResponse("Something went wrong")
+
+def add_restaurant_review(request, pk):
+    print(request.method)
+    if (request.method == "POST") and (request.user.is_authenticated):
+        restaurant = get_object_or_404(Restaurant, id = pk)
+        if request.user not in list(map(lambda obj: obj.user, restaurant.restaurantreview_set.all())):
+            new_review = RestaurantReview(review = request.POST.get("restaurant_review"), restaurant = restaurant, user = request.user)
+            new_review.save()
+            return redirect("restaurant", pk = pk)
+        else:
+            return HttpResponse("You contributed a review already")
+    else:
+        return HttpResponse("Something went wrong")
+
 def add_restaurant_waiting_time(request, pk):
     if (request.method == "POST") and (request.user.is_authenticated):
         restaurant = get_object_or_404(Restaurant, id = pk)
@@ -162,9 +188,10 @@ def add_restaurant_waiting_time(request, pk):
             return redirect("restaurant", pk = pk)
         else:
             return HttpResponse("You contributed a waiting time already")
-    return HttpResponse("Something went wrong")
+    else:
+        return HttpResponse("Something went wrong")
 
-def add_crowd_condition(request, pk):
+def add_restaurant_crowd_condition(request, pk):
     if (request.method == "POST") and (request.user.is_authenticated):
         restaurant = get_object_or_404(Restaurant, id = pk)
         if request.user not in list(map(lambda obj: obj.user, restaurant.get_crowd_condition_objects())):
@@ -173,11 +200,29 @@ def add_crowd_condition(request, pk):
             return redirect("restaurant", pk = pk)
         else:
             return HttpResponse("You contributed a crowd condition already")
-    return HttpResponse("Something went wrong")
+    else:
+        return HttpResponse("Something went wrong")
+
+def add_restaurant_review_rating(request, pk):
+    if (request.method == "POST") and (request.user.is_authenticated):
+        restaurant_review = get_object_or_404(RestaurantReview, id = pk)
+        if request.user not in list(map(lambda obj: obj.user, restaurant_review.restaurantreviewrating_set.all())):
+            restaurant = restaurant_review.restaurant
+            new_restaurant_review_rating = RestaurantReviewRating(rating = int(request.POST.get("restaurant_review_rating")), restaurant_review = restaurant_review, user = request.user)
+            new_restaurant_review_rating.save()
+            return redirect("restaurant", pk = restaurant.id)
+        else:
+            return HttpResponse("You already contributed a rating")
+    else:
+        return HttpResponse("Something went wrong")
 
 def search(request):
-    if request.method == "GET":
+    if "q" in request.GET:
+        page = request.GET.get('page', 1)
         query = request.GET.get("q")
         restaurants = Restaurant.objects.filter(name__icontains = query)
-        print(restaurants)
-        return HttpResponse(restaurants[0].name)
+        paginator = Paginator(restaurants, 10)
+        restaurants = paginator.page(page)
+        return render(request, "first_app/search.html", {"restaurants": restaurants})
+    else:
+        return HttpResponse("Something went wrong")
