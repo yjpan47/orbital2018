@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Search Results</title>
+  </head>
+  <body>
+    {% for restaurant in restaurants %}
+      <p><a href="{% url "restaurant" restaurant.id %}">{{restaurant.name}}</a></p>
+
+    {% endfor %}
+
+  </body>
+</html>

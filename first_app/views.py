@@ -215,11 +215,10 @@ def add_restaurant_review_rating(request, pk):
     else:
         return HttpResponse("Something went wrong")
 
-
-
 def search(request):
     if request.method == "GET":
         query = request.GET.get("q")
         restaurants = Restaurant.objects.filter(name__icontains = query)
-        print(restaurants)
-        return HttpResponse(restaurants[0].name)
+        return render(request, "first_app/search.html", {"restaurants": restaurants})
+    else:
+        return HttpResponse("Something went wrong")
