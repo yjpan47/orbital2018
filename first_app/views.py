@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
+from django.core.paginator import Paginator
 
 # Create your views here.
 
@@ -216,9 +217,12 @@ def add_restaurant_review_rating(request, pk):
         return HttpResponse("Something went wrong")
 
 def search(request):
-    if request.method == "GET":
+    if "q" in request.GET:
+        page = request.GET.get('page', 1)
         query = request.GET.get("q")
         restaurants = Restaurant.objects.filter(name__icontains = query)
+        paginator = Paginator(restaurants, 10)
+        restaurants = paginator.page(page)
         return render(request, "first_app/search.html", {"restaurants": restaurants})
     else:
         return HttpResponse("Something went wrong")
