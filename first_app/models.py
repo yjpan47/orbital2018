@@ -158,6 +158,10 @@ class DishReview(models.Model):
     def __str__(self):
         return "Dish Review: {}, {}".format(self.user, self.dish)
 
+    def get_average_rating(self):
+        lst = list(map(lambda x: x.rating, (self.dishreviewrating_set.all())))
+        return sum(lst)/len(lst) if lst else ""
+
 class DishReviewRating(models.Model):
     rating = models.PositiveIntegerField(validators = [MinValueValidator(0), MaxValueValidator(5)])
     dish_review = models.ForeignKey(DishReview, on_delete=models.CASCADE)

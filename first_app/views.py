@@ -67,16 +67,14 @@ def user_login(request):
 
 
 def user_logout(request):
-    print("wefwe",request.user)
     if request.user.is_authenticated:
         logout(request)
-        return HttpResponseRedirect(reverse(index))
+        return redirect("index")
 
 def user_profile(request, pk):
     user = request.user
     profile_user = get_object_or_404(User, id = pk)
     return render(request, "first_app/profile.html", {"user": user, "profile_user": profile_user})
-
 
 def edit_restaurant_review(request, pk):
     if request.user.is_authenticated:
@@ -210,7 +208,20 @@ def add_restaurant_review_rating(request, pk):
             restaurant = restaurant_review.restaurant
             new_restaurant_review_rating = RestaurantReviewRating(rating = int(request.POST.get("restaurant_review_rating")), restaurant_review = restaurant_review, user = request.user)
             new_restaurant_review_rating.save()
-            return redirect("restaurant", pk = restaurant.id)
+            return HttpResponseRedirect(request.POST.get('next'))
+        else:
+            return HttpResponse("You already contributed a rating")
+    else:
+        return HttpResponse("Something went wrong")
+
+def add_dish_review_rating(request, pk):
+    if (request.method == "POST") and (request.user.is_authenticated):
+        dish_review = get_object_or_404(DishReview, id = pk)
+        if request.user not in list(map(lambda obj: obj.user, dish_review.dishreviewrating_set.all())):
+            dish = dish_review.dish
+            new_dish_review_rating = DishReviewRating(rating = int(request.POST.get("dish_review_rating")), dish_review = dish_review, user = request.user)
+            new_dish_review_rating.save()
+            return HttpResponseRedirect(request.POST.get('next'))
         else:
             return HttpResponse("You already contributed a rating")
     else:

@@ -17,6 +17,7 @@ def populate_users(N = 1000):
         fake_lastname = fakegen.last_name()
         fake_username = (fake_firstname + fake_lastname).lower() + str(randint(0, 100))
         fake_password = fakegen.password()
+        fake_password = "Learning123"
         fake_email = fakegen.email()
         fake_about_me = fakegen.text()
         fake_user = User(username = fake_username, first_name = fake_firstname, last_name = fake_lastname, email = fake_email)
@@ -76,21 +77,21 @@ def populate_restaurant_reviews(N=100):
         restaurant_review = RestaurantReview(review = fake_review, restaurant = fake_restaurant, user = fake_user)
         restaurant_review.save()
 
-def populate_restaurant_waiting_times(N=100):
-    for i in range(N):
-        fake_waiting_time = randint(0, 30)
-        fake_restaurant = choice(Restaurant.objects.all())
-        fake_user = choice(User.objects.all())
-        restaurant_waiting_time = RestaurantWaitingTime(waiting_time = fake_waiting_time, restaurant = fake_restaurant, user = fake_user)
-        restaurant_waiting_time.save()
-
-def populate_restaurant_crowd_conditions(N=100):
-    for i in range(N):
-        fake_crowd_conditon = randint(0, 10)
-        fake_restaurant = choice(Restaurant.objects.all())
-        fake_user = choice(User.objects.all())
-        restaurant_crowd_condition = RestaurantCrowdCondition(crowd_condition = fake_crowd_conditon, restaurant = fake_restaurant, user = fake_user)
-        restaurant_crowd_condition.save()
+# def populate_restaurant_waiting_times(N=100):
+#     for i in range(N):
+#         fake_waiting_time = randint(0, 30)
+#         fake_restaurant = choice(Restaurant.objects.all())
+#         fake_user = choice(User.objects.all())
+#         restaurant_waiting_time = RestaurantWaitingTime(waiting_time = fake_waiting_time, restaurant = fake_restaurant, user = fake_user)
+#         restaurant_waiting_time.save()
+#
+# def populate_restaurant_crowd_conditions(N=100):
+#     for i in range(N):
+#         fake_crowd_conditon = randint(0, 10)
+#         fake_restaurant = choice(Restaurant.objects.all())
+#         fake_user = choice(User.objects.all())
+#         restaurant_crowd_condition = RestaurantCrowdCondition(crowd_condition = fake_crowd_conditon, restaurant = fake_restaurant, user = fake_user)
+#         restaurant_crowd_condition.save()
 
 def populate_dishes(N=1000):
     for i in range(N):
@@ -118,25 +119,25 @@ def populate_dish_reviews(N=1000):
 
 if __name__ == '__main__':
     print("POPULATING DATABASE")
-    # populate_users(N = 20)
-    # print("1")
-    # populate_locations()
-    # print("2")
-    # populate_restaurants(N = 20)
-    # print("3")
-    # populate_openinghours()
-    # print("4")
-    # populate_restaurant_ratings(N = 20)
-    # print("5")
-    populate_restaurant_reviews(N = 20)
+    populate_users(N = 20)
+    print("1")
+    populate_locations()
+    print("2")
+    populate_restaurants(N = 20)
+    print("3")
+    populate_openinghours()
+    print("4")
+    populate_restaurant_ratings(N = 100)
+    print("5")
+    populate_restaurant_reviews(N = 100)
     print("6")
-    populate_restaurant_waiting_times(N = 20)
-    print("7")
-    populate_restaurant_crowd_conditions(N = 20)
-    print("8")
-    populate_dishes(N = 50)
+    # populate_restaurant_waiting_times(N = 20)
+    # print("7")
+    # populate_restaurant_crowd_conditions(N = 20)
+    # print("8")
+    populate_dishes(N = 100)
     print("9")
-    populate_dish_ratings(N = 30)
+    populate_dish_ratings(N = 100)
     print("10")
-    populate_dish_reviews(N = 30)
+    populate_dish_reviews(N = 100)
     print("COMPLETE")
