@@ -1,3 +1,6 @@
+<!-- Search result page
+  To-do list: filter, sort, price, tags, open/closed, number of reviews -->
+
 <!DOCTYPE html>
 {% load staticfiles %}
 
@@ -83,6 +86,7 @@
       <!-- Copy up to this point to other pages -->
 
       <div class="row">
+        <!-- Filter & Sort to be done -->
 				<div class="col-sm-3 textBox">
 					<h4 class="words"> <strong> Filters </strong> </h4>
 					<div class="filterCategory">
@@ -191,11 +195,14 @@
   						</div>
   						<div class="col-sm-9">
   							<a href="{% url "restaurant" restaurant.id %}" class="words restaurantName">{{restaurant.name}}</a>
-  							<img src="../open.png" alt="open" class="topRight img-responsive" style="width:10%;">
+  							<img src="{% static "images/open.png" %}" alt="open" class="topRight img-responsive" style="width:10%;">
   							<p class="words"> {{restaurant.location}} </p>
+                <!-- Number of reviews to be done -->
   							<p class="reviewWord"> 25 Reviews </p>
-  							<p class="words"> Opening hours: {{restaurant.openinghours.monday_from}} to {{restaurant.openinghours.monday_to}} (Mon ~ Fri) </p>
+  							<p class="words"> Opening hours: {{restaurant.openinghours.monday_from}} to {{restaurant.openinghours.monday_to}} (Weekdays)</p>
+                <!-- Price to be done -->
   							<p class="words"> Price: ~S$4 per pax </p>
+                <!-- Tags to be done -->
   							<p class="words"> Tags:
   								<span><a href=# class="tags"> Western </a></span>
   								<span><a href=# class="tags"> Canteen </a></span>

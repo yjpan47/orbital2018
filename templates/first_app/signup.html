@@ -1,4 +1,5 @@
-<!-- kihyun 3 -->
+<!-- Signup form
+-->
 
 <!DOCTYPE html>
 {% load staticfiles %}
@@ -41,19 +42,8 @@
 				<div class="col-sm-1 col-sm-offset-2">
 					<br>
 					<br>
-					{% if user.is_authenticated %}
-
-	        <p>
-	          <a href="{% url "logout" %}">Logout</a>
-	        </p>
-
-	        {% else %}
-
 	        <a href="{% url "login" %}">
 	        <button type="button" class="btn btn-info pull-right" style="background-color: rgb(8, 0, 129);">Login</button> </a>
-
-	        {% endif %}
-
 				</div>
 			</div>
 
@@ -167,8 +157,8 @@
 
 					<div class="form-group row">
 						<div class="col-sm-4 col-sm-offset-4">
-							<label>Profile Picture:</label>
-        			<input type="file" name = "profile_pic">
+							<label for="profilepic" class="words">Profile Picture:</label>
+        			<input type="file" id="profilepic" name="profile_pic">
 						</div>
 					</div>
 

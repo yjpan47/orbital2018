@@ -1,3 +1,5 @@
+<!-- Sign up error username -->
+
 <!DOCTYPE html>
 {% load staticfiles %}
 
@@ -38,19 +40,8 @@
 				<div class="col-sm-1 col-sm-offset-2">
 					<br>
 					<br>
-					{% if user.is_authenticated %}
-
-	        <p>
-	          <a href="{% url "logout" %}">Logout</a>
-	        </p>
-
-	        {% else %}
-
 	        <a href="{% url "login" %}">
 	        <button type="button" class="btn btn-info pull-right" style="background-color: rgb(8, 0, 129);">Login</button> </a>
-
-	        {% endif %}
-
 				</div>
 			</div>
 

@@ -1,3 +1,6 @@
+<!-- User profile Page
+  Required changes: fonts, no. of reviews, date joined, tabs content-->
+
 <!DOCTYPE html>
 {% load staticfiles %}
 
@@ -102,8 +105,13 @@
           <p>About me: {{profile_user.userprofile.about_me}}</p>
 
         </div>
+
+        <div class="col-sm-3">
+          <!-- Add no. of reviews, date joined, etc. -->
+        </div>
       </div>
 
+      <!-- Tab. Requires attention -->
       <ul class="nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#restaurantReview">Restaurant Reviews</a></li>
         <li><a data-toggle="tab" href="#dish">Dish Reviews</a></li>
