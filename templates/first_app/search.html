@@ -1,34 +1,248 @@
 <!DOCTYPE html>
+{% load staticfiles %}
+
 <html lang="en" dir="ltr">
   <head>
+    <title>{{profile_user.first_name}} Search Results</title>
     <meta charset="utf-8">
-    <title>Search Results</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static "css/result.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   </head>
   <body>
-    {% for restaurant in restaurants %}
-      <p><a href="{% url "restaurant" restaurant.id %}">{{restaurant.name}}</a></p>
-    {% endfor %}
 
-{% if restaurants.has_other_pages %}
-    {% if users.has_previous %}
-      <li><a href="?q={{ q }}&page={{ restaurants.previous_page_number }}"></a></li>
-    {% else %}
-      <li class="disabled"><span>&laquo;</span></li>
-    {% endif %}
-    {% for i in restaurants.paginator.page_range %}
-      {% if restaurants.number == i %}
-        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-      {% else %}
-        <li><a href="?q={{ q }}&page={{ i }}">{{ i }}</a></li>
-      {% endif %}
-    {% endfor %}
-    {% if restaurants.has_next %}
-      <li><a href="?q={{ q }}&page={{ restaurants.next_page_number }}">&raquo;</a></li>
-    {% else %}
-      <li class="disabled"><span>&raquo;</span></li>
-    {% endif %}
-{% endif %}
+    <div class="container">
+      <div class="row">
+        <!-- MakaNUS logo -->
+				<div class="col-sm-3">
+					<a href="{% url "index" %}" class = "navbar-brand">
+						<img src="{% static "images/logo.png" %}" alt-"MakaNUS logo" width="216" height="60">
+					</a>
+				</div>
+        <!-- Search bar -->
+				<div class="col-sm-6 ">
+					<br>
+					<br>
+					<form action="{% url "search"%}" method="GET">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search by keyword, location, genre, etc." name="q">
+              <div class="input-group-btn">
+                <button class="btn btn-default" type="submit">
+                  <i class="glyphicon glyphicon-search"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+				</div>
+        <!-- Show signup/login buttons or user name if signed in -->
+        <div class="col-sm-3" style="padding-top:40px;">
+
+          {% if user.is_authenticated %}
+
+          <div class="dropdown" style="float:right;text-align:right;">
+
+            {% if user.userprofile.profile_pic.name == "" %}
+            {% else %}
+              <img src="{{user.userprofile.profile_pic.url}}" style="width:15%;border-radius:50%;">
+            {% endif %}
+            <span style="font-size:16px;text-align:right;"><strong> Welcome, {{user.first_name}}! </strong> <span>
+
+            <!-- Dropdown list -->
+            <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown" style="background-color: rgb(8, 0, 129);">
+            <span class="caret"></span></button>
+            <div class="dropdown-menu dropdown-menu-right">
+              <li><a href="{% url "profile" user.id %}">My Profile</a></li>
+              <li><a href="{% url "logout" %}">Logout</a></li>
+            </div>
+
+          </div>
+
+          {% else %}
+            <a href="{% url "signup" %}">
+            <button type="button" class="btn btn-info pull-right" style="background-color: rgb(8, 0, 129);">Sign Up</button> </a>
+            <a href="{% url "login" %}">
+            <button type="button" class="btn btn-info pull-right" style="background-color: rgb(8, 0, 129);">Login</button> </a>
+          {% endif %}
+
+        </div>
+			</div>
+
+      <br>
 
 
+      <!-- Navigation bar -->
+			<div class="row naviBarBackground" style="margin-bottom:15px;">
+				<a href="{% url "index" %}" class="naviBar"> <span class="glyphicon glyphicon-home"></span> Home</a>
+				<span class="naviBar"> > </span>
+				<span class="naviBar"> <strong> Search Results </strong></span>
+			</div>
+
+      <!-- Copy up to this point to other pages -->
+
+      <div class="row">
+				<div class="col-sm-3 textBox">
+					<h4 class="words"> <strong> Filters </strong> </h4>
+					<div class="filterCategory">
+						<p class="filterHeader words"> Sort by </p>
+						<div class="filterLinks">
+							<a href=# class="filterWords"> Ratings </a>
+							<span class="filterSmallWords"> - high to low </span>
+						</div>
+						<div class="filterLinks">
+							<a href=# class="filterWords"> Crowd </a>
+							<span class="filterSmallWords"> - high to low </span>
+						</div>
+						<div class="filterLinks">
+							<a href=# class="filterWords"> Name </a>
+							<span class="filterSmallWords"> - A to Z </span>
+						</div>
+					</div>
+					<div class="filterCategory">
+						<p class="filterHeader words"> Category </p>
+						<div class="filterLinks">
+							<a href=# class="filterWords"> Cafe </a>
+						</div>
+						<div class="filterLinks">
+							<a href=# class="filterWords"> Restaurant </a>
+						</div>
+						<div class="filterLinks">
+							<a href=# class="filterWords"> Canteen Stall </a>
+						</div>
+						<div class="filterLinks">
+							<a href=# class="filterWords"> Take-away </a>
+						</div>
+						<div class="filterLinks">
+							<a href=# class="filterWords"> Miscellaneous </a>
+						</div>
+					</div>
+					<div class="filterCategory">
+						<p class="filterHeader words"> Location </p>
+						<div class="filterLinks">
+							<a href=# class="filterWords"> Faculty of Arts and Social Sciences </a>
+						</div>
+						<div class="filterLinks">
+							<a href=# class="filterWords"> Faculty of Dentistry </a>
+						</div>
+						<div class="filterLinks">
+							<a href=# class="filterWords"> Faculty of Engineering </a>
+						</div>
+						<div class="filterLinks">
+							<a href=# class="filterWords"> Faculty of Law </a>
+						</div>
+						<div class="filterLinks">
+							<a href=# class="filterWords"> Faculty of Science </a>
+						</div>
+						<div class="filterLinks">
+							<a href=# class="filterWords"> School of Business </a>
+						</div>
+						<div class="filterLinks">
+							<a href=# class="filterWords"> School of Computing </a>
+						</div>
+						<div class="filterLinks">
+							<a href=# class="filterWords"> School of Design and Environment </a>
+						</div>
+						<div class="filterLinks">
+							<a href=# class="filterWords"> UTown </a>
+						</div>
+						<div class="filterLinks">
+							<a href=# class="filterWords"> Yong Loo Lin School of Medicine </a>
+						</div>
+						<div class="filterLinks">
+							<a href=# class="filterWords"> Yong Siew Toh Conservatory of Music </a>
+						</div>
+					</div>
+					<div class="filterCategory">
+						<p class="filterHeader words"> Cuisine </p>
+						<div class="filterLinks">
+							<a href=# class="filterWords"> Chinese </a>
+						</div>
+						<div class="filterLinks">
+							<a href=# class="filterWords"> Malay </a>
+						</div>
+						<div class="filterLinks">
+							<a href=# class="filterWords"> Indian </a>
+						</div>
+						<div class="filterLinks">
+							<a href=# class="filterWords"> Western </a>
+						</div>
+						<div class="filterLinks">
+							<a href=# class="filterWords"> Fast Food </a>
+						</div>
+						<div class="filterLinks">
+							<a href=# class="filterWords"> More... </a>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-8 textBox">
+
+          <!-- Results presented -->
+          {% for restaurant in restaurants %}
+  					<div class="resultBox">
+  						<div class="col-sm-3">
+                {% if restaurant.restaurant_profile_pic.name == "" %}
+                  <img src="{% static "images/default-restaurant-profile.png" %}" class="img-responsive">
+                {% else %}
+                  <img src="{{restaurant.restaurant_profile_pic.url}}">
+                {% endif %}
+                <p class="words" style="text-align:center;padding:15px;font-size:16px;"><strong>Rating: {{  restaurant.get_average_rating  }}</strong></p>
+  						</div>
+  						<div class="col-sm-9">
+  							<a href="{% url "restaurant" restaurant.id %}" class="words restaurantName">{{restaurant.name}}</a>
+  							<img src="../open.png" alt="open" class="topRight img-responsive" style="width:10%;">
+  							<p class="words"> {{restaurant.location}} </p>
+  							<p class="reviewWord"> 25 Reviews </p>
+  							<p class="words"> Opening hours: {{restaurant.openinghours.monday_from}} to {{restaurant.openinghours.monday_to}} (Mon ~ Fri) </p>
+  							<p class="words"> Price: ~S$4 per pax </p>
+  							<p class="words"> Tags:
+  								<span><a href=# class="tags"> Western </a></span>
+  								<span><a href=# class="tags"> Canteen </a></span>
+  								<span><a href=# class="tags"> Techno Edge </a></span>
+  							</p>
+  						</div>
+  					</div>
+          {% endfor %}
+
+          <!-- Pagination -->
+          {% if restaurants.has_other_pages %}
+            <div style="float:center;text-align:center;">
+              <ul class="pagination">
+                {% if users.has_previous %}
+                  <li><a href="?q={{ q }}&page={{ restaurants.previous_page_number }}"></a></li>
+                {% else %}
+                  <li class="disabled"><span>&laquo;</span></li>
+                {% endif %}
+                {% for i in restaurants.paginator.page_range %}
+                  {% if restaurants.number == i %}
+                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                  {% else %}
+                    <li><a href="?q={{ q }}&page={{ i }}">{{ i }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                {% if restaurants.has_next %}
+                  <li><a href="?q={{ q }}&page={{ restaurants.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                  <li class="disabled"><span>&raquo;</span></li>
+                {% endif %}
+              </ul>
+            </div>
+          {% endif %}
+				</div>
+			</div>
+
+      <br>
+
+      <!-- Page footer -->
+      <div>
+        <div class="row naviBarBackground">
+          <span style="font-size:16px;padding:10px;color:RGB(8,0,129);">Line Break</span>
+        </div>
+        <img src="{% static "images/logo.png" %}" alt="MakaNUS logo" class="img-responsive center-block" style="width:144px; height:55px; padding:10px;">
+        <p style="text-align:center;"> © 2018 MakaNUS, all rights reserved. </p>
+      </div>
+
+    </div>
   </body>
-</html>
+<html>

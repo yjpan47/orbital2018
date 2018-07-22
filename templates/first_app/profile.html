@@ -16,11 +16,13 @@
 
     <div class="container">
       <div class="row">
+        <!-- MakaNUS logo -->
 				<div class="col-sm-3">
 					<a href="{% url "index" %}" class = "navbar-brand">
 						<img src="{% static "images/logo.png" %}" alt-"MakaNUS logo" width="216" height="60">
 					</a>
 				</div>
+        <!-- Search bar -->
 				<div class="col-sm-6 ">
 					<br>
 					<br>
@@ -35,6 +37,7 @@
             </div>
           </form>
 				</div>
+        <!-- Show signup/login buttons or user name if signed in -->
         <div class="col-sm-3" style="padding-top:40px;">
 
           {% if user.is_authenticated %}
@@ -43,7 +46,7 @@
 
             {% if user.userprofile.profile_pic.name == "" %}
             {% else %}
-              <img src="{{user.userprofile.profile_pic.url}}" style="width:10%;border-radius:50%;">
+              <img src="{{user.userprofile.profile_pic.url}}" style="width:15%;border-radius:50%;">
             {% endif %}
             <span style="font-size:16px;text-align:right;"><strong> Welcome, {{user.first_name}}! </strong> <span>
 
@@ -69,11 +72,15 @@
 
       <br>
 
+
+      <!-- Navigation bar -->
 			<div class="row naviBarBackground" style="margin-bottom:15px;">
 				<a href="{% url "index" %}" class="naviBar"> <span class="glyphicon glyphicon-home"></span> Home</a>
 				<span class="naviBar"> > </span>
 				<span class="naviBar"> <strong> {{profile_user.first_name}}'s Profile </strong></span>
 			</div>
+
+      <!-- Copy up to this point to other pages -->
 
       <div class="row">
         <div class="col-sm-3">
@@ -204,6 +211,7 @@
         </div>
       </div>
 
+      <!-- Page footer -->
       <div>
 				<div class="row naviBarBackground">
 					<span style="font-size:16px;padding:10px;color:RGB(8,0,129);">Line Break</span>
