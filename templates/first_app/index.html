@@ -18,26 +18,31 @@
       <br>
 
       <!-- Login or Signup button here if not authenticated-->
-      <div class="row" style="text-align:right;">
-        {% if user.is_authenticated %}
-        {% if user.userprofile.profile_pic.name == "" %}
-        {% else %}
-        <img src="{{user.userprofile.profile_pic.url}}">
-        {% endif %}
-        <h4> Welcome, {{user.first_name}}! </h4>
-        <a href="{% url "logout" %}">
-        <button type="button" class="btn btn-info" style="background-color: rgb(8, 0, 129);">Logout</button> </a>
-        <a href="{% url "profile" user.id %}">
-        <button type="button" class="btn btn-info" style="background-color: rgb(8, 0, 129);">My Profile</button> </a>
+      <div class="row vertical-center">
+        <div class="col-sm-8">
+          <img src="{% static "images/logo.png" %}" alt="MakaNUS logo" class="img-responsive" align="right" width="324" height="90">
+        </div>
+        <div class="col-sm-4" style="text-align:right;">
+          {% if user.is_authenticated %}
+          <p style="font-size:20px;"> <strong> Welcome, {{user.first_name}}! </strong>
+          {% if user.userprofile.profile_pic.name == "" %}
+          {% else %}
+          <img src="{{user.userprofile.profile_pic.url}}" style="width:10%;border-radius:50%;">
+          {% endif %}
+          <a href="{% url "logout" %}">
+          <button type="button" class="btn btn-info" style="background-color: rgb(8, 0, 129);">Logout</button> </a>
+          <a href="{% url "profile" user.id %}">
+          <button type="button" class="btn btn-info" style="background-color: rgb(8, 0, 129);">My Profile</button> </a>
+          </p>
 
-        {% else %}
+          {% else %}
 
-        <a href="{% url "signup" %}">
-        <button type="button" class="btn btn-info pull-right" style="background-color: rgb(8, 0, 129);">Sign Up</button> </a>
-        <a href="{% url "login" %}">
-        <button type="button" class="btn btn-info pull-right" style="background-color: rgb(8, 0, 129);">Login</button> </a>
+          <a href="{% url "signup" %}">
+          <button type="button" class="btn btn-info pull-right" style="background-color: rgb(8, 0, 129);">Sign Up</button> </a>
+          <a href="{% url "login" %}">
+          <button type="button" class="btn btn-info pull-right" style="background-color: rgb(8, 0, 129);">Login</button> </a>
 
-        {% endif %}
+          {% endif %}
 
       </div>
 
