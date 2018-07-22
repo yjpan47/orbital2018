@@ -3,136 +3,215 @@
 
 <html lang="en" dir="ltr">
   <head>
-    <meta charset="utf-8">
     <title>{{profile_user.first_name}}'s Profile</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static "css/index.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   </head>
   <body>
-  <!-- Navbar: Link to Home Page -->
-    <p><a href="{% url "index" %}">Home</a></p>
-  <!-- Navbar: Search bar -->
-    <p><form action="{% url "search" %}" method="GET">
-        {% csrf_token %}
-        <label>Search Function:</label>
-        <input type="text" placeholder="Search here!" name = "q">
-      </form></p>
-  <!-- Navbar: Sign up/Login/Logout/My Profile -->
-    {% if user.is_authenticated %}
-      <p><a href="{% url "profile" user.id %}">My Profile</a></p>
-      <p><a href="{% url "logout" %}">Logout</a></p>
-    {% else %}
-      <p><a href="{% url "signup" %}">Sign Up</a></p>
-      <p><a href="{% url "login" %}">Login</a></p>
-    {% endif %}
-    <hr>
 
-  <!-- Username -->
-    <h1>{{profile_user.username}}</h1>
-  <!-- Profile Name -->
-    <h1>{{profile_user.first_name}} {{profile_user.last_name}}</h1>
-  <!-- Profile Picture -->
-    {% if profile_user.userprofile.profile_pic.name == "" %}
-      <p><img src="{% static "images/default-user-profile.png" %}"></p>
-    {% else %}
-      <p><img src="{{profile_user.userprofile.profile_pic.url}}"></p>
-    {% endif %}
-    <!-- Other Profile Information -->
-    <p>Year: {{profile_user.userprofile.year}}</p>
-    <p>Faulty: {{profile_user.userprofile.faculty}}</p>
-    <p>Major: {{profile_user.userprofile.major}}</p>
-    <p>About me: {{profile_user.userprofile.about_me}}</p>
-    <hr>
-
-    <!-- Restaurant Reviews -->
-    <h1>Restaurant Reviews</h1>
-      {% for review in profile_user.restaurantreview_set.all %}
-        <!-- Restaurant Name -->
-        <h2><a href = "{% url "restaurant" review.restaurant.id %}">{{review.restaurant.name}}</a></h2>
-        <!-- Restaurant Profile Picture -->
-        {% if review.restaurant.restaurant_profile_pic.name == "" %}
-          <p><img src="{% static "images/default-restaurant-profile.png" %}"></p>
-        {% else %}
-          <p>Restaurant Profile Picture: <img src="{{review.restaurant.restaurant_profile_pic.url}}"></p>
-        {% endif %}
-        <!-- Restaurant Review -->
-        <p>{{review.review}}</p>
-        <!-- Restaurant Review Rating -->
-        <p>{{review.get_average_rating}}</p>
-        <!-- Add Restaurant Review Rating -->
-        {% if user.is_authenticated %}
-          <form action="{% url "add_restaurant_review_rating" review.id %}" method="POST">
-            {% csrf_token %}
-            <input type="hidden" name="next" value="{{ request.path }}">
-            <select name="restaurant_review_rating">
-              <option value = 1> 1 </option>
-              <option value = 2> 2 </option>
-              <option value = 3> 3 </option>
-              <option value = 4> 4 </option>
-              <option value = 5> 5 </option>
-            </select>
-            <input type="submit">
+    <div class="container">
+      <div class="row">
+				<div class="col-sm-3">
+					<a href="{% url "index" %}" class = "navbar-brand">
+						<img src="{% static "images/logo.png" %}" alt-"MakaNUS logo" width="216" height="60">
+					</a>
+				</div>
+				<div class="col-sm-6 ">
+					<br>
+					<br>
+					<form action="{% url "search"%}" method="GET">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search by keyword, location, genre, etc." name="q">
+              <div class="input-group-btn">
+                <button class="btn btn-default" type="submit">
+                  <i class="glyphicon glyphicon-search"></i>
+                </button>
+              </div>
+            </div>
           </form>
-        {% endif %}
-        <!-- Edite/Delete Restaurant Review -->
-        {% if user.id == profile_user.id %}
-          <p><a href="{% url "edit_restaurant_review" review.id %}">Edit</a></p>
-          <p><a href="{% url "delete_restaurant_review" review.id %}">Delete</a></p>
-        {% endif %}
-      <hr>
-      {% endfor %}
+				</div>
+        <div class="col-sm-3" style="padding-top:40px;">
 
-    <!-- Dish Reviews -->
-    <h1>Dish Reviews</h1>
-    {% for review in profile_user.dishreview_set.all %}
-      <!-- Dish Name -->
-      <h2>{{review.dish.name}}</h2>
-      <!-- Restaurant that Dish belongs to -->
-      <p>of <a href = "{% url "restaurant" review.dish.restaurant.id %}">{{review.dish.restaurant.name}}</a></p>
-      <!-- Dish Profile Picture -->
-      {% if review.dish.dish_profile_pic.name == "" %}
-        <p><img src="{% static "images/default-dish-profile.png" %}"></p>
-      {% else %}
-        <p><img src="{{review.dish.dish_profile_pic.url}}"></p>
-      {% endif %}
-      <!-- Dish Review -->
-      <p>{{review.review}}</p>
-      <!-- Dish Review Rating -->
-      <p>{{review.get_average_rating}}</p>
-      <!-- Add Dish Review Rating -->
-      {% if user.is_authenticated %}
-        <form action="{% url "add_dish_review_rating" review.id %}" method="POST">
-          {% csrf_token %}
-          <input type="hidden" name="next" value="{{ request.path }}">
-          <select name="dish_review_rating">
-            <option value = 1> 1 </option>
-            <option value = 2> 2 </option>
-            <option value = 3> 3 </option>
-            <option value = 4> 4 </option>
-            <option value = 5> 5 </option>
-          </select>
-          <input type="submit">
-        </form>
-      {% endif %}
-      <!-- Edit/Delete Dish Review -->
-      {% if user.id == profile_user.id %}
-        <p><a href="{% url "edit_dish_review" review.id %}">Edit</a></p>
-        <p><a href="{% url "delete_dish_review" review.id %}">Delete</a></p>
-      {% endif %}
+          {% if user.is_authenticated %}
 
-      <hr>
-      {% endfor %}
+          <div class="dropdown" style="float:right;text-align:right;">
 
-      <!-- Photos Uploaded -->
-      <h1>Photos Uploaded</h1>
-        {% for restaurant_photo in profile_user.restaurantphoto_set.all %}
-          <!-- Restaurant that photo belongs to -->
-          <h2><a href = "{% url "restaurant" restaurant_photo.restaurant.id %}">{{restaurant_photo.restaurant.name}}</h2></p>
-          <!-- Restaurant photo -->
-          <p><img src="{{restaurant_photo.photo.url}}"></p>
-          <!-- Delete photo -->
-          {% if user.id == profile_user.id %}
-            <p><a href="{% url "delete_restaurant_photo" restaurant_photo.id %}">Delete</a></p>
+            {% if user.userprofile.profile_pic.name == "" %}
+            {% else %}
+              <img src="{{user.userprofile.profile_pic.url}}" style="width:10%;border-radius:50%;">
+            {% endif %}
+            <span style="font-size:16px;text-align:right;"><strong> Welcome, {{user.first_name}}! </strong> <span>
+
+            <!-- Dropdown list -->
+            <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown" style="background-color: rgb(8, 0, 129);">
+            <span class="caret"></span></button>
+            <div class="dropdown-menu dropdown-menu-right">
+              <li><a href="{% url "profile" user.id %}">My Profile</a></li>
+              <li><a href="{% url "logout" %}">Logout</a></li>
+            </div>
+
+          </div>
+
+          {% else %}
+            <a href="{% url "signup" %}">
+            <button type="button" class="btn btn-info pull-right" style="background-color: rgb(8, 0, 129);">Sign Up</button> </a>
+            <a href="{% url "login" %}">
+            <button type="button" class="btn btn-info pull-right" style="background-color: rgb(8, 0, 129);">Login</button> </a>
           {% endif %}
-        <hr>
-        {% endfor %}
+
+        </div>
+			</div>
+
+      <br>
+
+			<div class="row naviBarBackground" style="margin-bottom:15px;">
+				<a href="{% url "index" %}" class="naviBar"> <span class="glyphicon glyphicon-home"></span> Home</a>
+				<span class="naviBar"> > </span>
+				<span class="naviBar"> <strong> {{profile_user.first_name}}'s Profile </strong></span>
+			</div>
+
+      <div class="row">
+        <div class="col-sm-3">
+          <!-- Profile Picture -->
+          {% if profile_user.userprofile.profile_pic.name == "" %}
+            <p><img src="{% static "images/default-user-profile.png" %}" style="width:90%;margin:15px;"></p>
+          {% else %}
+            <p><img src="{{profile_user.userprofile.profile_pic.url}}" style="width:90%;margin:15px;"></p>
+          {% endif %}
+        </div>
+
+        <div class="col-sm-6">
+          <!-- Profile Name -->
+          <h1>{{profile_user.first_name}} {{profile_user.last_name}} ({{profile_user.username}})</h1>
+          <!-- Other Profile Information -->
+          <p>Year: {{profile_user.userprofile.year}}</p>
+          <p>Faulty: {{profile_user.userprofile.faculty}}</p>
+          <p>Major: {{profile_user.userprofile.major}}</p>
+          <p>About me: {{profile_user.userprofile.about_me}}</p>
+
+        </div>
+      </div>
+
+      <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#restaurantReview">Restaurant Reviews</a></li>
+        <li><a data-toggle="tab" href="#dish">Dish Reviews</a></li>
+        <li><a data-toggle="tab" href="#photo">Photos Uploaded</a></li>
+      </ul>
+      <br>
+      <div class="tab-content">
+        <div id="restaurantReview" class="tab-pane fade in active">
+          <!-- Restaurant Reviews -->
+          <h1>Restaurant Reviews</h1>
+          {% for review in profile_user.restaurantreview_set.all %}
+          <!-- Restaurant Name -->
+          <h2><a href = "{% url "restaurant" review.restaurant.id %}">{{review.restaurant.name}}</a></h2>
+          <!-- Restaurant Profile Picture -->
+          {% if review.restaurant.restaurant_profile_pic.name == "" %}
+            <p><img src="{% static "images/default-restaurant-profile.png" %}"></p>
+          {% else %}
+            <p>Restaurant Profile Picture: <img src="{{review.restaurant.restaurant_profile_pic.url}}"></p>
+          {% endif %}
+          <!-- Restaurant Review -->
+          <p>{{review.review}}</p>
+          <!-- Restaurant Review Rating -->
+          <p>{{review.get_average_rating}}</p>
+          <!-- Add Restaurant Review Rating -->
+          {% if user.is_authenticated %}
+            <form action="{% url "add_restaurant_review_rating" review.id %}" method="POST">
+              {% csrf_token %}
+              <input type="hidden" name="next" value="{{ request.path }}">
+              <select name="restaurant_review_rating">
+                <option value = 1> 1 </option>
+                <option value = 2> 2 </option>
+                <option value = 3> 3 </option>
+                <option value = 4> 4 </option>
+                <option value = 5> 5 </option>
+              </select>
+              <input type="submit">
+            </form>
+          {% endif %}
+          <!-- Edite/Delete Restaurant Review -->
+          {% if user.id == profile_user.id %}
+            <p><a href="{% url "edit_restaurant_review" review.id %}">Edit</a></p>
+            <p><a href="{% url "delete_restaurant_review" review.id %}">Delete</a></p>
+          {% endif %}
+          <hr>
+          {% endfor %}
+        </div>
+
+        <div id="dish" class="tab-pane fade">
+          <!-- Dish Reviews -->
+          <h1>Dish Reviews</h1>
+          {% for review in profile_user.dishreview_set.all %}
+          <!-- Dish Name -->
+          <h2>{{review.dish.name}}</h2>
+          <!-- Restaurant that Dish belongs to -->
+          <p>of <a href = "{% url "restaurant" review.dish.restaurant.id %}">{{review.dish.restaurant.name}}</a></p>
+          <!-- Dish Profile Picture -->
+          {% if review.dish.dish_profile_pic.name == "" %}
+            <p><img src="{% static "images/default-dish-profile.png" %}"></p>
+          {% else %}
+            <p><img src="{{review.dish.dish_profile_pic.url}}"></p>
+          {% endif %}
+          <!-- Dish Review -->
+          <p>{{review.review}}</p>
+          <!-- Dish Review Rating -->
+          <p>{{review.get_average_rating}}</p>
+          <!-- Add Dish Review Rating -->
+          {% if user.is_authenticated %}
+            <form action="{% url "add_dish_review_rating" review.id %}" method="POST">
+              {% csrf_token %}
+              <input type="hidden" name="next" value="{{ request.path }}">
+              <select name="dish_review_rating">
+                <option value = 1> 1 </option>
+                <option value = 2> 2 </option>
+                <option value = 3> 3 </option>
+                <option value = 4> 4 </option>
+                <option value = 5> 5 </option>
+              </select>
+              <input type="submit">
+            </form>
+          {% endif %}
+          <!-- Edit/Delete Dish Review -->
+          {% if user.id == profile_user.id %}
+            <p><a href="{% url "edit_dish_review" review.id %}">Edit</a></p>
+            <p><a href="{% url "delete_dish_review" review.id %}">Delete</a></p>
+          {% endif %}
+
+          <hr>
+          {% endfor %}
+        </div>
+
+        <div id="photo" class="tab-pane fade">
+          <!-- Photos Uploaded -->
+          <h1>Photos Uploaded</h1>
+          {% for restaurant_photo in profile_user.restaurantphoto_set.all %}
+            <!-- Restaurant that photo belongs to -->
+            <h2><a href = "{% url "restaurant" restaurant_photo.restaurant.id %}">{{restaurant_photo.restaurant.name}}</h2></p>
+            <!-- Restaurant photo -->
+            <p><img src="{{restaurant_photo.photo.url}}"></p>
+            <!-- Delete photo -->
+            {% if user.id == profile_user.id %}
+              <p><a href="{% url "delete_restaurant_photo" restaurant_photo.id %}">Delete</a></p>
+            {% endif %}
+          <hr>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div>
+				<div class="row naviBarBackground">
+					<span style="font-size:16px;padding:10px;color:RGB(8,0,129);">Line Break</span>
+				</div>
+				<img src="{% static "images/logo.png" %}" alt="MakaNUS logo" class="img-responsive center-block" style="width:144px; height:55px; padding:10px;">
+				<p style="text-align:center;"> © 2018 MakaNUS, all rights reserved. </p>
+			</div>
+
+    </div>
   </body>
-</html>
+<html>

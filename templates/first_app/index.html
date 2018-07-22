@@ -31,10 +31,10 @@
             {% else %}
               <img src="{{user.userprofile.profile_pic.url}}" style="width:10%;border-radius:50%;">
             {% endif %}
-            <span style="font-size:20px;text-align:right;"><strong> Welcome, {{user.first_name}}! </strong> <span>
+            <span style="font-size:16px;text-align:right;"><strong> Welcome, {{user.first_name}}! </strong> <span>
 
             <!-- Dropdown list -->
-            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" style="background-color: rgb(8, 0, 129);">
+            <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown" style="background-color: rgb(8, 0, 129);">
             <span class="caret"></span></button>
             <div class="dropdown-menu dropdown-menu-right">
               <li><a href="{% url "profile" user.id %}">My Profile</a></li>
