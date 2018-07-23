@@ -4,68 +4,82 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Restaurant</title>
+    <title>{{restaurant.name}}</title>
   </head>
   <body>
-<!-- Restaurant Name -->
+    <!-- Navbar: Link to Home Page -->
+      <p><a href="{% url "index" %}">Home</a></p>
+    <!-- Navbar: Search bar -->
+      <p><form action="{% url "search" %}" method="GET">
+          {% csrf_token %}
+          <label>Search Function:</label>
+          <input type="text" placeholder="Search here!" name = "q">
+        </form></p>
+    <!-- Navbar: Sign up/Login/Logout/My Profile -->
+      {% if user.is_authenticated %}
+        <p><a href="{% url "profile" user.id %}">My Profile</a></p>
+        <p><a href="{% url "logout" %}">Logout</a></p>
+      {% else %}
+        <p><a href="{% url "signup" %}">Sign Up</a></p>
+        <p><a href="{% url "login" %}">Login</a></p>
+      {% endif %}
+      <hr>
+
+    <!-- Restaurant Name -->
     <h1>{{restaurant.name}}</h1>
+    <!-- Restaurant Profile Picture -->
     {% if restaurant.restaurant_profile_pic.name == "" %}
-      <h2>Profile Picture: <img src="{% static "images/default-restaurant-profile.png" %}"> </h2>
+      <p><img src="{% static "images/default-restaurant-profile.png" %}"> </p>
     {% else %}
-      <h2>Profile Picture: <img src="{{restaurant.restaurant_profile_pic.url}}"> </h2>
+      p><img src="{{restaurant.restaurant_profile_pic.url}}"> </p>
     {% endif %}
-    <h2>Rating: {{  restaurant.get_average_rating  }}</h2>
-    <h2>Estimated Waiting Time: {{ restaurant.get_waiting_time }}</h2>
-    <h2>Crowd Condition: {{ restaurant.get_crowd_condition }}</h2>
-    <h2>Opening Hours: </h2>
-      <h3>Monday: {{restaurant.openinghours.monday_from}} to {{restaurant.openinghours.monday_to}} </h2>
-      <h3>Tuesday: {{restaurant.openinghours.tuesday_from}} to {{restaurant.openinghours.tuesday_to}} </h2>
-      <h3>Wednesday: {{restaurant.openinghours.wednesday_from}} to {{restaurant.openinghours.wednesday_to}} </h2>
-      <h3>Thursday: {{restaurant.openinghours.thursday_from}} to {{restaurant.openinghours.thursday_to}} </h2>
-      <h3>Friday: {{restaurant.openinghours.friday_from}} to {{restaurant.openinghours.friday_to}} </h2>
-      <h3>Saturday: {{restaurant.openinghours.saturday_from}} to {{restaurant.openinghours.saturday_to}} </h2>
-      <h3>Sunday: {{restaurant.openinghours.sunday_from}} to {{restaurant.openinghours.sunday_to}} </h2>
-    <h2>Location: {{restaurant.location}}</h2>
-    <h2>Address: {{restaurant.address}}</h2>
+    <p>Rating: {{  restaurant.get_average_rating  }}</p>
+    <p>Estimated Waiting Time: {{ restaurant.get_waiting_time }}</p>
+    <p>Crowd Condition: {{ restaurant.get_crowd_condition }}</p>
+    <p>Opening Hours: </p>
+      <p>Monday: {{restaurant.openinghours.monday_from}} to {{restaurant.openinghours.monday_to}} </p>
+      <p>Tuesday: {{restaurant.openinghours.tuesday_from}} to {{restaurant.openinghours.tuesday_to}} </p>
+      <p>Wednesday: {{restaurant.openinghours.wednesday_from}} to {{restaurant.openinghours.wednesday_to}} </p>
+      <p>Thursday: {{restaurant.openinghours.thursday_from}} to {{restaurant.openinghours.thursday_to}} </p>
+      <p>Friday: {{restaurant.openinghours.friday_from}} to {{restaurant.openinghours.friday_to}} </p>
+      <p>Saturday: {{restaurant.openinghours.saturday_from}} to {{restaurant.openinghours.saturday_to}} </p>
+      <p>Sunday: {{restaurant.openinghours.sunday_from}} to {{restaurant.openinghours.sunday_to}} </p>
+    <p>Location: {{restaurant.location}}</p>
+    <p>Address: {{restaurant.address}}</p>
+    <hr>
 
-{% if user.is_authenticated %}
-    <h1>Contribute a Rating</h1>
-      <form action="{% url "add_restaurant_rating" restaurant.id %}" method="post">
-      {% csrf_token %}
-        <select name="restaurant_rating">
-          <option value = 1> 1 </option>
-          <option value = 2> 2 </option>
-          <option value = 3> 3 </option>
-          <option value = 4> 4 </option>
-          <option value = 5> 5 </option>
-        </select>
-        <input type="submit">
-      </form>
-
-      <h1>Contribute Review</h1>
-        <form action="{% url "add_restaurant_review" restaurant.id %}" method="post">
+    <!-- Add a rating -->
+    {% if user.is_authenticated %}
+      <h2>Add Rating</h2>
+        <form action="{% url "add_restaurant_rating" restaurant.id %}" method="post">
         {% csrf_token %}
-          <input type="textarea" name="restaurant_review">
+          <select name="restaurant_rating">
+            <option value = 1> 1 </option>
+            <option value = 2> 2 </option>
+            <option value = 3> 3 </option>
+            <option value = 4> 4 </option>
+            <option value = 5> 5 </option>
+          </select>
           <input type="submit">
         </form>
+    {% endif %}
 
-    <h1>Contribute to Estimated Waiting Time</h1>
-      <form action="{% url "add_waiting_time" restaurant.id %}" method="POST">
-      {% csrf_token %}
-        <select name="waiting_time">
-          <option value = 1> 1 minute </option>
-          <option value = 2> 2 minute </option>
-          <option value = 3> 3 minute </option>
-          <option value = 4> 4 minute </option>
-          <option value = 5> 5 minute </option>
-        </select>
-        <input type="submit">
-      </form>
-
-      <h1>Contribute to Crowd Condition</h1>
-        <form action="{% url "add_crowd_condition" restaurant.id %}" method="POST">
+    <!-- Add a Review -->
+    {% if user.is_authenticated %}
+        <h2>Add Review</h2>
+          <form action="{% url "add_restaurant_review" restaurant.id %}" method="post">
           {% csrf_token %}
-          <select name="crowd_condition">
+            <input type="textarea" name="restaurant_review">
+            <input type="submit">
+          </form>
+    {% endif %}
+
+    <!-- Add an estimated waiting time -->
+    {% if user.is_authenticated %}
+      <h2>What's the Estimated Waiting Time?</h2>
+        <form action="{% url "add_waiting_time" restaurant.id %}" method="POST">
+        {% csrf_token %}
+          <select name="waiting_time">
             <option value = 1> 1 minute </option>
             <option value = 2> 2 minute </option>
             <option value = 3> 3 minute </option>
@@ -74,54 +88,84 @@
           </select>
           <input type="submit">
         </form>
- {% endif %}
+    {% endif %}
 
-<!-- RESTAURANT REVIEWS -->
-<h1>Restaurant Reviews</h1>
-{% for review in restaurant.restaurantreview_set.all %}
-  <h4>Name: {{review.user.first_name}}</h4>
-  {% if review.user.userprofile.profile_pic.name == "" %}
-    <h2><img src="{% static "images/default-user-profile.png" %}"> </h2>
-  {% else %}
-    <h4><img src="{{review.user.userprofile.profile_pic.url}}"></h4>
-  {% endif %}
-  <p>Review: {{review.review}}</p>
-  <p>Review Rating: {{review.get_average_rating}}</p>
+    <!-- Add a crowd condition -->
+    {% if user.is_authenticated %}
+        <h2>How's the Crowd Condition here?</h2>
+          <form action="{% url "add_crowd_condition" restaurant.id %}" method="POST">
+            {% csrf_token %}
+            <select name="crowd_condition">
+              <option value = 1> 1 </option>
+              <option value = 2> 2 </option>
+              <option value = 3> 3 </option>
+              <option value = 4> 4 </option>
+              <option value = 5> 5 </option>
+            </select>
+            <input type="submit">
+          </form>
+    {% endif %}
+    <hr>
 
-  <!-- Give Review Rating -->
-  {% if user.is_authenticated %}
-    <form action="{% url "add_restaurant_review_rating" review.id %}" method="POST">
-      {% csrf_token %}
-      <select name="restaurant_review_rating">
-        <option value = 1> 1 </option>
-        <option value = 2> 2 </option>
-        <option value = 3> 3 </option>
-        <option value = 4> 4 </option>
-        <option value = 5> 5 </option>
-      </select>
-      <input type="submit">
-    </form>
-  {% endif %}
+    <!-- RESTAURANT REVIEWS -->
+    <h1>Restaurant Reviews</h1>
+    {% for review in restaurant.restaurantreview_set.all %}
+    <!-- Reviewer's Name -->
+      <h2><a href = "{% url "profile" review.user.id %}">{{review.user.first_name}} {{review.user.last_name}}</a></h2>
+    <!-- Reviewer's Profile Picture -->
+      {% if review.user.userprofile.profile_pic.name == "" %}
+        <h2><img src="{% static "images/default-user-profile.png" %}"> </h2>
+      {% else %}
+        <h4><img src="{{review.user.userprofile.profile_pic.url}}"></h4>
+      {% endif %}
+      <!-- Reviewer's review -->
+      <p>{{review.review}}</p>
+      <!-- Reviewer's review's rating -->
+      <p>{{review.get_average_rating}}</p>
 
-{% endfor %}
+      <!-- Add Restaurant Review Rating -->
+      {% if user.is_authenticated %}
+        <form action="{% url "add_restaurant_review_rating" review.id %}" method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ request.path }}">
+          <select name="restaurant_review_rating">
+            <option value = 1> 1 </option>
+            <option value = 2> 2 </option>
+            <option value = 3> 3 </option>
+            <option value = 4> 4 </option>
+            <option value = 5> 5 </option>
+          </select>
+          <input type="submit">
+        </form>
+      {% endif %}
 
+    <hr>
+    {% endfor %}
 
+    <!-- RESTAURANT DISHES (MENU) -->
+    <h1>Dishes</h1>
+    {% for dish in restaurant.dish_set.all %}
+      <!-- Dish's Name -->
+      <p>{{dish.name}} </p>
+      <!-- Dish's Rating -->
+      <p>{{dish.get_average_rating}}</p>
+      <!-- Dish's Profile Picture -->
+      {% if dish.dish_profile_pic.name == "" %}
+        <p><img src="{% static "images/default-dish-profile.png" %}"></p>
+      {% else %}
+        <p><img src="{{dish.dish_profile_pic.url}}"> </p>
+      {% endif %}
+    <hr>
+    {% endfor %}
 
-
-
-
-
-<h1>Menu</h1>
-{% for dish in restaurant.dish_set.all %}
-  <h4>Dish: {{dish.name}} </h4>
-  {% if dish.dish_profile_pic.name == "" %}
-    <h4>Dish Picture: <img src="{% static "images/default-dish-profile.png" %}"> </h4>
-  {% else %}
-    <h4>Dish Picture: <img src="{{dish.dish_profile_pic.url}}"> </h4>
-  {% endif %}
-{% endfor %}
-
-
+    <!-- RESTAURANT PHOTOS -->
+    <h1>Photos</h1>
+    {% for photo in restaurant.restaurantphoto_set.all %}
+      <!-- Restaurant photo -->
+      <p><img src="{{photo.photo.url}}"></p>
+      <!-- Uploader's username -->
+      <p>Uploaded by: <a href = "{% url "profile" photo.user.id %}">{{photo.user.username}}</p>
+    {% endfor %}
 
   </body>
 </html>
