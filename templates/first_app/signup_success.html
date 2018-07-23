@@ -1,3 +1,6 @@
+<!-- Signup success page
+	Redirected to the login page-->
+
 <!DOCTYPE html>
 {% load staticfiles %}
 
@@ -11,8 +14,11 @@
 	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script> function goToLogin() {
+      window.location.href = "{% url 'login' %}";
+    }   </script>
 	</head>
-	<body>
+	<body onload="goToLogin()">
 
 		<div class="container">
 			<div class="row">
@@ -35,23 +41,6 @@
             </div>
           </form>
 				</div>
-				<div class="col-sm-1 col-sm-offset-2">
-					<br>
-					<br>
-					{% if user.is_authenticated %}
-
-	        <p>
-	          <a href="{% url "logout" %}">Logout</a>
-	        </p>
-
-	        {% else %}
-
-	        <a href="{% url "login" %}">
-	        <button type="button" class="btn btn-info pull-right" style="background-color: rgb(8, 0, 129);">Login</button> </a>
-
-	        {% endif %}
-
-				</div>
 			</div>
 
 			<br>
@@ -64,7 +53,7 @@
 
       <div class="row">
         <h2 id="signUpTitle"> Sign up successful! </h2>
-        <a href="{% url "login" %}">Proceed to login</a>
+        <p class="words"> You will be redirected to the login page in a moment. </p>
       </div>
 
       <br>

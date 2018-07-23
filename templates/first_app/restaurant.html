@@ -1,171 +1,345 @@
+<!-- Restaurant details
+  To-do list: Open sign, waiting time, score, number of reviews, photo uploading, tab contents -->
+
 <!DOCTYPE html>
 {% load staticfiles %}
 
 <html lang="en" dir="ltr">
   <head>
-    <meta charset="utf-8">
     <title>{{restaurant.name}}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static "css/restaurantDetail.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   </head>
   <body>
-    <!-- Navbar: Link to Home Page -->
-      <p><a href="{% url "index" %}">Home</a></p>
-    <!-- Navbar: Search bar -->
-      <p><form action="{% url "search" %}" method="GET">
-          {% csrf_token %}
-          <label>Search Function:</label>
-          <input type="text" placeholder="Search here!" name = "q">
-        </form></p>
-    <!-- Navbar: Sign up/Login/Logout/My Profile -->
-      {% if user.is_authenticated %}
-        <p><a href="{% url "profile" user.id %}">My Profile</a></p>
-        <p><a href="{% url "logout" %}">Logout</a></p>
-      {% else %}
-        <p><a href="{% url "signup" %}">Sign Up</a></p>
-        <p><a href="{% url "login" %}">Login</a></p>
-      {% endif %}
+
+    <div class="container">
+      <div class="row">
+        <!-- MakaNUS logo -->
+				<div class="col-sm-3">
+					<a href="{% url "index" %}" class = "navbar-brand">
+						<img src="{% static "images/logo.png" %}" alt-"MakaNUS logo" width="216" height="60">
+					</a>
+				</div>
+        <!-- Search bar -->
+				<div class="col-sm-6 ">
+					<br>
+					<br>
+					<form action="{% url "search"%}" method="GET">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search by keyword, location, genre, etc." name="q">
+              <div class="input-group-btn">
+                <button class="btn btn-default" type="submit">
+                  <i class="glyphicon glyphicon-search"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+				</div>
+        <!-- Show signup/login buttons or user name if signed in -->
+        <div class="col-sm-3" style="padding-top:40px;">
+
+          {% if user.is_authenticated %}
+
+          <div class="dropdown" style="float:right;text-align:right;">
+
+            {% if user.userprofile.profile_pic.name == "" %}
+            {% else %}
+              <img src="{{user.userprofile.profile_pic.url}}" style="width:15%;border-radius:50%;">
+            {% endif %}
+            <span style="font-size:16px;text-align:right;"><strong> Welcome, {{user.first_name}}! </strong> <span>
+
+            <!-- Dropdown list -->
+            <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown" style="background-color: rgb(8, 0, 129);">
+            <span class="caret"></span></button>
+            <div class="dropdown-menu dropdown-menu-right">
+              <li><a href="{% url "profile" user.id %}">My Profile</a></li>
+              <li><a href="{% url "logout" %}">Logout</a></li>
+            </div>
+
+          </div>
+
+          {% else %}
+            <a href="{% url "signup" %}">
+            <button type="button" class="btn btn-info pull-right" style="background-color: rgb(8, 0, 129);">Sign Up</button> </a>
+            <a href="{% url "login" %}">
+            <button type="button" class="btn btn-info pull-right" style="background-color: rgb(8, 0, 129);">Login</button> </a>
+          {% endif %}
+
+        </div>
+			</div>
+
+      <br>
+
+
+      <!-- Navigation bar -->
+			<div class="row naviBarBackground" style="margin-bottom:15px;">
+				<a href="{% url "index" %}" class="naviBar"> <span class="glyphicon glyphicon-home"></span> Home</a>
+				<span class="naviBar"> > </span>
+				<span class="naviBar"> <strong> {{restaurant.name}} </strong></span>
+			</div>
+
+      <!-- Copy up to this point to other pages -->
+
+      <div class="row">
+        <!-- Restaurant Name -->
+        <div class="col-sm-8">
+          <h2 class="words" style="font-weight:bold;"> {{restaurant.name}} </h2>
+        </div>
+        <!-- Open/closed sign -->
+        <div class="col-sm-4">
+          <img src="{% static "images/open.png" %}" alt="open" class="pull-right img-responsive" style="width:35%;padding:10px;">
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <!-- Restaurant profile picture -->
+        <div class="col-sm-3">
+          {% if restaurant.restaurant_profile_pic.name == "" %}
+            <img src="{% static "images/default-restaurant-profile.png" %}" style="width:96%;padding:10px;">
+          {% else %}
+            <img src="{{restaurant.restaurant_profile_pic.url}}" style="width:96%;padding:10px;">
+          {% endif %}
+        </div>
+        <div class="col-sm-7">
+          <!-- Category, to be done -->
+          <p> <strong>Category:</strong>
+            <a href=#> Western </a>
+            <a href=#> Canteen </a>
+            <a href=#> Techno Edge </a>
+          </p>
+          <!-- Restaurant location -->
+          <p> <strong> Location: </strong>{{restaurant.location}}</p>
+          <!-- Score & number of reviews, to be done -->
+          <p> <strong>Rating: </strong>{{  restaurant.get_average_rating  }} <a href=# class="reviewWord"> 25 Reviews </a> </p>
+          <!-- When authenticated, review and upload photo form -->
+          <div class="row">
+            {% if user.is_authenticated %}
+              <button type="button" class="btn btn-info btn-lg" style="background-color: rgb(90, 123, 255);margin:15px;border:0px;" data-toggle="modal" data-target="#RateReview">Rate & Review</button>
+              <button type="button" class="btn btn-info btn-lg" style="background-color: rgb(214, 165, 25);margin:15px;border:0px;" data-toggle="modal" data-target="#PhotoUpload">Upload a photo</button>
+            {% endif %}
+          </div>
+        </div>
+        <!--Waiting time & crowd condition -->
+        <div class="col-sm-2">
+          <img src="{% static "images/clock.png" %}" alt="clock" class="img-responsive center-block" width="60%">
+          <p class="time" style="text-align:center;"> Estimated waiting time: {{ restaurant.get_waiting_time }} </p>
+          <p class="time" style="text-align:center;"> {{ restaurant.get_crowd_condition }} </p>
+        </div>
+      </div>
       <hr>
 
-    <!-- Restaurant Name -->
-    <h1>{{restaurant.name}}</h1>
-    <!-- Restaurant Profile Picture -->
-    {% if restaurant.restaurant_profile_pic.name == "" %}
-      <p><img src="{% static "images/default-restaurant-profile.png" %}"> </p>
-    {% else %}
-      p><img src="{{restaurant.restaurant_profile_pic.url}}"> </p>
-    {% endif %}
-    <p>Rating: {{  restaurant.get_average_rating  }}</p>
-    <p>Estimated Waiting Time: {{ restaurant.get_waiting_time }}</p>
-    <p>Crowd Condition: {{ restaurant.get_crowd_condition }}</p>
-    <p>Opening Hours: </p>
-      <p>Monday: {{restaurant.openinghours.monday_from}} to {{restaurant.openinghours.monday_to}} </p>
-      <p>Tuesday: {{restaurant.openinghours.tuesday_from}} to {{restaurant.openinghours.tuesday_to}} </p>
-      <p>Wednesday: {{restaurant.openinghours.wednesday_from}} to {{restaurant.openinghours.wednesday_to}} </p>
-      <p>Thursday: {{restaurant.openinghours.thursday_from}} to {{restaurant.openinghours.thursday_to}} </p>
-      <p>Friday: {{restaurant.openinghours.friday_from}} to {{restaurant.openinghours.friday_to}} </p>
-      <p>Saturday: {{restaurant.openinghours.saturday_from}} to {{restaurant.openinghours.saturday_to}} </p>
-      <p>Sunday: {{restaurant.openinghours.sunday_from}} to {{restaurant.openinghours.sunday_to}} </p>
-    <p>Location: {{restaurant.location}}</p>
-    <p>Address: {{restaurant.address}}</p>
-    <hr>
+      <!-- Tabs -->
+      <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#overview">Overview</a></li>
+        <li><a data-toggle="tab" href="#menu">Menu</a></li>
+        <li><a data-toggle="tab" href="#photos">Photos</a></li>
+        <li><a data-toggle="tab" href="#reviews">Reviews</a></li>
+      </ul>
+      <br>
+			<div class="tab-content">
+        <!-- Overview tab -->
+			  <div id="overview" class="tab-pane fade in active">
+          <!-- To be done -->
+					<div class="row">
+		        <div class="col-sm-5 textBox">
+		          <h3 class="words"><strong>Most recent reviews</strong></h3>
+		          <hr>
+		        </div>
+		        <div class="col-sm-5 col-sm-offset-1 textBox">
+		          <h3 class="words"><strong>Most recent photos</strong></h3>
+		          <hr>
+		        </div>
+		      </div>
+		      <br>
+		      <p> <strong> Opening Hours: </strong> </p>
+          <ul>
+            <li>Monday: {{restaurant.openinghours.monday_from}} to {{restaurant.openinghours.monday_to}} </li>
+            <li>Tuesday: {{restaurant.openinghours.tuesday_from}} to {{restaurant.openinghours.tuesday_to}} </li>
+            <li>Wednesday: {{restaurant.openinghours.wednesday_from}} to {{restaurant.openinghours.wednesday_to}} </li>
+            <li>Thursday: {{restaurant.openinghours.thursday_from}} to {{restaurant.openinghours.thursday_to}} </li>
+            <li>Friday: {{restaurant.openinghours.friday_from}} to {{restaurant.openinghours.friday_to}} </li>
+            <li>Saturday: {{restaurant.openinghours.saturday_from}} to {{restaurant.openinghours.saturday_to}} </li>
+            <li>Sunday: {{restaurant.openinghours.sunday_from}} to {{restaurant.openinghours.sunday_to}} </li>
+          </ul>
+          <!-- To be done -->
+		      <p> <strong>Price:</strong> ~S$4 per pax </p>
+		      <p> <strong>Method of Payment:</strong> Cash, PayLah </p>
+		      <p> <strong>Address:</strong> {{restaurant.address}} </p>
+		      <p> <strong>Closed on:</strong> Sundays, public holidays </p>
+			  </div>
+        <!-- Menu tab -->
+			  <div id="menu" class="tab-pane fade">
+          <!-- To be done -->
+			    <h3 class="words"><strong>Most Popular</strong></h3>
+					<hr>
+			    <div class="row">
+						<div class="col-sm-3">
+              <img src="{% static "images/default-dish-profile.png" %}" style="width:80%;">
+						</div>
+						<div class="col-sm-9">
+							<h3 class="words" style="line-height: 1.8;"> <strong> Baked Meal </strong> <br> S$2.20</h3>
+							<p class="rate"> <img src="{% static "images/Thumbs_up.png" %}" alt="Thumbs up" style="width:3%;float:left;">
+								16 </p>
+						</div>
+					</div>
+					<hr>
+          <div class="row">
+            {% for dish in restaurant.dish_set.all %}
+              <div class="col-sm-4" style="padding:15px;">
+                <div class="col-sm-6">
+                  {% if dish.dish_profile_pic.name == "" %}
+                    <img src="{% static "images/default-dish-profile.png" %}" style="width:80%;">
+                  {% else %}
+                    <img src="{{dish.dish_profile_pic.url}}" style="width:80%;">
+                  {% endif %}
+                </div>
+                <div class="col-sm-6">
+                  <p><strong>{{dish.name}}</strong></p>
+                  <p> S$3.50 </p>
+                  <p class="rate"> <img src="{% static "images/Thumbs_up.png" %}" alt="Thumbs up" style="width:15%;float:left;">
+    								16 </p>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+			  </div>
+        <!-- Photos tab, to be done -->
+			  <div id="photos" class="tab-pane fade">
+          <h3 class="words"><strong>Uploaded Photos</strong></h3>
+					<hr>
+			  </div>
+        <!-- Reviews tab -->
+				<div id="reviews" class="tab-pane fade">
+          <!-- Sorting, to be done -->
+			    <div class="row">
+						<p class="words" style="margin:15px;"> Sort by:
+							<span style="font-weight:bold;margin:15px;"> Most Endorsed </span>
+							<a href=#> Recent </a>
+						</p>
+					</div>
+          <!-- Restaurant Reviews -->
+          {% for review in restaurant.restaurantreview_set.all %}
+  					<div class="row reviewBox">
+              <!-- User information -->
+  						<div class="col-sm-2 words" style="text-align:center;">
+                {% if review.user.userprofile.profile_pic.name == "" %}
+                  <img src="{% static "images/default-user-profile.png" %}" style="margin:10px;width:100%;">
+                {% else %}
+                  <img src="{{review.user.userprofile.profile_pic.url}}" style="margin:10px;width:100%;">
+                {% endif %}
+  							<a href=# style="font-size:18px;"> {{review.user.first_name}} </a>
+  							<p style="font-size:12px;"><i> Certified reviewer </i></p>
+  						</div>
 
-    <!-- Add a rating -->
-    {% if user.is_authenticated %}
-      <h2>Add Rating</h2>
-        <form action="{% url "add_restaurant_rating" restaurant.id %}" method="post">
-        {% csrf_token %}
-          <select name="restaurant_rating">
-            <option value = 1> 1 </option>
-            <option value = 2> 2 </option>
-            <option value = 3> 3 </option>
-            <option value = 4> 4 </option>
-            <option value = 5> 5 </option>
-          </select>
-          <input type="submit">
-        </form>
-    {% endif %}
+  						<div class="col-sm-10 words">
+                <!-- Review title & Score given & Number of endorsement, to be done -->
+  							<div class="row">
+  								<p style="text-indent:20px;"> <strong> Great food at great price! </strong> {{review.get_average_rating}}
+  									<span style="font-size:12px;text-decoration:underline;"> 17 users have endorsed this review </span>
+  								</p>
+  							</div>
+                <!-- Review -->
+  							<p> {{review.review}} </p>
+                <!-- Date of posting -->
+  							<p style="color:grey;font-size:12px;"> Posted on 24th June 2018 </p>
+                <!-- Give Review Rating -->
+                {% if user.is_authenticated %}
+                  <form action="{% url "add_restaurant_review_rating" review.id %}" method="POST">
+                    {% csrf_token %}
+                    <select name="restaurant_review_rating">
+                      <option value = 1> 1 </option>
+                      <option value = 2> 2 </option>
+                      <option value = 3> 3 </option>
+                      <option value = 4> 4 </option>
+                      <option value = 5> 5 </option>
+                    </select>
+                    <input type="submit">
+                  </form>
+                {% endif %}
+  						</div>
+  					</div>
+          {% endfor %}
 
-    <!-- Add a Review -->
-    {% if user.is_authenticated %}
-        <h2>Add Review</h2>
-          <form action="{% url "add_restaurant_review" restaurant.id %}" method="post">
-          {% csrf_token %}
-            <input type="textarea" name="restaurant_review">
-            <input type="submit">
-          </form>
-    {% endif %}
+			  </div>
+			</div>
 
-    <!-- Add an estimated waiting time -->
-    {% if user.is_authenticated %}
-      <h2>What's the Estimated Waiting Time?</h2>
-        <form action="{% url "add_waiting_time" restaurant.id %}" method="POST">
-        {% csrf_token %}
-          <select name="waiting_time">
-            <option value = 1> 1 minute </option>
-            <option value = 2> 2 minute </option>
-            <option value = 3> 3 minute </option>
-            <option value = 4> 4 minute </option>
-            <option value = 5> 5 minute </option>
-          </select>
-          <input type="submit">
-        </form>
-    {% endif %}
+      <!-- Review Modal -->
+      <div class="modal fade" id="RateReview" role="dialog">
+        <div class="modal-dialog">
 
-    <!-- Add a crowd condition -->
-    {% if user.is_authenticated %}
-        <h2>How's the Crowd Condition here?</h2>
-          <form action="{% url "add_crowd_condition" restaurant.id %}" method="POST">
-            {% csrf_token %}
-            <select name="crowd_condition">
-              <option value = 1> 1 </option>
-              <option value = 2> 2 </option>
-              <option value = 3> 3 </option>
-              <option value = 4> 4 </option>
-              <option value = 5> 5 </option>
-            </select>
-            <input type="submit">
-          </form>
-    {% endif %}
-    <hr>
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title title">Rate & Review</h4>
+            </div>
+            <div class="modal-body">
+              <h4 class="modal-title title">Contribute a Rating</h4>
+                <form action="{% url "add_restaurant_rating" restaurant.id %}" method="post">
+                {% csrf_token %}
+                <select name="restaurant_rating">
+                  <option value = 1> 1 </option>
+                  <option value = 2> 2 </option>
+                  <option value = 3> 3 </option>
+                  <option value = 4> 4 </option>
+                  <option value = 5> 5 </option>
+                </select>
+                <input type="submit">
+              </form>
 
-    <!-- RESTAURANT REVIEWS -->
-    <h1>Restaurant Reviews</h1>
-    {% for review in restaurant.restaurantreview_set.all %}
-    <!-- Reviewer's Name -->
-      <h2><a href = "{% url "profile" review.user.id %}">{{review.user.first_name}} {{review.user.last_name}}</a></h2>
-    <!-- Reviewer's Profile Picture -->
-      {% if review.user.userprofile.profile_pic.name == "" %}
-        <h2><img src="{% static "images/default-user-profile.png" %}"> </h2>
-      {% else %}
-        <h4><img src="{{review.user.userprofile.profile_pic.url}}"></h4>
-      {% endif %}
-      <!-- Reviewer's review -->
-      <p>{{review.review}}</p>
-      <!-- Reviewer's review's rating -->
-      <p>{{review.get_average_rating}}</p>
+              <h4 class="modal-title title">Contribute Review</h4>
+              <form action="{% url "add_restaurant_review" restaurant.id %}" method="post">
+              {% csrf_token %}
+                <input type="textarea" name="restaurant_review">
+                <input type="submit">
+              </form>
 
-      <!-- Add Restaurant Review Rating -->
-      {% if user.is_authenticated %}
-        <form action="{% url "add_restaurant_review_rating" review.id %}" method="POST">
-          {% csrf_token %}
-          <input type="hidden" name="next" value="{{ request.path }}">
-          <select name="restaurant_review_rating">
-            <option value = 1> 1 </option>
-            <option value = 2> 2 </option>
-            <option value = 3> 3 </option>
-            <option value = 4> 4 </option>
-            <option value = 5> 5 </option>
-          </select>
-          <input type="submit">
-        </form>
-      {% endif %}
+              <h4 class="modal-title title">Contribute to Estimated Waiting Time</h4>
+              <form action="{% url "add_waiting_time" restaurant.id %}" method="POST">
+              {% csrf_token %}
+                <select name="waiting_time">
+                  <option value = 1> 1 minute </option>
+                  <option value = 2> 2 minute </option>
+                  <option value = 3> 3 minute </option>
+                  <option value = 4> 4 minute </option>
+                  <option value = 5> 5 minute </option>
+                </select>
+                <input type="submit">
+              </form>
 
-    <hr>
-    {% endfor %}
+              <h4 class="modal-title title">Contribute to Crowd Condition</h4>
+              <form action="{% url "add_crowd_condition" restaurant.id %}" method="POST">
+                {% csrf_token %}
+                <select name="crowd_condition">
+                  <option value = 1> 1 minute </option>
+                  <option value = 2> 2 minute </option>
+                  <option value = 3> 3 minute </option>
+                  <option value = 4> 4 minute </option>
+                  <option value = 5> 5 minute </option>
+                </select>
+                <input type="submit">
+              </form>
+            </div>
+          </div>
 
-    <!-- RESTAURANT DISHES (MENU) -->
-    <h1>Dishes</h1>
-    {% for dish in restaurant.dish_set.all %}
-      <!-- Dish's Name -->
-      <p>{{dish.name}} </p>
-      <!-- Dish's Rating -->
-      <p>{{dish.get_average_rating}}</p>
-      <!-- Dish's Profile Picture -->
-      {% if dish.dish_profile_pic.name == "" %}
-        <p><img src="{% static "images/default-dish-profile.png" %}"></p>
-      {% else %}
-        <p><img src="{{dish.dish_profile_pic.url}}"> </p>
-      {% endif %}
-    <hr>
-    {% endfor %}
+        </div>
+      </div>
 
-    <!-- RESTAURANT PHOTOS -->
-    <h1>Photos</h1>
-    {% for photo in restaurant.restaurantphoto_set.all %}
-      <!-- Restaurant photo -->
-      <p><img src="{{photo.photo.url}}"></p>
-      <!-- Uploader's username -->
-      <p>Uploaded by: <a href = "{% url "profile" photo.user.id %}">{{photo.user.username}}</p>
-    {% endfor %}
+      <!-- Page footer -->
+      <br>
 
+      <div>
+        <div class="row naviBarBackground">
+          <span style="font-size:16px;padding:10px;color:RGB(8,0,129);">Line Break</span>
+        </div>
+        <img src="{% static "images/logo.png" %}" alt="MakaNUS logo" class="img-responsive center-block" style="width:144px; height:55px; padding:10px;">
+        <p style="text-align:center;"> © 2018 MakaNUS, all rights reserved. </p>
+      </div>
+
+    </div>
   </body>
-</html>
+<html>
