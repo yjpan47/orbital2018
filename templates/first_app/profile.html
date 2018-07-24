@@ -138,12 +138,23 @@
                   <!-- Restaurant Review -->
                   <p>{{review.review}}</p>
                   <!-- Restaurant Review Rating -->
-                  <p>{{review.get_average_rating}}</p>
+                  <p><strong>Average review rating: </strong>{{review.get_average_rating}}</p>
+                  <div class="row" style="margin-left:5px;">
+                    <!-- Edit/Delete Restaurant Review -->
+                    {% if user.id == profile_user.id %}
+                      <a href="{% url "edit_restaurant_review" review.id %}">
+                      <button type="button" class="btn btn-info btn-sm" style="background-color: rgb(8, 0, 129);">Edit Review</button> </a>
+                      <a href="{% url "delete_restaurant_review" review.id %}">
+                      <button type="button" class="btn btn-info btn-sm" style="background-color: rgb(8, 0, 129);">Delete Review</button> </a>
+                    {% endif %}
+                  </div>
                 </div>
                 <div class="col-sm-3" style="padding:15px;">
                   <div class="row" style="padding:15px;">
                     <!-- Add Restaurant Review Rating -->
+                    <!-- Lol what is this supposed to do actually? -->
                     {% if user.is_authenticated %}
+                      <p><strong>Rate this review</strong></p>
                       <form action="{% url "add_restaurant_review_rating" review.id %}" method="POST">
                         {% csrf_token %}
                         <input type="hidden" name="next" value="{{ request.path }}">
@@ -158,15 +169,6 @@
                       </form>
                     {% endif %}
                   </div>
-                  <div class="row" style="padding:15px;">
-                    <!-- Edite/Delete Restaurant Review -->
-                    {% if user.id == profile_user.id %}
-                      <a href="{% url "edit_restaurant_review" review.id %}">
-                      <button type="button" class="btn btn-info btn-sm" style="background-color: rgb(8, 0, 129);">Edit Review</button> </a>
-                      <a href="{% url "delete_restaurant_review" review.id %}">
-                      <button type="button" class="btn btn-info btn-sm" style="background-color: rgb(8, 0, 129);">Delete Review</button> </a>
-                    {% endif %}
-                  </div>
                 </div>
               </div>
             {% endfor %}
@@ -175,45 +177,58 @@
 
         <div id="dish" class="tab-pane fade">
           <!-- Dish Reviews -->
-          <h1>Dish Reviews</h1>
           {% for review in profile_user.dishreview_set.all %}
-          <!-- Dish Name -->
-          <h2>{{review.dish.name}}</h2>
-          <!-- Restaurant that Dish belongs to -->
-          <p>of <a href = "{% url "restaurant" review.dish.restaurant.id %}">{{review.dish.restaurant.name}}</a></p>
-          <!-- Dish Profile Picture -->
-          {% if review.dish.dish_profile_pic.name == "" %}
-            <p><img src="{% static "images/default-dish-profile.png" %}"></p>
-          {% else %}
-            <p><img src="{{review.dish.dish_profile_pic.url}}"></p>
-          {% endif %}
-          <!-- Dish Review -->
-          <p>{{review.review}}</p>
-          <!-- Dish Review Rating -->
-          <p>{{review.get_average_rating}}</p>
-          <!-- Add Dish Review Rating -->
-          {% if user.is_authenticated %}
-            <form action="{% url "add_dish_review_rating" review.id %}" method="POST">
-              {% csrf_token %}
-              <input type="hidden" name="next" value="{{ request.path }}">
-              <select name="dish_review_rating">
-                <option value = 1> 1 </option>
-                <option value = 2> 2 </option>
-                <option value = 3> 3 </option>
-                <option value = 4> 4 </option>
-                <option value = 5> 5 </option>
-              </select>
-              <input type="submit">
-            </form>
-          {% endif %}
-          <!-- Edit/Delete Dish Review -->
-          {% if user.id == profile_user.id %}
-            <p><a href="{% url "edit_dish_review" review.id %}">Edit</a></p>
-            <p><a href="{% url "delete_dish_review" review.id %}">Delete</a></p>
-          {% endif %}
-
-          <hr>
+            <div class="row" style="border:1px solid;border-radius:20px;padding:15px;margin:30px;">
+              <!-- Dish Name and the restaurant that serves the dish-->
+              <h3 style="text-indent:15px;">{{review.dish.name}} (<a href = "{% url "restaurant" review.dish.restaurant.id %}">{{review.dish.restaurant.name}}</a>)</h3>
+              <hr>
+              <div class="col-sm-2" style="padding:15px;">
+                <!-- Dish Profile Picture -->
+                {% if review.dish.dish_profile_pic.name == "" %}
+                  <img src="{% static "images/default-dish-profile.png" %}" class="center-block" width="80%">
+                {% else %}
+                  <img src="{{review.dish.dish_profile_pic.url}}" class="center-block" width="80%">
+                {% endif %}
+              </div>
+              <div class="col-sm-6" style="padding:15px;">
+                <!-- Dish Review -->
+                <p>{{review.review}}</p>
+                <!-- Dish Review Rating -->
+                <p><strong>Average review rating: </strong>{{review.get_average_rating}}</p>
+                <div class="row" style="margin-left:5px;">
+                  <!-- Edit/Delete Dish Review -->
+                  {% if user.id == profile_user.id %}
+                    <a href="{% url "edit_dish_review" review.id %}">
+                    <button type="button" class="btn btn-info btn-sm" style="background-color: rgb(8, 0, 129);">Edit Review</button> </a>
+                    <a href="{% url "delete_dish_review" review.id %}">
+                    <button type="button" class="btn btn-info btn-sm" style="background-color: rgb(8, 0, 129);">Delete Review</button> </a>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="col-sm-3" style="padding:15px;">
+                <div class="row" style="padding:15px;">
+                  <!-- Add Restaurant Review Rating -->
+                  <!-- Lol what is this supposed to do actually? -->
+                  {% if user.is_authenticated %}
+                    <p><strong>Rate this review</strong></p>
+                    <form action="{% url "add_dish_review_rating" review.id %}" method="POST">
+                      {% csrf_token %}
+                      <input type="hidden" name="next" value="{{ request.path }}">
+                      <select name="dish_review_rating">
+                        <option value = 1> 1 </option>
+                        <option value = 2> 2 </option>
+                        <option value = 3> 3 </option>
+                        <option value = 4> 4 </option>
+                        <option value = 5> 5 </option>
+                      </select>
+                      <input type="submit">
+                    </form>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
           {% endfor %}
+
         </div>
 
         <div id="photo" class="tab-pane fade">
