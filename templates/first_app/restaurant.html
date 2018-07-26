@@ -279,7 +279,7 @@
             </div>
             <div class="modal-body">
               <h4 class="modal-title title">Contribute a Rating</h4>
-                <form action="{% url "add_restaurant_rating" restaurant.id %}" method="post">
+              <form action="{% url "add_restaurant_rating" restaurant.id %}" method="post">
                 {% csrf_token %}
                 <select name="restaurant_rating">
                   <option value = 1> 1 </option>
@@ -300,7 +300,7 @@
 
               <h4 class="modal-title title">Contribute to Estimated Waiting Time</h4>
               <form action="{% url "add_waiting_time" restaurant.id %}" method="POST">
-              {% csrf_token %}
+                {% csrf_token %}
                 <select name="waiting_time">
                   <option value = 1> 1 minute </option>
                   <option value = 2> 2 minute </option>
