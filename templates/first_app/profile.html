@@ -226,6 +226,25 @@
                 </div>
               </div>
             </div>
+
+            <!-- Review Modal -->
+            <div class="modal fade" id="EditStallReview" role="dialog">
+              <div class="modal-dialog">
+
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title title">Edit Restaurant Review</h4>
+                  </div>
+                  <div class="modal-body">
+                    <form action = "{% url "edit_restaurant_review" review.id %}" method="POST">
+                      {% csrf_token %}
+                      <label>Edit Here:</label>
+                      <input type="textarea" value="{{review.review}}" name="new_restaurant_review">
+                      <input type="submit">
+                    </form>
+                  </div>
+                </div>
           {% endfor %}
 
         </div>
@@ -247,24 +266,7 @@
         </div>
       </div>
 
-      <!-- Review Modal -->
-      <div class="modal fade" id="EditStallReview" role="dialog">
-        <div class="modal-dialog">
 
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title title">Edit Restaurant Review</h4>
-            </div>
-            <div class="modal-body">
-              <form action = "{% url "edit_restaurant_review" restaurant_review.id %}" method="POST">
-                {% csrf_token %}
-                <label>Edit Here:</label>
-                <input type="textarea" value="{{restaurant_review.review}}" name="new_restaurant_review">
-                <input type="submit">
-              </form>
-            </div>
-          </div>
 
         </div>
       </div>
