@@ -257,10 +257,20 @@ def add_dish_review(request, pk):
 
 def search(request):
     if "q" in request.GET:
+        sort_by = request.GET.get('sort', "name")
+        location_filter = request.GET.get('location')
         page = request.GET.get('page', 1)
         query = request.GET.get("q")
-        restaurants = Restaurant.objects.filter(name__icontains = query)
-        restaurants = restaurants.order_by(request.GET.get("sort"))
+        restaurants = list(Restaurant.objects.filter(name__icontains = query).order_by("name"))
+
+        if sort_by == "ratings":
+            restaurants.sort(key = lambda obj: obj.get_average_rating(), reverse = True)
+        if sort_by == "crowd":
+            restaurants.sort(key = lambda obj: obj.get_crowd_condition(), reverse = False)
+
+        if location_filter:
+            restaurants = list(filter(lambda obj: obj.location == location_filter, restaurants))
+
         paginator = Paginator(restaurants, 10)
         restaurants = paginator.page(page)
         return render(request, "first_app/search.html", {"restaurants": restaurants, "q": query})

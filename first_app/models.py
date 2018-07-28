@@ -32,9 +32,17 @@ class Restaurant(models.Model):
     def __str__(self):
         return self.name
 
+    def get_restaurant_reviews(self):
+        reviews_list = list(self.restaurantreview_set.all())
+        reviews_list.sort(key = lambda obj: obj.get_average_rating(), reverse = True)
+        return reviews_list
+
+    def number_of_reviews(self):
+        return len(self.restaurantreview_set.all())
+
     def get_average_rating(self):
         lst = list(map(lambda x: x.rating, (self.restaurantrating_set.all())))
-        return sum(lst)/len(lst) if lst else ""
+        return sum(lst)/len(lst) if lst else 0
 
     def get_waiting_time_objects(self, mins = 10):
         start, end = localtime() - timedelta(seconds = mins), localtime()
@@ -94,7 +102,10 @@ class RestaurantReview(models.Model):
 
     def get_average_rating(self):
         lst = list(map(lambda x: x.rating, (self.restaurantreviewrating_set.all())))
-        return sum(lst)/len(lst) if lst else ""
+        return sum(lst)/len(lst) if lst else 0
+
+    def get_time(self):
+        return localtime(self.created_at).strftime("%d %B %Y, %H:%M")
 
 class RestaurantReviewRating(models.Model):
     rating = models.PositiveIntegerField(validators = [MinValueValidator(0), MaxValueValidator(5)])
@@ -112,6 +123,9 @@ class RestaurantPhoto(models.Model):
 
     def __str__(self):
         return "Restaurant Photo: {}, {}".format(self.user, self.restaurant)
+
+    def get_time(self):
+        return localtime(self.created_at).strftime("%d %B %Y, %H:%M")
 
 class RestaurantWaitingTime(models.Model):
     waiting_time = models.PositiveIntegerField()
@@ -142,7 +156,7 @@ class Dish(models.Model):
 
     def get_average_rating(self):
         lst = list(map(lambda x: x.rating, (self.dishrating_set.all())))
-        return sum(lst)/len(lst) if lst else ""
+        return sum(lst)/len(lst) if lst else 0
 
 class DishRating(models.Model):
     rating = models.PositiveIntegerField(validators = [MinValueValidator(1), MaxValueValidator(5)])
@@ -164,7 +178,10 @@ class DishReview(models.Model):
 
     def get_average_rating(self):
         lst = list(map(lambda x: x.rating, (self.dishreviewrating_set.all())))
-        return sum(lst)/len(lst) if lst else ""
+        return sum(lst)/len(lst) if lst else 0
+
+    def get_time(self):
+        return localtime(self.created_at).strftime("%d %B %Y, %H:%M")
 
 class DishReviewRating(models.Model):
     rating = models.PositiveIntegerField(validators = [MinValueValidator(0), MaxValueValidator(5)])

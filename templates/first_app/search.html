@@ -92,15 +92,11 @@
 					<div class="filterCategory">
 						<p class="filterHeader words"> Sort by </p>
 						<div class="filterLinks">
-							<a href="{% url "search" %}?q={{q}}&sort=get_average_rating" class="filterWords"> Ratings </a>
+							<a href="{% url "search" %}?q={{q}}&sort=ratings" class="filterWords"> Ratings </a>
 							<span class="filterSmallWords"> - high to low </span>
 						</div>
 						<div class="filterLinks">
-							<a href=# class="filterWords"> Crowd </a>
-							<span class="filterSmallWords"> - high to low </span>
-						</div>
-						<div class="filterLinks">
-							<a href=# class="filterWords"> Name </a>
+							<a href="{% url "search" %}?q={{q}}" class="filterWords"> Name </a>
 							<span class="filterSmallWords"> - A to Z </span>
 						</div>
 					</div>
@@ -125,7 +121,7 @@
 					<div class="filterCategory">
 						<p class="filterHeader words"> Location </p>
 						<div class="filterLinks">
-							<a href=# class="filterWords"> Faculty of Arts and Social Sciences </a>
+							<a href=# class="filterWords" > Faculty of Arts and Social Sciences </a>
 						</div>
 						<div class="filterLinks">
 							<a href=# class="filterWords"> Faculty of Dentistry </a>

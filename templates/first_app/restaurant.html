@@ -115,7 +115,7 @@
           <!-- Restaurant location -->
           <p> <strong> Location: </strong>{{restaurant.location}}</p>
           <!-- Score & number of reviews, to be done -->
-          <p> <strong>Rating: </strong>{{  restaurant.get_average_rating  }} <a href=# class="reviewWord"> 25 Reviews </a> </p>
+          <p> <strong>Rating: </strong>{{  restaurant.get_average_rating  }} <a href=# class="reviewWord"> {{ restaurant.number_of_reviews }} Reviews </a> </p>
           <!-- When authenticated, review and upload photo form -->
           <div class="row">
             {% if user.is_authenticated %}
@@ -240,7 +240,7 @@
 						</p>
 					</div>
           <!-- Restaurant Reviews -->
-          {% for review in restaurant.restaurantreview_set.all %}
+          {% for review in restaurant.get_restaurant_reviews %}
   					<div class="row reviewBox">
               <!-- User information -->
   						<div class="col-sm-2 words" style="text-align:center;">
@@ -262,8 +262,8 @@
   							</div>
                 <!-- Review -->
   							<p> {{review.review}} </p>
-                <!-- Date of posting -->
-  							<p style="color:grey;font-size:12px;"> Posted on 24th June 2018 </p>
+                <!-- Date & Time of posting -->
+  							<p style="color:grey;font-size:12px;"> {{review.get_time}} </p>
                 <!-- Give Review Rating -->
                 {% if user.is_authenticated %}
                   <form action="{% url "add_restaurant_review_rating" review.id %}" method="POST">
