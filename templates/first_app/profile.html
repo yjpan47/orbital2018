@@ -145,8 +145,7 @@
                   <!-- Edit/Delete Restaurant Review -->
                   {% if user.id == profile_user.id %}
                     <button type="button" class="btn btn-info btn-sm" style="background-color: rgb(8, 0, 129);" data-toggle="modal" data-target="#EditStallReview{{review.id}}">Edit Review</button>
-                    <a href="{% url "delete_restaurant_review" review.id %}">
-                    <button type="button" class="btn btn-info btn-sm" style="background-color: rgb(8, 0, 129);">Delete Review</button> </a>
+                    <button type="button" class="btn btn-info btn-sm" style="background-color: rgb(8, 0, 129);" data-toggle="modal" data-target="#DeleteStallReview{{review.id}}">Delete Review</button>
                   {% endif %}
                 </div>
               </div>
@@ -173,7 +172,7 @@
               </div>
             </div>
 
-            <!-- Review Modal -->
+            <!-- Edit Review Modal -->
             <div class="modal fade" id="EditStallReview{{review.id}}" role="dialog">
               <div class="modal-dialog">
 
@@ -185,9 +184,29 @@
                   <div class="modal-body">
                     <form action = "{% url "edit_restaurant_review" review.id %}" method="POST">
                       {% csrf_token %}
-                      <label>Edit Here:</label>
-                      <input type="textarea" value="{{review.review}}" name="new_restaurant_review">
+                      <textarea rows="7" cols="50" style="margin:15px;" name="new_restaurant_review">{{review.review}}</textarea> <br>
                       <input type="submit">
+                    </form>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Delete Review Modal -->
+            <div class="modal fade" id="DeleteStallReview{{review.id}}" role="dialog">
+              <div class="modal-dialog">
+
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title title">Delete Restaurant Review</h4>
+                  </div>
+                  <div class="modal-body">
+                    <form action = "{% url "delete_restaurant_review" review.id %}"method="POST">
+                      {% csrf_token %}
+                      <label>Are you sure you want to delete this review?</label> <br>
+                      <input type="submit" >
                     </form>
                   </div>
                 </div>
@@ -221,10 +240,8 @@
                 <div class="row" style="margin-left:5px;">
                   <!-- Edit/Delete Dish Review -->
                   {% if user.id == profile_user.id %}
-                    <a href="{% url "edit_dish_review" review.id %}">
-                    <button type="button" class="btn btn-info btn-sm" style="background-color: rgb(8, 0, 129);">Edit Review</button> </a>
-                    <a href="{% url "delete_dish_review" review.id %}">
-                    <button type="button" class="btn btn-info btn-sm" style="background-color: rgb(8, 0, 129);">Delete Review</button> </a>
+                    <button type="button" class="btn btn-info btn-sm" style="background-color: rgb(8, 0, 129);" data-toggle="modal" data-target="#EditDishReview{{review.id}}">Edit Review</button>
+                    <button type="button" class="btn btn-info btn-sm" style="background-color: rgb(8, 0, 129);" data-toggle="modal" data-target="#DeleteDishReview{{review.id}}">Delete Review</button>
                   {% endif %}
                 </div>
               </div>
@@ -248,6 +265,48 @@
                     </form>
                   {% endif %}
                 </div>
+              </div>
+            </div>
+
+            <!-- Edit Review Modal -->
+            <div class="modal fade" id="EditDishReview{{review.id}}" role="dialog">
+              <div class="modal-dialog">
+
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title title">Edit Dish Review</h4>
+                  </div>
+                  <div class="modal-body">
+                    <form action = "{% url "edit_dish_review" review.id %}"method="POST">
+                      {% csrf_token %}
+                      <textarea rows="7" cols="50" style="margin:15px;" name="new_dish_review">{{review.review}}</textarea> <br>
+                      <input type="submit">
+                    </form>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Delete Review Modal -->
+            <div class="modal fade" id="DeleteDishReview{{review.id}}" role="dialog">
+              <div class="modal-dialog">
+
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title title">Delete Dish Review</h4>
+                  </div>
+                  <div class="modal-body">
+                    <form action = "{% url "delete_dish_review" review.id %}"method="POST">
+                      {% csrf_token %}
+                      <label>Are you sure you want to delete this review?</label> <br>
+                      <input type="submit" >
+                    </form>
+                  </div>
+                </div>
+
               </div>
             </div>
 
