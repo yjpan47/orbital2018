@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Dish</title>
+  </head>
+  <body>
+    <!-- Dish Name -->
+  <h1>{{ dish.name }}</h1>
+    <!-- Dish Restaurant -->
+    <p>{{ dish.restaurant.name }}</p>
+    <!-- Dish Profile Picture -->
+    {% if dish.dish_profile_pic.name == "" %}
+      <img src="{% static "images/default-dish-profile.png" %}">
+    {% else %}
+      <img src="{{dish.dish_profile_pic.url}}" style="width:80%;">
+    {% endif %}
+    <!-- Dish Rating -->
+    <p>{{ dish.get_average_rating }}<p>
+    <!-- Dish information -->
+    <p>{{ dish.information }}</p>
+    <!-- Dish Review -->
+    <hr>
+
+    {% for review in dish.dishreview_set.all %}
+      <!-- Reviewer's Information -->
+      <p><a href = "{% url "profile" review.user.id %}">{{ review.user.first_name }}</a><p>
+      <p>
+      {% if review.user.userprofile.profile_pic.name == "" %}
+        <img src="{% static "images/default-user-profile.png" %}">
+      {% else %}
+        <img src="{{review.user.userprofile.profile_pic.url}}">
+      {% endif %}
+      </p>
+      {{ review.review }}
+
+      <hr>
+    {% endfor %}
+
+
+
+  </body>
+</html>

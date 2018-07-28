@@ -227,6 +227,12 @@ def add_dish_review_rating(request, pk):
     else:
         return HttpResponse("Something went wrong")
 
+def dish_page(request, pk):
+    dish = get_object_or_404(Dish, id = pk)
+    print("Test", dish)
+    return render(request, "first_app/dish.html", {"dish": dish})
+
+
 def search(request):
     if "q" in request.GET:
         page = request.GET.get('page', 1)

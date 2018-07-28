@@ -251,6 +251,7 @@
                 {% if user.is_authenticated %}
                   <form action="{% url "add_restaurant_review_rating" review.id %}" method="POST">
                     {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.path }}">
                     <select name="restaurant_review_rating">
                       <option value = 1> 1 </option>
                       <option value = 2> 2 </option>

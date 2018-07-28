@@ -38,5 +38,6 @@ urlpatterns = [
     path('restaurant_add_crowd_condition/<int:pk>', views.add_restaurant_crowd_condition, name = "add_crowd_condition"),
     path('restaurant_add_review_rating/<int:pk>', views.add_restaurant_review_rating, name = "add_restaurant_review_rating"),
     path('dish_add_review_rating/<int:pk>', views.add_dish_review_rating, name = "add_dish_review_rating"),
+    path('dish/<int:pk>', views.dish_page, name = "dish"),
     path('search/', views.search, name = "search"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
