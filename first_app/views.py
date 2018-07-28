@@ -165,7 +165,6 @@ def add_restaurant_rating(request, pk):
         return HttpResponse("Something went wrong")
 
 def add_restaurant_review(request, pk):
-    print(request.method)
     if (request.method == "POST") and (request.user.is_authenticated):
         restaurant = get_object_or_404(Restaurant, id = pk)
         if request.user not in list(map(lambda obj: obj.user, restaurant.restaurantreview_set.all())):
@@ -231,6 +230,31 @@ def dish_page(request, pk):
     dish = get_object_or_404(Dish, id = pk)
     print("Test", dish)
     return render(request, "first_app/dish.html", {"dish": dish})
+
+def add_dish_rating(request, pk):
+    if (request.method == "POST") and (request.user.is_authenticated):
+        dish = get_object_or_404(Dish, id = pk)
+        if request.user not in list(map(lambda obj: obj.user, dish.dishrating_set.all())):
+            new_dish_rating = DishRating(rating = int(request.POST.get("dish_rating")), dish = dish, user = request.user)
+            new_dish_rating.save()
+            return HttpResponseRedirect(request.POST.get('next'))
+        else:
+            return HttpResponse("You already contributed a rating")
+    else:
+        return HttpResponse("Something went wrong")
+
+def add_dish_review(request, pk):
+    if (request.method == "POST") and (request.user.is_authenticated):
+        dish = get_object_or_404(Dish, id = pk)
+        if request.user not in list(map(lambda obj: obj.user, dish.dishreview_set.all())):
+            new_dish = DishReview(review = request.POST.get("dish_review"), dish = dish, user = request.user)
+            new_dish.save()
+            return HttpResponseRedirect(request.POST.get('next'))
+        else:
+            return HttpResponse("You contributed a review already")
+    else:
+        return HttpResponse("Something went wrong")
+
 
 
 def search(request):
