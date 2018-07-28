@@ -255,15 +255,14 @@ def add_dish_review(request, pk):
     else:
         return HttpResponse("Something went wrong")
 
-
-
 def search(request):
     if "q" in request.GET:
         page = request.GET.get('page', 1)
         query = request.GET.get("q")
         restaurants = Restaurant.objects.filter(name__icontains = query)
+        restaurants = restaurants.order_by(request.GET.get("sort"))
         paginator = Paginator(restaurants, 10)
         restaurants = paginator.page(page)
-        return render(request, "first_app/search.html", {"restaurants": restaurants})
+        return render(request, "first_app/search.html", {"restaurants": restaurants, "q": query})
     else:
         return HttpResponse("Something went wrong")

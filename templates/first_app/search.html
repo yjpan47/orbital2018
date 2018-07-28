@@ -92,7 +92,7 @@
 					<div class="filterCategory">
 						<p class="filterHeader words"> Sort by </p>
 						<div class="filterLinks">
-							<a href=# class="filterWords"> Ratings </a>
+							<a href="{% url "search" %}?q={{q}}&sort=get_average_rating" class="filterWords"> Ratings </a>
 							<span class="filterSmallWords"> - high to low </span>
 						</div>
 						<div class="filterLinks">
