@@ -144,7 +144,7 @@
                 <div class="row" style="margin-left:5px;">
                   <!-- Edit/Delete Restaurant Review -->
                   {% if user.id == profile_user.id %}
-                    <button type="button" class="btn btn-info btn-sm" style="background-color: rgb(8, 0, 129);" data-toggle="modal" data-target="#EditStallReview">Edit Review</button>
+                    <button type="button" class="btn btn-info btn-sm" style="background-color: rgb(8, 0, 129);" data-toggle="modal" data-target="#EditStallReview{{review.id}}">Edit Review</button>
                     <a href="{% url "delete_restaurant_review" review.id %}">
                     <button type="button" class="btn btn-info btn-sm" style="background-color: rgb(8, 0, 129);">Delete Review</button> </a>
                   {% endif %}
@@ -174,7 +174,7 @@
             </div>
 
             <!-- Review Modal -->
-            <div class="modal fade" id="EditStallReview" role="dialog">
+            <div class="modal fade" id="EditStallReview{{review.id}}" role="dialog">
               <div class="modal-dialog">
 
                 <div class="modal-content">
@@ -195,8 +195,6 @@
               </div>
             </div>
           {% endfor %}
-
-
 
         </div>
 

@@ -77,7 +77,6 @@ def user_profile(request, pk):
     return render(request, "first_app/profile.html", {"user": user, "profile_user": profile_user})
 
 def edit_restaurant_review(request, pk):
-    print("HEELOO", pk)
     if request.user.is_authenticated:
         restaurant_review = get_object_or_404(RestaurantReview, id = pk)
         if restaurant_review in request.user.restaurantreview_set.all():
