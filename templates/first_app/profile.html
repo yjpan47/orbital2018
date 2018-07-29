@@ -1,5 +1,4 @@
-<!-- User profile Page
-  Required changes: fonts, no. of reviews, date joined, tabs content-->
+<!-- User profile Page -->
 
 <!DOCTYPE html>
 {% load staticfiles %}
@@ -9,6 +8,7 @@
     <title>{{profile_user.first_name}}'s Profile</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static "css/userProfile.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -98,10 +98,15 @@
           <!-- Profile Name -->
           <h1>{{profile_user.first_name}} {{profile_user.last_name}} ({{profile_user.username}})</h1>
           <!-- Other Profile Information -->
-          <p>Year: {{profile_user.userprofile.year}}</p>
-          <p>Faulty: {{profile_user.userprofile.faculty}}</p>
-          <p>Major: {{profile_user.userprofile.major}}</p>
-          <p>About me: {{profile_user.userprofile.about_me}}</p>
+          <p class="userDetail">Year: {{profile_user.userprofile.year}}</p>
+          <p class="userDetail">Faulty: {{profile_user.userprofile.faculty}}</p>
+          <p class="userDetail">Major: {{profile_user.userprofile.major}}</p>
+          <p class="userDetail">About me: {{profile_user.userprofile.about_me}}</p>
+
+          <!-- If user is the owner of the profile, profile can be edited. -->
+          {% if user.id == profile_user.id %}
+            <button type="button" class="btn btn-info btn-sm" style="background-color:rgb(8, 0, 129);margin-top:10px;" disabled>Edit Profile</button>
+          {% endif %}
 
         </div>
 
@@ -110,11 +115,12 @@
         </div>
       </div>
 
-      <!-- Tab. Requires attention -->
+      <!-- Tabs -->
       <ul class="nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#restaurantReview">Restaurant Reviews</a></li>
         <li><a data-toggle="tab" href="#dish">Dish Reviews</a></li>
-        <li><a data-toggle="tab" href="#photo">Photos Uploaded</a></li>
+        <!-- Disabled -->
+        <li><a data-toggle="tab" href="#photo" style="pointer-events:none;">Photos Uploaded</a></li>
       </ul>
 
       <br>
@@ -154,7 +160,7 @@
                   <!-- Add Restaurant Review Rating -->
                   <!-- Lol what is this supposed to do actually? -->
                   {% if user.is_authenticated %}
-                    <p><strong>Rate this review</strong></p>
+                    <p><strong>Rate this review (5 is the highest)</strong></p>
                     <form action="{% url "add_restaurant_review_rating" review.id %}" method="POST">
                       {% csrf_token %}
                       <input type="hidden" name="next" value="{{ request.path }}">
@@ -184,7 +190,7 @@
                   <div class="modal-body">
                     <form action = "{% url "edit_restaurant_review" review.id %}" method="POST">
                       {% csrf_token %}
-                      <textarea rows="7" cols="50" style="margin:15px;" name="new_restaurant_review">{{review.review}}</textarea> <br>
+                      <textarea rows="7" style="margin:15px;width:95%;" name="new_restaurant_review">{{review.review}}</textarea> <br>
                       <input type="submit">
                     </form>
                   </div>
@@ -250,7 +256,7 @@
                   <!-- Add Restaurant Review Rating -->
                   <!-- Lol what is this supposed to do actually? -->
                   {% if user.is_authenticated %}
-                    <p><strong>Rate this review</strong></p>
+                    <p><strong>Rate this review (5 is the highest)</strong></p>
                     <form action="{% url "add_dish_review_rating" review.id %}" method="POST">
                       {% csrf_token %}
                       <input type="hidden" name="next" value="{{ request.path }}">

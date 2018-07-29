@@ -1,8 +1,4 @@
-.filterHeader {
-	font-size: 16px;
-	font-weight: bold;
-}
-
+/* Border around each restaurant results */
 .resultBox {
 	border-radius: 8px;
 	border: 1px;
@@ -13,6 +9,7 @@
 	overflow: hidden;
 }
 
+/* Border around columns */
 .textBox {
 	border-radius: 8px;
 	border: 1px;
@@ -20,6 +17,12 @@
 	border-color: RGB(8, 0, 129);
 	padding: 5px 15px;
 	margin: 5px;
+}
+
+/* Filter designs */
+.filterHeader {
+	font-size: 16px;
+	font-weight: bold;
 }
 
 div.filterLinks{
@@ -39,6 +42,7 @@ div.filterLinks{
 	padding: 5px;
 }
 
+/* Number of reviews */
 p.reviewWord {
 	font-weight: bold;
 	font-size: 16px;

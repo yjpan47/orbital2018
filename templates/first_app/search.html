@@ -18,7 +18,7 @@
   <body>
 
     <div class="container">
-      <div class="row">
+      <div class="row centerDiv">
         <!-- MakaNUS logo -->
 				<div class="col-sm-3">
 					<a href="{% url "index" %}" class = "navbar-brand">
@@ -176,7 +176,8 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-8 textBox">
+
+				<div class="col-sm-8 textBox" style="margin-left:50px;">
 
           <!-- Results presented -->
           {% for restaurant in restaurants %}
@@ -187,14 +188,14 @@
                 {% else %}
                   <img src="{{restaurant.restaurant_profile_pic.url}}">
                 {% endif %}
-                <p class="words" style="text-align:center;padding:15px;font-size:16px;"><strong>Rating: {{  restaurant.get_average_rating  }}</strong></p>
+                <p class="words" style="text-align:center;padding:15px;font-size:18px;"><strong>Rating: {{  restaurant.get_average_rating  }}</strong></p>
   						</div>
   						<div class="col-sm-9">
   							<a href="{% url "restaurant" restaurant.id %}" class="words restaurantName">{{restaurant.name}}</a>
   							<img src="{% static "images/open.png" %}" alt="open" class="topRight img-responsive" style="width:10%;">
   							<p class="words"> {{restaurant.location}} </p>
-                <!-- Number of reviews to be done -->
-  							<p class="reviewWord"> 25 Reviews </p>
+                <!-- Number of reviews -->
+  							<p class="reviewWord"> {{ restaurant.number_of_reviews }} Reviews </p>
   							<p class="words"> Opening hours: {{restaurant.openinghours.monday_from}} to {{restaurant.openinghours.monday_to}} (Weekdays)</p>
                 <!-- Price to be done -->
   							<p class="words"> Price: ~S$4 per pax </p>
