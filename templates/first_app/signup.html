@@ -1,5 +1,4 @@
-<!-- Signup form
--->
+<!-- Signup form -->
 
 <!DOCTYPE html>
 {% load staticfiles %}
@@ -14,6 +13,20 @@
 	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script>
+			var check = function() {
+				if (document.getElementById('password').value ==
+					document.getElementById('password_again').value) {
+					document.getElementById('message').style.color = 'green';
+					document.getElementById('message').innerHTML = 'Password matches';
+					document.getElementById('submit').disabled = false;
+				} else {
+					document.getElementById('message').style.color = 'red';
+					document.getElementById('message').innerHTML = 'Password does not match';
+					document.getElementById('submit').disabled = true;
+				}
+			}
+		</script>
 	</head>
 	<body>
 
@@ -25,12 +38,12 @@
 						<img src="{% static "images/logo.png" %}" alt-"MakaNUS logo" width="216" height="60">
 					</a>
 				</div>
-				<div class="col-sm-6 ">
+				<div class="col-sm-6">
 					<br>
 					<br>
-					<form action=#>
+					<form action="{% url "search" %}" method="GET">
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="Search by keyword, location, genre, etc.">
+              <input type="text" class="form-control" placeholder="Search by keyword, location, cuisine, etc." name="q">
               <div class="input-group-btn">
                 <button class="btn btn-default" type="submit">
                   <i class="glyphicon glyphicon-search"></i>
@@ -68,14 +81,14 @@
           <div class="form-group row">
             <div class="col-sm-4 col-sm-offset-4">
               <label for="firstName" class="words">First Name:</label>
-              <input type="text" class="form-control" id="firstName" placeholder="First name" name="first_name">
+              <input type="text" class="form-control" id="firstName" placeholder="First name" name="first_name" required>
             </div>
           </div>
 
           <div class="form-group row">
             <div class="col-sm-4 col-sm-offset-4">
               <label for="lastName" class="words">Last Name:</label>
-              <input type="text" class="form-control" id="lastName" placeholder="Last name" name="last_name">
+              <input type="text" class="form-control" id="lastName" placeholder="Last name" name="last_name" required>
             </div>
           </div>
 
@@ -88,6 +101,7 @@
                 <option> Year 2 </option>
                 <option> Year 3 </option>
                 <option> Year 4 </option>
+								<option> Unspecified </option>
               </select>
             </div>
           </div>
@@ -107,6 +121,7 @@
                 <option> Yale-NUS </option>
                 <option> Yong Loo Lin School of Medicine </option>
                 <option> Yong Siew Toh Conservatory of Music </option>
+								<option> Unspecified </option>
               </select>
             </div>
           </div>
@@ -123,28 +138,29 @@
           <div class="form-group row">
             <div class="col-sm-4 col-sm-offset-4">
               <label for="Email" class="words">Email:</label>
-              <input type="email" class="form-control" id="Email" placeholder="Email" name="email">
+              <input type="email" class="form-control" id="Email" placeholder="Email" name="email" required>
             </div>
           </div>
 
 					<div class="form-group row">
 						<div class="col-sm-4 col-sm-offset-4">
 							<label for="Username" class="words">Username:</label>
-							<input type="text" class="form-control" id="Username" placeholder="Enter username" name="username">
+							<input type="text" class="form-control" id="Username" placeholder="Enter username" name="username" required>
 						</div>
 					</div>
 
           <div class="form-group row">
             <div class="col-sm-4 col-sm-offset-4">
               <label for="pwd" class="words">Password:</label>
-              <input type="password" class="form-control" id="pwd" placeholder="Enter Password" name="password">
+              <input type="password" class="form-control" id="password" placeholder="Enter Password" name="password" onkeyup='check()' required>
             </div>
           </div>
 
           <div class="form-group row">
             <div class="col-sm-4 col-sm-offset-4">
               <label for="pwd" class="words">Confirm Password:</label>
-              <input type="password" class="form-control" id="pwd" placeholder="Re-enter Password" name="password_again">
+              <input type="password" class="form-control" id="password_again" placeholder="Re-enter Password" name="password_again" onkeyup='check()' required>
+							<span id='message'></span>
             </div>
           </div>
 
@@ -166,7 +182,7 @@
 
           <div class="row">
             <div class="col-sm-4 col-sm-offset-4">
-              <button type="submit" class="btn btn-default formButton" style="background-color: rgb(8, 0, 129); color: rgb(255, 255, 255);">Sign Up</button>
+              <button type="submit" id="submit" class="btn btn-default formButton" style="background-color: rgb(8, 0, 129); color: rgb(255, 255, 255);">Sign Up</button>
             </div>
           </div>
         </form>

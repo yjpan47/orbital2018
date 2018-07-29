@@ -1,20 +1,24 @@
+/* Banner words */
 .bigWords {
   font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
   color: RGB(255, 255, 255);
   white-space: nowrap;
 }
 
+/* banner background image */
 .banner {
     opacity: 0.5;
     filter: alpha(opacity=50); /* For IE8 and earlier */
 }
 
+/* container with banner and words */
 .imgContainer {
     position: relative;
     text-align: center;
     color: white;
 }
 
+/* Banner word in the middle */
 .centered {
     position: absolute;
     top: 55%;
@@ -22,6 +26,7 @@
     transform: translate(-50%, -50%);
 }
 
+/*Banner words on the top */
 .up-centered {
     position: absolute;
     top: 35%;

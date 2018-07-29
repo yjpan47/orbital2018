@@ -1,5 +1,4 @@
-<!-- Home Page
-  Required changes: none -->
+<!-- Home Page -->
 
 <!DOCTYPE html>
 {% load staticfiles %}
@@ -60,7 +59,7 @@
       <div class="imgContainer">
         <img class="banner" src="{% static "images/banner.jpg" %}" alt="banner" style="width:100%;">
         <div class="up-centered">
-          <h1 class="bigWords" style="font-size: 4vw;"> NUS eateries at your fingertips </h1>
+          <h1 class="bigWords" style="font-size: 3.3vw;"> NUS eateries at your fingertips </h1>
         </div>
 
         <div class="centered">
@@ -69,7 +68,7 @@
           <!-- Search form -->
           <form action="{% url "search" %}" method="GET">
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="Search by keyword, location, genre, etc." name="q">
+              <input type="text" class="form-control" placeholder="Search by keyword, location, cuisine, etc." name="q">
               <div class="input-group-btn">
                 <button class="btn btn-default" type="submit">
                   <i class="glyphicon glyphicon-search"></i>
@@ -86,40 +85,4 @@
     </div>
 
   </body>
-
 </html>
-
-<!-- Modal
-<div class="modal fade" id="loginForm" role="dialog">
-  <div class="modal-dialog">
-
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title title">Login to MakaNUS</h4>
-      </div>
-      <div class="modal-body">
-        <form "{% url "login" %}" method="POST">
-          <div class="form-group">
-            <label for="username" class="words">Username:</label>
-            <input type="text" class="form-control" id="username" placeholder="Enter username">
-          </div>
-          <div class="form-group">
-            <label for="pwd" class="words">Password:</label>
-            <input type="password" class="form-control" id="pwd" placeholder="Enter Password">
-          </div>
-          <div class="checkbox">
-            <label><input type="checkbox"> Remember me</label>
-          </div>
-          <div class="row">
-            <p class="small">New to ManaNUS? <a href="{% url "signup" %}"> Sign up </a> here!</p>
-          </div>
-          <button type="submit" class="btn btn-default formButton" style="background-color: rgb(8, 0, 129); color: rgb(255, 255, 255);">Login</button>
-          <button type="button" class="btn btn-default formButton" style="background-color: rgb(8, 0, 129); color: rgb(255, 255, 255);" data-dismiss="modal">Cancel</button>
-        </form>
-      </div>
-    </div>
-
-  </div>
-</div>
--->
