@@ -1,5 +1,5 @@
 <!-- Restaurant details
-  To-do list: Open sign, waiting time, score, number of reviews, photo uploading, tab contents -->
+  To-do list: Open sign, waiting time, photo uploading, tab contents -->
 
 <!DOCTYPE html>
 {% load staticfiles %}
@@ -80,6 +80,8 @@
 			<div class="row naviBarBackground" style="margin-bottom:15px;">
 				<a href="{% url "index" %}" class="naviBar"> <span class="glyphicon glyphicon-home"></span> Home</a>
 				<span class="naviBar"> > </span>
+        <a href=# class="naviBar"> Search Results </a>
+        <span class="naviBar"> > </span>
 				<span class="naviBar"> <strong> {{restaurant.name}} </strong></span>
 			</div>
 
@@ -115,12 +117,12 @@
           <!-- Restaurant location -->
           <p> <strong> Location: </strong>{{restaurant.location}}</p>
           <!-- Score & number of reviews, to be done -->
-          <p> <strong>Rating: </strong>{{  restaurant.get_average_rating  }} <a href=# class="reviewWord"> {{ restaurant.number_of_reviews }} Reviews </a> </p>
+          <p> <strong>Rating: </strong>{{  restaurant.get_average_rating  }} <a href="#" class="reviewWord"><strong>{{ restaurant.number_of_reviews }} Reviews </strong></a> </p>
           <!-- When authenticated, review and upload photo form -->
           <div class="row">
             {% if user.is_authenticated %}
               <button type="button" class="btn btn-info btn-lg" style="background-color: rgb(90, 123, 255);margin:15px;border:0px;" data-toggle="modal" data-target="#RateReview">Rate & Review</button>
-              <button type="button" class="btn btn-info btn-lg" style="background-color: rgb(214, 165, 25);margin:15px;border:0px;" data-toggle="modal" data-target="#PhotoUpload">Upload a photo</button>
+              <button type="button" class="btn btn-info btn-lg" style="background-color: rgb(214, 165, 25);margin:15px;border:0px;" data-toggle="modal" data-target="#PhotoUpload" disabled>Upload a photo</button>
             {% endif %}
           </div>
         </div>
@@ -149,22 +151,29 @@
 		        <div class="col-sm-5 textBox">
 		          <h3 class="words"><strong>Most recent reviews</strong></h3>
 		          <hr>
+              {% for review in restaurant.get_restaurant_reviews|slice:":2" %}
+                <div style="margin:20px;padding:20px;border:1px solid;border-radius:8px;border-color:RGB(230,230,230);" >
+                  <h5> <a href=# style="font-size:18px;"> {{review.user.first_name}} </a> </h5>
+                  <p style="font-size:14px;"> {{review.review}} </p>
+                </div>
+              {% endfor %}
 		        </div>
 		        <div class="col-sm-5 col-sm-offset-1 textBox">
 		          <h3 class="words"><strong>Most recent photos</strong></h3>
 		          <hr>
+              <p style="font-size:14px;"> No pictures have been uploaded </p>
 		        </div>
 		      </div>
 		      <br>
 		      <p> <strong> Opening Hours: </strong> </p>
           <ul>
-            <li>Monday: {{restaurant.openinghours.monday_from}} to {{restaurant.openinghours.monday_to}} </li>
-            <li>Tuesday: {{restaurant.openinghours.tuesday_from}} to {{restaurant.openinghours.tuesday_to}} </li>
-            <li>Wednesday: {{restaurant.openinghours.wednesday_from}} to {{restaurant.openinghours.wednesday_to}} </li>
-            <li>Thursday: {{restaurant.openinghours.thursday_from}} to {{restaurant.openinghours.thursday_to}} </li>
-            <li>Friday: {{restaurant.openinghours.friday_from}} to {{restaurant.openinghours.friday_to}} </li>
-            <li>Saturday: {{restaurant.openinghours.saturday_from}} to {{restaurant.openinghours.saturday_to}} </li>
-            <li>Sunday: {{restaurant.openinghours.sunday_from}} to {{restaurant.openinghours.sunday_to}} </li>
+            <li><span style="font-size:16px;line-height:30px;">Monday: {{restaurant.openinghours.monday_from}} to {{restaurant.openinghours.monday_to}}</span></li>
+            <li><span style="font-size:16px;line-height:30px;">Tuesday: {{restaurant.openinghours.tuesday_from}} to {{restaurant.openinghours.tuesday_to}}</span></li>
+            <li><span style="font-size:16px;line-height:30px;">Wednesday: {{restaurant.openinghours.wednesday_from}} to {{restaurant.openinghours.wednesday_to}}</span></li>
+            <li><span style="font-size:16px;line-height:30px;">Thursday: {{restaurant.openinghours.thursday_from}} to {{restaurant.openinghours.thursday_to}}</span></li>
+            <li><span style="font-size:16px;line-height:30px;">Friday: {{restaurant.openinghours.friday_from}} to {{restaurant.openinghours.friday_to}}</span></li>
+            <li><span style="font-size:16px;line-height:30px;">Saturday: {{restaurant.openinghours.saturday_from}} to {{restaurant.openinghours.saturday_to}}</span></li>
+            <li><span style="font-size:16px;line-height:30px;">Sunday: {{restaurant.openinghours.sunday_from}} to {{restaurant.openinghours.sunday_to}}</span></li>
           </ul>
           <!-- To be done -->
 		      <p> <strong>Price:</strong> ~S$4 per pax </p>
@@ -305,7 +314,40 @@
               <h4 class="modal-title title">Rate & Review</h4>
             </div>
             <div class="modal-body">
-              <h4 class="modal-title title">Contribute a Rating</h4>
+              <form action=# method="post">
+                <div class="form-group row" style="margin-left:20px;">
+                  <label for="restaurantRate">Rate: </label>
+                  <select id="restaurantRate" name="restaurant_rating">
+                    <option value = 1> 1 </option>
+                    <option value = 2> 2 </option>
+                    <option value = 3> 3 </option>
+                    <option value = 4> 4 </option>
+                    <option value = 5> 5 </option>
+                  </select>
+                </div>
+                <div class="form-group row" style="margin-left:20px;">
+                  <p style="font-size:14px;color:black;"><strong> Review: </strong><textarea rows="5" style="margin:15px;width:90%;" name="restaurant_review"></textarea></p>
+                </div>
+                <div class="form-group row" style="margin-left:15px;">
+                  <div class="col-sm-6">
+                    <label for="waitingTime">Estimated waiting time: </label>
+                    <input type="range" id="waitingTime" name="waiting_time" min="0" max="15">
+                  </div>
+                  <div class="col-sm-6">
+                    <label for="crowdCondition"> Crowd condition: </label>
+                    <select id="crowdCondition" name="crowd_condition">
+                      <option value = 1> Not crowded </option>
+                      <option value = 2> Fairly busy </option>
+                      <option value = 3> Very busy </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row"  style="margin-left:20px;">
+                  <button type="submit" id="submit" class="btn btn-default formButton pull-right" style="margin-right:20px;background-color:rgb(8, 0, 129);color:rgb(255, 255, 255);">Submit</button>
+                </div>
+              </form>
+
+              <!--
               <form action="{% url "add_restaurant_rating" restaurant.id %}" method="post">
                 {% csrf_token %}
                 <select name="restaurant_rating">
@@ -349,7 +391,7 @@
                   <option value = 5> 5 minute </option>
                 </select>
                 <input type="submit">
-              </form>
+              </form> -->
             </div>
           </div>
 
