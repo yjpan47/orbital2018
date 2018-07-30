@@ -98,14 +98,14 @@
           <!-- Profile Name -->
           <h1>{{profile_user.first_name}} {{profile_user.last_name}} ({{profile_user.username}})</h1>
           <!-- Other Profile Information -->
-          <p class="userDetail">Year: {{profile_user.userprofile.year}}</p>
-          <p class="userDetail">Faulty: {{profile_user.userprofile.faculty}}</p>
-          <p class="userDetail">Major: {{profile_user.userprofile.major}}</p>
-          <p class="userDetail">About me: {{profile_user.userprofile.about_me}}</p>
+          <p class="userDetail"><strong>Year:</strong> {{profile_user.userprofile.year}}</p>
+          <p class="userDetail"><strong>Faulty:</strong> {{profile_user.userprofile.faculty}}</p>
+          <p class="userDetail"><strong>Course of Study:</strong> {{profile_user.userprofile.course}}</p>
+          <p class="userDetail"><strong>About me:</strong> {{profile_user.userprofile.about_me}}</p>
 
           <!-- If user is the owner of the profile, profile can be edited. -->
           {% if user.id == profile_user.id %}
-            <button type="button" class="btn btn-info btn-sm" style="background-color:rgb(8, 0, 129);margin-top:10px;" disabled>Edit Profile</button>
+            <button type="button" class="btn btn-info btn-sm" style="background-color:rgb(8, 0, 129);margin-top:10px;" disabled><a href = "{% url "edit_profile" user.id %}">Edit Profile</a></button>
           {% endif %}
 
         </div>

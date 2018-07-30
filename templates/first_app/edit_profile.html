@@ -1,0 +1,208 @@
+<!-- Signup form -->
+
+<!DOCTYPE html>
+{% load staticfiles %}
+
+<html lang="en" dir="ltr">
+	<head>
+	  <title>Edit Profile</title>
+	  <meta charset="utf-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" type="text/css" href="{% static "css/signup.css" %}">
+	  <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}">
+	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script>
+			var check = function() {
+				if (document.getElementById('password').value ==
+					document.getElementById('password_again').value) {
+					document.getElementById('message').style.color = 'green';
+					document.getElementById('message').innerHTML = 'Password matches';
+					document.getElementById('submit').disabled = false;
+				} else {
+					document.getElementById('message').style.color = 'red';
+					document.getElementById('message').innerHTML = 'Password does not match';
+					document.getElementById('submit').disabled = true;
+				}
+			}
+		</script>
+	</head>
+	<body>
+
+    <div class="container">
+      <div class="row">
+        <!-- MakaNUS logo -->
+				<div class="col-sm-3">
+					<a href="{% url "index" %}" class = "navbar-brand">
+						<img src="{% static "images/logo.png" %}" alt-"MakaNUS logo" width="216" height="60">
+					</a>
+				</div>
+        <!-- Search bar -->
+				<div class="col-sm-6 ">
+					<br>
+					<br>
+					<form action="{% url "search"%}" method="GET">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search by keyword, location, cuisine, etc." name="q">
+              <div class="input-group-btn">
+                <button class="btn btn-default" type="submit">
+                  <i class="glyphicon glyphicon-search"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+				</div>
+        <!-- Show signup/login buttons or user name if signed in -->
+        <div class="col-sm-3" style="padding-top:40px;">
+
+          {% if user.is_authenticated %}
+
+          <div class="dropdown" style="float:right;text-align:right;">
+
+            {% if user.userprofile.profile_pic.name == "" %}
+            {% else %}
+              <img src="{{user.userprofile.profile_pic.url}}" style="width:15%;border-radius:50%;">
+            {% endif %}
+            <span style="font-size:16px;text-align:right;"><strong> Welcome, {{user.first_name}}! </strong> <span>
+
+            <!-- Dropdown list -->
+            <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown" style="background-color: rgb(8, 0, 129);">
+            <span class="caret"></span></button>
+            <div class="dropdown-menu dropdown-menu-right">
+              <li><a href="{% url "profile" user.id %}">My Profile</a></li>
+              <li><a href="{% url "logout" %}">Logout</a></li>
+            </div>
+
+          </div>
+
+          {% else %}
+            <a href="{% url "signup" %}">
+            <button type="button" class="btn btn-info pull-right" style="background-color: rgb(8, 0, 129);">Sign Up</button> </a>
+            <a href="{% url "login" %}">
+            <button type="button" class="btn btn-info pull-right" style="background-color: rgb(8, 0, 129);">Login</button> </a>
+          {% endif %}
+
+        </div>
+			</div>
+      <br>
+      <!-- Navigation bar -->
+			<div class="row naviBarBackground" style="margin-bottom:15px;">
+				<a href="{% url "index" %}" class="naviBar"> <span class="glyphicon glyphicon-home"></span> Home</a>
+				<span class="naviBar"> > </span>
+        <a href=# class="naviBar"> Edit Profile </a>
+				<span class="naviBar"> <strong> {{restaurant.name}} </strong></span>
+			</div>
+
+			<!-- Edit Profile form -->
+      <div style="padding:15px;">
+        <form action="{% url "edit_profile" user.id %}" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+
+          <div class="form-group row">
+						<div class="col-sm-4 col-sm-offset-4">
+							<label for="Username" class="words">Username:</label>
+							<input type="text" class="form-control" id="Username" value="{{user.username}}" name="username" required>
+						</div>
+					</div>
+
+          <div class="form-group row">
+            <div class="col-sm-4 col-sm-offset-4">
+              <label for="firstName" class="words">First Name:</label>
+              <input type="text" class="form-control" id="firstName" value="{{user.first_name}}" name="first_name" required>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-sm-4 col-sm-offset-4">
+              <label for="lastName" class="words">Last Name:</label>
+              <input type="text" class="form-control" id="lastName" value="{{user.last_name}}" name="last_name" required>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-sm-4 col-sm-offset-4">
+              <label for="Email" class="words">Email:</label>
+              <input type="email" class="form-control" id="Email" value="{{user.email}}" name="email" required>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-sm-4 col-sm-offset-4">
+              <label for="year" class="words">Year of schooling:</label>
+              <select class="form-control" id="year" name="year">
+                <option> Year 1 </option>
+                <option> Year 2 </option>
+                <option> Year 3 </option>
+                <option> Year 4 </option>
+								<option> Unspecified </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-sm-4 col-sm-offset-4">
+              <label for="faculty" class="words">Faculty:</label>
+              <select class="form-control" id="faculty" name="faculty">
+                <option> Faculty of Arts and Social Sciences </option>
+                <option> Faculty of Dentistry </option>
+                <option> Faculty of Engineering </option>
+                <option> Faculty of Law </option>
+                <option> Faculty of Science </option>
+                <option> School of Business </option>
+                <option> School of Computing </option>
+                <option> School of Design and Environment </option>
+                <option> Yale-NUS </option>
+                <option> Yong Loo Lin School of Medicine </option>
+                <option> Yong Siew Toh Conservatory of Music </option>
+								<option> Unspecified </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-sm-4 col-sm-offset-4">
+              <label for="course" class="words">Course of Study:</label>
+              <input type="text" class="form-control" id="course" value="{{user.userprofile.course}}" name="course">
+            </div>
+          </div>
+          <br>
+
+					<div class="form-group row">
+            <div class="col-sm-4 col-sm-offset-4">
+              <label for="aboutme" class="words">About Me: (Optional)</label>
+              <input type="textarea" class="form-control" id="aboutme" value="{{user.userprofile.about_me}}" name="about_me">
+            </div>
+          </div>
+
+					<div class="form-group row">
+						<div class="col-sm-4 col-sm-offset-4">
+							<label for="profilepic" class="words">Profile Picture:</label>
+        			<input type="file" id="profilepic" name="profile_pic">
+						</div>
+					</div>
+
+          <br>
+
+          <div class="row">
+            <div class="col-sm-4 col-sm-offset-4">
+              <button type="submit" id="submit" class="btn btn-default formButton" style="background-color: rgb(8, 0, 129); color: rgb(255, 255, 255);">Confirm</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <br>
+
+			<!-- Page footer -->
+      <div>
+				<div class="row naviBarBackground">
+					<span style="font-size:16px;padding:10px;color:RGB(8,0,129);">Line Break</span>
+				</div>
+				<img src="{% static "images/logo.png" %}" alt="MakaNUS logo" class="img-responsive center-block" style="width:144px; height:55px; padding:10px;">
+				<p style="text-align:center;"> © 2018 MakaNUS, all rights reserved. </p>
+			</div>
+
+    </div>
+  </body>
+</html>

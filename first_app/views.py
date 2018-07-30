@@ -25,6 +25,7 @@ def user_signup(request):
         faculty = request.POST.get("faculty")
         course = request.POST.get("course")
         password = request.POST.get("password")
+        password_again = request.POST.get("password_again")
         about_me = request.POST.get("about_me")
         profile_pic = request.FILES.get("profile_pic")
 
@@ -75,6 +76,43 @@ def user_profile(request, pk):
     user = request.user
     profile_user = get_object_or_404(User, id = pk)
     return render(request, "first_app/profile.html", {"user": user, "profile_user": profile_user})
+
+def edit_profile(request, pk):
+    if (request.user.is_authenticated):
+        user = request.user
+        profile_user = get_object_or_404(User, id = pk)
+        if (user == profile_user):
+            if request.method == "POST":
+                print(request.POST.get("username"))
+                print(user.username)
+                if (request.POST.get("username") != user.username) and (request.POST.get("username") in list(map(lambda x: x.username, User.objects.all()))):
+                    return HttpResponse("Username taken")
+
+                user.username = request.POST.get("username")
+                user.first_name = request.POST.get("first_name")
+                user.last_name = request.POST.get("last_name")
+                user.email = request.POST.get("email")
+                user.userprofile.year = request.POST.get("year")
+                user.userprofile.faculty = request.POST.get("faculty")
+                user.userprofile.course = request.POST.get("course")
+                user.userprofile.about_me = request.POST.get("about_me")
+                if request.FILES.get("profile_pic"):
+                    user.userprofile.profile_pic = request.FILES.get("profile_pic")
+
+                user.full_clean()
+                user.save()
+
+                user.userprofile.full_clean()
+                user.userprofile.save()
+
+                return redirect("profile", pk = request.user.id)
+
+            else:
+                return render(request, "first_app/edit_profile.html", {"user": user})
+        else:
+            return HttpResponse("Oops something went wrong")
+    else:
+        return HttpResponse("Oops something went wrong")
 
 def edit_restaurant_review(request, pk):
     if request.user.is_authenticated:
@@ -268,7 +306,7 @@ def add_dish_review(request, pk):
 
 def search(request):
     if "q" in request.GET:
-        sort_by = request.GET.get('sort', "name")
+        sort_by = request.GET.get('sort')
         location_filter = request.GET.get('location')
         page = request.GET.get('page', 1)
         query = request.GET.get("q")
@@ -277,6 +315,8 @@ def search(request):
         informations = list(Restaurant.objects.filter(information__icontains = query).order_by("name"))
         restaurants = names + locations + informations
 
+        if sort_by == "names":
+            restaurants.sort(key = lambda obj: obj.name, reverse = True)
         if sort_by == "ratings":
             restaurants.sort(key = lambda obj: obj.get_average_rating(), reverse = True)
         if sort_by == "reviews":
