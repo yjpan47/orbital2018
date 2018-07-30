@@ -92,9 +92,9 @@
         <!-- Open/closed sign -->
         <div class="col-sm-4">
           {% if restaurant.is_open %}
-            <img src="{% static "images/open.png" %}" alt="open" class="topRight img-responsive" style="width:10%;">
+            <img src="{% static "images/open.png" %}" alt="open" class="topRight img-responsive" style="width:40%;margin-top:10px;">
           {% else %}
-            <img src="{% static "images/close.png" %}" alt="close" class="topRight img-responsive" style="width:10%;">
+            <img src="{% static "images/close.png" %}" alt="close" class="topRight img-responsive" style="width:40%;margin-top:10px;">
           {% endif %}
         </div>
       </div>
@@ -137,7 +137,7 @@
             {% if user.is_authenticated %}
               <button type="button" class="btn btn-info btn-lg" style="background-color: rgb(90, 123, 255);margin:15px;border:0px;" data-toggle="modal" data-target="#WriteReview">Review</button>
               <button type="button" class="btn btn-info btn-lg" style="background-color: rgb(214, 165, 25);margin:15px;border:0px;" data-toggle="modal" data-target="#PhotoUpload">Upload a Photo</button>
-              {% endif %}
+            {% endif %}
           </div>
         </div>
         <!--Waiting time & crowd condition -->
@@ -196,24 +196,24 @@
 			  <div id="overview" class="tab-pane fade in active">
           <!-- To be done -->
 					<div class="row">
-		        <div class="col-sm-5 textBox">
+		        <div class="col-sm-5 textBox" style="margin-left:70px;">
 		          <h3 class="words"><strong>Most Recent Reviews</strong></h3>
 		          <hr>
               {% for review in restaurant.get_restaurant_reviews_most_recent|slice:":2" %}
                 <div style="margin:20px;padding:20px;border:1px solid;border-radius:8px;border-color:RGB(230,230,230);" >
                   <h5> <a href=# style="font-size:18px;"> {{review.user.first_name}} </a> </h5>
                   <p style="font-size:14px;"> {{review.review}} </p>
-                  <p style="font-size:14px;"><em> {{review.get_time}} </em></p>
+                  <p style="font-size:14px;"><em> Posted on: {{review.get_time}} </em></p>
                 </div>
               {% endfor %}
 		        </div>
-		        <div class="col-sm-5 col-sm-offset-1 textBox">
+		        <div class="col-sm-5 textBox">
 		          <h3 class="words"><strong>Most Recent Photos</strong></h3>
 		          <hr>
-              {% for restaurant_photo in restaurant.get_restaurant_photos|slice:":2" %}
-                <div style="margin:20px;padding:20px;border:1px solid;border-radius:8px;border-color:RGB(230,230,230);" >
-                  <p><img src="{{restaurant_photo.photo.url}}"></p>
-                  <p style="font-size:14px;"><em>{{restaurant_photo.get_time}}</em></p>
+              {% for restaurant_photo in restaurant.get_restaurant_photos|slice:":6" %}
+                <div class="col-sm-4" style="margin:5px;padding:5px;border:1px solid;border-radius:8px;border-color:RGB(230,230,230);" >
+                  <p><img src="{{restaurant_photo.photo.url}}" style="width:100%"></p>
+                  <p style="font-size:14px;"><em> Posted on: <br>{{restaurant_photo.get_time}}</em></p>
                 </div>
               {% endfor %}
 		        </div>
@@ -248,11 +248,22 @@
                 <img src="{{restaurant.highest_rated_dish.dish_profile_pic.url}}" style="width:80%;">
               {% endif %}
 						</div>
+<<<<<<< HEAD
 						<div class="col-sm-9">
 							<h3 class="words" style="line-height: 1.8;"> <strong> <a href="{% url "dish" restaurant.highest_rated_dish.id %}"> {{restaurant.highest_rated_dish.name}} </a></strong> <br> {{restaurant.highest_rated_dish.price}} </h3>
 							<p class="rate"> <img src="{% static "images/Thumbs_up.png" %}" alt="Thumbs up" style="width:3%;float:left;">
+=======
+						<div class="col-sm-3">
+							<h3 class="words" style="line-height: 1.8;"> <strong> {{restaurant.highest_rated_dish.name}} </strong> <br> {{restaurant.highest_rated_dish.price}} </h3>
+							<p class="rate"> <img src="{% static "images/Thumbs_up.png" %}" alt="Thumbs up" style="width:10%;float:left;">
+>>>>>>> fcc0cd4cdb30f02affe68e640db19f79af737419
 								{{restaurant.highest_rated_dish.get_average_rating}} </p>
 						</div>
+            <div class="col-sm-6">
+              <p> Is the menu you are looking for missing?
+                <a href="{% url "add_dish" restaurant.id %}">
+                <button type="button" class="btn btn-info btn-lg" style="background-color: rgb(90, 123, 255);margin:15px;border:0px;">Add to Menu</button></a></p>
+            </div>
 					</div>
 					<hr>
           <div class="row">
@@ -291,21 +302,25 @@
               </div>
             {% endfor %}
           </div>
-          <a href="{% url "add_dish" restaurant.id %}"><button type="button" name="button">Add to Menu</button></a>
 			  </div>
         <!-- Photos tab, to be done -->
         <div id="photos" class="tab-pane fade">
           <h3 class="words"><strong>Uploaded Photos</strong></h3>
           <hr>
-          {% for restaurant_photo in restaurant.restaurantphoto_set.all %}
-          <p><img src="{{restaurant_photo.photo.url}}"></p>
-          <p><em>Uploaded by <a href="{% url "profile" restaurant_photo.user.id %}">{{restaurant_photo.user}}</a></em> </p>
-          <!-- Delete photo -->
-          {% if user.id == restaurant_photo.user.id %}
-          <p><a href="{% url "delete_restaurant_photo" restaurant_photo.id %}">Delete</a></p>
-          {% endif %}
-          <hr>
+          <div class="row" style="margin-bottom:15px;">
+            {% for restaurant_photo in restaurant.restaurantphoto_set.all %}
+            <div class="col-sm-3" style="margin:5px;padding:5px;">
+              <p><img src="{{restaurant_photo.photo.url}}" style="width:100%"></p>
+              <p><em>Uploaded by <a href="{% url "profile" restaurant_photo.user.id %}">{{restaurant_photo.user}}</a></em> </p>
+              <!-- Delete photo -->
+              {% if user.id == restaurant_photo.user.id %}
+              <a href="{% url "delete_restaurant_photo" restaurant_photo.id %}">
+              <button type="button" class="btn btn-info btn-sm" style="background-color: rgb(8, 0, 129);">Remove photo</button> </a>
+              {% endif %}
+            </div>
           {% endfor %}
+          </div>
+          <br>
         </div>
         <!-- Reviews tab -->
 				<div id="reviews" class="tab-pane fade">
@@ -408,26 +423,27 @@
               <form action="{% url "add_restaurant_review" restaurant.id %}" method="post">
               {% csrf_token %}
                 <textarea rows="5" style="margin:15px;width:90%;" name="restaurant_review"></textarea>
-                <button type="submit" id="submit" class="btn btn-default formButto" style="margin-left:20px;background-color:rgb(8, 0, 129);color:rgb(255, 255, 255);">Submit Review</button>
+                <button type="submit" id="submit" class="btn btn-default formButton" style="margin-left:20px;background-color:rgb(8, 0, 129);color:rgb(255, 255, 255);">Submit Review</button>
               </form>
-              <br
+              <br>
             </div>
           </div>
 
         </div>
       </div>
-    </div>
+
       <!-- Page footer -->
       <br>
 
       <div>
         <div class="row naviBarBackground">
-          <span style="font-size:16px;padding:10px;color:RGB(8,0,129);">Line Break</span>
+          <span style="font-size:16px;padding:10px;color:RGB(8,0,129);margin-top:15px;">Line Break</span>
         </div>
         <img src="{% static "images/logo.png" %}" alt="MakaNUS logo" class="img-responsive center-block" style="width:144px; height:55px; padding:10px;">
         <p style="text-align:center;"> © 2018 MakaNUS, all rights reserved. </p>
       </div>
 
+    </div>
 
   </body>
 <html>
