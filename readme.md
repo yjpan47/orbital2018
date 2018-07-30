@@ -1,8 +1,8 @@
 ## (Orbital Milestone 3
-Group: Team GGEZ
-Members: PAN YONGJING, YOON KI HYUN
-Level of Achievement: Apollo 11
-Type of Project: Website Application
+- Group: Team GGEZ
+- Members: PAN YONGJING, YOON KI HYUN
+- Level of Achievement: Apollo 11
+- Type of Project: Website Application
 
 ## Website Application: MakaNUS
 
