@@ -272,15 +272,15 @@ def search(request):
         location_filter = request.GET.get('location')
         page = request.GET.get('page', 1)
         query = request.GET.get("q")
-        restaurants = list(Restaurant.objects.filter(name__icontains = query).order_by("name"))
+        names = list(Restaurant.objects.filter(name__icontains = query).order_by("name"))
+        locations = list(Restaurant.objects.filter(location__location_name__icontains = query).order_by("name"))
+        informations = list(Restaurant.objects.filter(information__icontains = query).order_by("name"))
+        restaurants = names + locations + informations
 
         if sort_by == "ratings":
             restaurants.sort(key = lambda obj: obj.get_average_rating(), reverse = True)
-        if sort_by == "crowd":
-            restaurants.sort(key = lambda obj: obj.get_crowd_condition(), reverse = False)
-
-        if location_filter:
-            restaurants = list(filter(lambda obj: obj.location == location_filter, restaurants))
+        if sort_by == "reviews":
+            restaurants.sort(key = lambda obj: obj.number_of_reviews(), reverse = True)
 
         paginator = Paginator(restaurants, 10)
         restaurants = paginator.page(page)

@@ -75,13 +75,42 @@ class Restaurant(models.Model):
     def get_crowd_condition(self, mins = 30):
         start, end = localtime() - timedelta(seconds = mins), localtime()
         lst = list(filter(lambda obj: start < localtime(obj.created_at) < end, self.restaurantcrowdcondition_set.all()))
-        return round(sum(list(map(lambda obj: obj.crowd_condition, lst)))/len(lst), 2) if len(lst) else ""
+        int_result = int(round(sum(list(map(lambda obj: obj.crowd_condition, lst)))/len(lst), 0)) if len(lst) else ""
+        if int_result == 1: return "Not Busy"
+        elif int_result == 2: return "Fairly Busy"
+        elif int_result == 3: return "Very Busy"
+        else: return ""
 
     def highest_rated_dish(self):
         dishes_list = list(self.dish_set.all())
         dishes_list.sort(key = lambda obj: obj.get_average_rating(), reverse = True)
-        print(dishes_list[0])
         return dishes_list[0]
+
+    def get_opening_hours_today(self):
+        if localtime().weekday() == 0:
+            return (self.openinghours.monday_from.strftime("%H:%M"), self.openinghours.monday_to.strftime("%H:%M"))
+        if localtime().weekday() == 1:
+            return (self.openinghours.tuesday_from.strftime("%H:%M"), self.openinghours.tuesday_to.strftime("%H:%M"))
+        elif localtime().weekday() == 2:
+            return (self.openinghours.wednesday_from.strftime("%H:%M"), self.openinghours.wednesday_to.strftime("%H:%M"))
+        elif localtime().weekday() == 3:
+            return (self.openinghours.thursday_from.strftime("%H:%M"), self.openinghours.thursday_to.strftime("%H:%M"))
+        elif localtime().weekday() == 4:
+            return (self.openinghours.friday_from.strftime("%H:%M"), self.openinghours.friday_to.strftime("%H:%M"))
+        elif localtime().weekday() == 5:
+            return (self.openinghours.saturday_from.strftime("%H:%M"), self.openinghours.saturday_to.strftime("%H:%M"))
+        elif localtime().weekday() == 6:
+            return (self.openinghours.sunday_from.strftime("%H:%M"), self.openinghours.sunday_to.strftime("%H:%M"))
+
+    def get_weekday(self):
+        return localtime().weekday()
+
+    def is_open(self):
+        start, end = self.get_opening_hours_today()
+        if start < localtime().strftime("%H:%M") < end:
+            return True
+        else:
+            return False
 
 class OpeningHours(models.Model):
     restaurant = models.OneToOneField(Restaurant, on_delete = models.CASCADE)

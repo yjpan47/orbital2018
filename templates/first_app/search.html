@@ -89,19 +89,23 @@
       <div class="row">
         <!-- Filter & Sort to be done -->
 				<div class="col-sm-3 textBox">
-					<h4 class="words"> <strong> Filters </strong> </h4>
+					<!-- <h4 class="words"> <strong> Filters </strong> </h4> -->
 					<div class="filterCategory">
 						<p class="filterHeader words"> Sort by </p>
-						<div class="filterLinks">
-							<a href="{% url "search" %}?q={{q}}&sort=ratings" class="filterWords"> Ratings </a>
-							<span class="filterSmallWords"> - high to low </span>
-						</div>
 						<div class="filterLinks">
 							<a href="{% url "search" %}?q={{q}}" class="filterWords"> Name </a>
 							<span class="filterSmallWords"> - A to Z </span>
 						</div>
+            <div class="filterLinks">
+							<a href="{% url "search" %}?q={{q}}&sort=ratings" class="filterWords"> Ratings </a>
+							<span class="filterSmallWords"> - high to low </span>
+						</div>
+            <div class="filterLinks">
+							<a href="{% url "search" %}?q={{q}}&sort=reviews" class="filterWords"> Number of Reviews </a>
+							<span class="filterSmallWords"> - most to least </span>
+						</div>
 					</div>
-					<div class="filterCategory">
+					<!-- <div class="filterCategory">
 						<p class="filterHeader words"> Category </p>
 						<div class="filterLinks">
 							<a href=# class="filterWords"> Cafe </a>
@@ -118,8 +122,8 @@
 						<div class="filterLinks">
 							<a href=# class="filterWords"> Miscellaneous </a>
 						</div>
-					</div>
-					<div class="filterCategory">
+					</div> -->
+					<!-- <div class="filterCategory">
 						<p class="filterHeader words"> Location </p>
 						<div class="filterLinks">
 							<a href=# class="filterWords" > Faculty of Arts and Social Sciences </a>
@@ -175,7 +179,7 @@
 						<div class="filterLinks">
 							<a href=# class="filterWords"> More... </a>
 						</div>
-					</div>
+					</div> -->
 				</div>
 
 				<div class="col-sm-8 textBox" style="margin-left:50px;">
@@ -193,19 +197,40 @@
   						</div>
   						<div class="col-sm-9">
   							<a href="{% url "restaurant" restaurant.id %}" class="words restaurantName">{{restaurant.name}}</a>
-  							<img src="{% static "images/open.png" %}" alt="open" class="topRight img-responsive" style="width:10%;">
-  							<p class="words"> {{restaurant.location}} </p>
+                {% if restaurant.is_open %}
+                  <img src="{% static "images/open.png" %}" alt="open" class="topRight img-responsive" style="width:10%;">
+                {% else %}
+                  <img src="{% static "images/close.png" %}" alt="close" class="topRight img-responsive" style="width:10%;">
+                {% endif %}
+                <p class="words"> {{restaurant.location}} </p>
                 <!-- Number of reviews -->
   							<p class="reviewWord"> {{ restaurant.number_of_reviews }} Reviews </p>
-  							<p class="words"> Opening hours: {{restaurant.openinghours.monday_from}} to {{restaurant.openinghours.monday_to}} (Weekdays)</p>
+                <p> {{restaurant.information}}</p>
+
+                {% if restaurant.get_weekday == 0 %}
+                <p><span style="font-size:16px;line-height:30px;"><strong>Opening Hours Today: {{restaurant.openinghours.monday_from}} to {{restaurant.openinghours.monday_to}} (Monday)</strong></span></p>
+                {% elif restaurant.get_weekday == 1 %}
+                <p><span style="font-size:16px;line-height:30px;"><strong>Opening Hours Today: {{restaurant.openinghours.tuesday_from}} to {{restaurant.openinghours.tuesday_to}} (Tuesday)</strong></span></p>
+                {% elif restaurant.get_weekday == 2 %}
+                <p><span style="font-size:16px;line-height:30px;"><strong>Opening Hours Today: {{restaurant.openinghours.wednesday_from}} to {{restaurant.openinghours.wednesday_to}} (Wednesday)</strong></span></p>
+                {% elif restaurant.get_weekday == 3 %}
+                <p><span style="font-size:16px;line-height:30px;"><strong>Opening Hours Today: {{restaurant.openinghours.thursday_from}} to {{restaurant.openinghours.thursday_to}} (Thursday)</strong></span></p>
+                {% elif restaurant.get_weekday == 4 %}
+                <p><span style="font-size:16px;line-height:30px;"><strong>Opening Hours Today: {{restaurant.openinghours.friday_from}} to {{restaurant.openinghours.friday_to}} (Friday)</strong></span></p>
+                {% elif restaurant.get_weekday == 5 %}
+                <p><span style="font-size:16px;line-height:30px;"><strong>Opening Hours Today: {{restaurant.openinghours.saturday_from}} to {{restaurant.openinghours.saturday_to}} (Saturday)</strong></span></p>
+                {% elif restaurant.get_weekday == 6 %}
+                <p><span style="font-size:16px;line-height:30px;"><strong>Opening Hours Today: {{restaurant.openinghours.sunday_from}} to {{restaurant.openinghours.sunday_to}} (Sunday)</strong></span></p>
+                {% endif %}
+
                 <!-- Price to be done -->
-  							<p class="words"> Price: ~S$4 per pax </p>
+  							<!-- <p class="words"> Price: ~S$4 per pax </p> -->
                 <!-- Tags to be done -->
-  							<p class="words"> Tags:
+  							<!-- <p class="words"> Tags:
   								<span><a href=# class="tags"> Western </a></span>
   								<span><a href=# class="tags"> Canteen </a></span>
   								<span><a href=# class="tags"> Techno Edge </a></span>
-  							</p>
+  							</p> -->
   						</div>
   					</div>
           {% endfor %}
