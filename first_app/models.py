@@ -158,7 +158,7 @@ class RestaurantReview(models.Model):
 
     def get_average_rating(self):
         lst = list(map(lambda x: x.rating, (self.restaurantreviewrating_set.all())))
-        return sum(lst)/len(lst) if lst else 0
+        return round(sum(lst)/len(lst), 1) if lst else 0
 
     def get_time(self):
         return localtime(self.created_at).strftime("%d %B %Y, %H:%M")
@@ -236,7 +236,7 @@ class DishReview(models.Model):
 
     def get_average_rating(self):
         lst = list(map(lambda x: x.rating, (self.dishreviewrating_set.all())))
-        return sum(lst)/len(lst) if lst else 0
+        return round(sum(lst)/len(lst), 1) if lst else 0
 
     def get_time(self):
         return localtime(self.created_at).strftime("%d %B %Y, %H:%M")
