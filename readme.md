@@ -46,6 +46,12 @@ MakaNUS is an food information and review website that contains information abou
 - Estimated Waiting Time is computed by the average of all users' inputs for the past 30 minutes from current time.
 - Crowd condition also takes into consideration the average of users' inputs for the past 30 minutes from current time.
 
+###
+
+- Install Python 3.6 (make sure to add python to PATH)
+- Install Django using pip
+-  
+
 ### Website Deployment
 
 - We are planning on deploying our website using pythonanywhere.com web hosting service. However, we just into some last minute issues with the web hosting site. We will fix it ASAP.

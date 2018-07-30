@@ -241,7 +241,7 @@
 			    <h3 class="words"><strong>Most Popular</strong></h3>
 					<hr>
 			    <div class="row">
-						<div class="col-sm-3">
+						<!-- <div class="col-sm-3">
               {% if restaurant.highest_rated_dish.dish_profile_pic.name == "" %}
                 <img src="{% static "images/default-dish-profile.png" %}" style="width:80%;">
               {% else %}
@@ -252,7 +252,7 @@
 							<h3 class="words" style="line-height: 1.8;"> <strong><a href="{% url "dish" restaurant.highest_rated_dish.id %}"> {{restaurant.highest_rated_dish.name}} </a></strong> <br> {{restaurant.highest_rated_dish.price}} </h3>
 							<p class="rate"> <img src="{% static "images/Thumbs_up.png" %}" alt="Thumbs up" style="width:10%;float:left;">
 								{{restaurant.highest_rated_dish.get_average_rating}} </p>
-						</div>
+						</div> -->
             <div class="col-sm-6">
               <p> Is the menu you are looking for missing?
                 <a href="{% url "add_dish" restaurant.id %}">
