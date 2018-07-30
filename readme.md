@@ -46,7 +46,12 @@ MakaNUS is an food information and review website that contains information abou
 - Estimated Waiting Time is computed by the average of all users' inputs for the past 30 minutes from current time.
 - Crowd condition also takes into consideration the average of users' inputs for the past 30 minutes from current time.
 
-## Plans after Milestone 3
+### Website Deployment
+
+- We are planning on deploying our website using pythonanywhere.com web hosting service. However, we just into some last minute issues with the web hosting site. We will fix it ASAP.
+- Nonetheless, the domain site is masterggez.pythonanywhere.com
+
+### Plans after Milestone 3
 
 - Importing of all (if not most) NUS food places into our database
 - Improving UI for some error pages
