@@ -291,22 +291,22 @@
               </div>
             {% endfor %}
           </div>
-          <a href="{% url "add_dish" restaurant.id %}"><button type="button" name="button">Add to Menu</button><a>
+          <a href="{% url "add_dish" restaurant.id %}"><button type="button" name="button">Add to Menu</button></a>
 			  </div>
         <!-- Photos tab, to be done -->
-			  <div id="photos" class="tab-pane fade">
+        <div id="photos" class="tab-pane fade">
           <h3 class="words"><strong>Uploaded Photos</strong></h3>
-					<hr>
+          <hr>
           {% for restaurant_photo in restaurant.restaurantphoto_set.all %}
-            <p><img src="{{restaurant_photo.photo.url}}"></p>
-            <p><em>Uploaded by <a href="{% url "profile" restaurant_photo.user.id %}">{{restaurant_photo.user}}</a></em> </p>
-            <!-- Delete photo -->
-            {% if user.id == restaurant_photo.user.id %}
-              <p><a href="{% url "delete_restaurant_photo" restaurant_photo.id %}">Delete</a></p>
-            {% endif %}
+          <p><img src="{{restaurant_photo.photo.url}}"></p>
+          <p><em>Uploaded by <a href="{% url "profile" restaurant_photo.user.id %}">{{restaurant_photo.user}}</a></em> </p>
+          <!-- Delete photo -->
+          {% if user.id == restaurant_photo.user.id %}
+          <p><a href="{% url "delete_restaurant_photo" restaurant_photo.id %}">Delete</a></p>
+          {% endif %}
           <hr>
           {% endfor %}
-			  </div>
+        </div>
         <!-- Reviews tab -->
 				<div id="reviews" class="tab-pane fade">
           <!-- Sorting, to be done -->

@@ -6,6 +6,7 @@
   </head>
   <body>
     <h1>Add to Menu</h1>
+    <h3>{{restaurant.name}}</h3>
     <hr>
     <form action="{% url "add_dish" restaurant.id %}" method="post" enctype="multipart/form-data">
       {% csrf_token %}
