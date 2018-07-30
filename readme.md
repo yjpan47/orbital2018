@@ -50,9 +50,9 @@ MakaNUS is an food information and review website that contains information abou
 
 - Clone repository
 - Install Python 3.6 (make sure to add python to PATH)
-- Install Django (via pip)
-- Open Command Prompt Terminal, set directory to project folder "orbital2018"
-- Call "python manage.py runserver" on terminal
+- Install Django 2.0.5 (via pip)
+- Open Command Prompt Terminal, set directory to the project folder "orbital2018"
+- Run "python manage.py runserver" on terminal
 - Copy local server address into browser
 
 ### Website Deployment
