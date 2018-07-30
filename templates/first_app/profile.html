@@ -105,7 +105,7 @@
 
           <!-- If user is the owner of the profile, profile can be edited. -->
           {% if user.id == profile_user.id %}
-            <button type="button" class="btn btn-info btn-sm" style="background-color:rgb(8, 0, 129);margin-top:10px;"><a href = "{% url "edit_profile" user.id %}">Edit Profile</a></button>
+            <a href = "{% url "edit_profile" user.id %}"><button type="button" class="btn btn-info btn-sm" style="background-color:rgb(8, 0, 129)">Edit Profile</button></a>
           {% endif %}
 
         </div>
@@ -230,7 +230,7 @@
           {% for review in profile_user.dishreview_set.all %}
             <div class="row" style="border:1px solid;border-radius:20px;padding:15px;margin:30px;">
               <!-- Dish Name and the restaurant that serves the dish-->
-              <h3 style="text-indent:15px;">{{review.dish.name}} (<a href = "{% url "restaurant" review.dish.restaurant.id %}">{{review.dish.restaurant.name}}</a>)</h3>
+              <h3 style="text-indent:15px;"><a href="{% url "dish" review.dish.id %}">{{review.dish.name}} (<a href = "{% url "restaurant" review.dish.restaurant.id %}">{{review.dish.restaurant.name}}</a>)</h3>
               <hr>
               <div class="col-sm-2" style="padding:15px;">
                 <!-- Dish Profile Picture -->

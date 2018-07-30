@@ -13,77 +13,6 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   </head>
   <body>
-<<<<<<< HEAD
-    <!-- Dish Name -->
-  <h1><a href = "{% url "dish" dish.id %}">{{ dish.name }}</a></h1>
-    <!-- Restaurant that this dish belongs to -->
-    <p><a href = "{% url "restaurant" dish.restaurant.id %}">{{ dish.restaurant.name }}</a></p>
-    <!-- Dish Profile Picture -->
-    {% if dish.dish_profile_pic.name == "" %}
-      <img src="{% static "images/default-dish-profile.png" %}">
-    {% else %}
-      <img src="{{dish.dish_profile_pic.url}}" style="width:80%;">
-    {% endif %}
-    <!-- Dish Rating -->
-    <p>{{ dish.get_average_rating }}<p>
-    <!-- Dish information -->
-    <p>{{ dish.information }}</p>
-
-    <!-- Add Dish Rating -->
-    {% if user.is_authenticated %}
-      <form action="{% url "add_dish_rating" dish.id %}" method="POST">
-        {% csrf_token %}
-        <input type="hidden" name="next" value="{{ request.path }}">
-        <select name="dish_rating">
-          <option value = 1> 1 </option>
-          <option value = 2> 2 </option>
-          <option value = 3> 3 </option>
-          <option value = 4> 4 </option>
-          <option value = 5> 5 </option>
-        </select>
-        <input type="submit">
-      </form>
-      {% endif %}
-
-      <!-- Add Dish Review -->
-      {% if user.is_authenticated %}
-        <form action="{% url "add_dish_review" dish.id %}" method="POST">
-          {% csrf_token %}
-          <input type="hidden" name="next" value="{{ request.path }}">
-          <input type="textarea" name="dish_review">
-          <input type="submit">
-        </form>
-        {% endif %}
-
-    <hr>
-
-    <!-- Dish Reviews -->
-    {% for review in dish.dishreview_set.all %}
-      <!-- Reviewer's Name -->
-      <p><a href = "{% url "profile" review.user.id %}">{{ review.user.first_name }}</a><p>
-      <p>
-      <!-- Reviewer's Profile Picture -->
-      {% if review.user.userprofile.profile_pic.name == "" %}
-        <img src="{% static "images/default-user-profile.png" %}">
-      {% else %}
-        <img src="{{review.user.userprofile.profile_pic.url}}">
-      {% endif %}
-      </p>
-      <!-- Review -->
-      <p>{{ review.review }}</p>
-      <!-- Review Rating -->
-      <p>{{ review.get_average_rating }}</p>
-      <!-- Edit/Delete Review -->
-      <p>
-      {% if user.id == review.user.id %}
-        <a href="{% url "edit_dish_review" review.id %}">
-        <button type="button" class="btn btn-info btn-sm">Edit Review</button> </a>
-        <a href="{% url "delete_dish_review" review.id %}">
-        <button type="button" class="btn btn-info btn-sm">Delete Review</button> </a>
-      </p>
-      {% endif %}
-=======
->>>>>>> fcc0cd4cdb30f02affe68e640db19f79af737419
 
     <div class="container">
       <div class="row">
@@ -231,6 +160,26 @@
             <p class="description"> {{ review.review }} </p>
             <!-- Review Rating -->
             <p class="description"> <strong> Review rating: </strong> {{ review.get_average_rating }} </p>
+
+              <div class="row" style="padding:15px;">
+                {% if user.is_authenticated %}
+                  <p><strong>Rate this review (5 is the highest)</strong>
+                  <form action="{% url "add_dish_review_rating" review.id %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.path }}">
+                    <select name="dish_review_rating">
+                      <option value = 1> 1 </option>
+                      <option value = 2> 2 </option>
+                      <option value = 3> 3 </option>
+                      <option value = 4> 4 </option>
+                      <option value = 5> 5 </option>
+                    </select>
+                    <input type="submit">
+                  </form></p>
+                {% endif %}
+              </div>
+
+
             <!-- Edit/Delete Review -->
             {% if user.id == review.user.id %}
             <button type="button" class="btn btn-info btn-sm" style="background-color: rgb(8, 0, 129);" data-toggle="modal" data-target="#EditDishReview{{review.id}}">Edit Review</button>
