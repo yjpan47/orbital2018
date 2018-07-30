@@ -37,6 +37,11 @@ class Restaurant(models.Model):
         reviews_list.sort(key = lambda obj: obj.get_average_rating(), reverse = True)
         return reviews_list
 
+    def get_restaurant_reviews(self):
+        reviews_list = list(self.restaurantreview_set.all())
+        reviews_list.sort(key = lambda obj: obj.get_average_rating(), reverse = True)
+        return reviews_list
+
     def number_of_reviews(self):
         return len(self.restaurantreview_set.all())
 
@@ -61,6 +66,12 @@ class Restaurant(models.Model):
         start, end = localtime() - timedelta(seconds = mins), localtime()
         lst = list(filter(lambda obj: start < localtime(obj.created_at) < end, self.restaurantcrowdcondition_set.all()))
         return round(sum(list(map(lambda obj: obj.crowd_condition, lst)))/len(lst), 2) if len(lst) else ""
+
+    def highest_rated_dish(self):
+        dishes_list = list(self.dish_set.all())
+        dishes_list.sort(key = lambda obj: obj.get_average_rating(), reverse = True)
+        print(dishes_list[0])
+        return dishes_list[0]
 
 class OpeningHours(models.Model):
     restaurant = models.OneToOneField(Restaurant, on_delete = models.CASCADE)
@@ -149,6 +160,7 @@ class Dish(models.Model):
     name = models.CharField(max_length = 256)
     dish_profile_pic = models.ImageField(upload_to = 'dish_profile_pics', blank = True)
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
+    price = models.DecimalField(decimal_places=2, max_digits=4)
     information = models.TextField(blank=True)
 
     def __str__(self):
@@ -156,7 +168,7 @@ class Dish(models.Model):
 
     def get_average_rating(self):
         lst = list(map(lambda x: x.rating, (self.dishrating_set.all())))
-        return sum(lst)/len(lst) if lst else 0
+        return round(sum(lst)/len(lst), 1) if lst else 0
 
 class DishRating(models.Model):
     rating = models.PositiveIntegerField(validators = [MinValueValidator(1), MaxValueValidator(5)])

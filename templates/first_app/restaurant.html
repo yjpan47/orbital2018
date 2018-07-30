@@ -115,8 +115,8 @@
             <a href=#> Techno Edge </a>
           </p> -->
           <!-- Restaurant location -->
-          <p> <strong>Rating: </strong>{{  restaurant.get_average_rating  }} <a href="#" class="reviewWord"><em>{{ restaurant.number_of_reviews }} reviews</em> </a></p>
-          <p> <strong> Location: </strong>{{restaurant.location}}</p>
+          <p> <strong>Rating: </strong>{{  restaurant.get_average_rating  }} <em>({{ restaurant.number_of_reviews }} reviews)</em></p>
+          <p> <strong>Location: </strong>{{restaurant.location}}</p>
           <p> <strong>Address:</strong></p> <p>{{restaurant.address}} </p>
           <p> <strong>Information: </strong></p> <p>{{restaurant.information}} </p>
           <!-- Score & number of reviews, to be done -->
@@ -191,12 +191,16 @@
 					<hr>
 			    <div class="row">
 						<div class="col-sm-3">
-              <img src="{% static "images/default-dish-profile.png" %}" style="width:80%;">
+              {% if restaurant.highest_rated_dish.dish_profile_pic.name == "" %}
+                <img src="{% static "images/default-dish-profile.png" %}" style="width:80%;">
+              {% else %}
+                <img src="{{restaurant.highest_rated_dish.dish_profile_pic.url}}" style="width:80%;">
+              {% endif %}
 						</div>
 						<div class="col-sm-9">
-							<h3 class="words" style="line-height: 1.8;"> <strong> Baked Meal </strong> <br> S$2.20</h3>
+							<h3 class="words" style="line-height: 1.8;"> <strong> {{restaurant.highest_rated_dish.name}} </strong> <br> {{restaurant.highest_rated_dish.price}} </h3>
 							<p class="rate"> <img src="{% static "images/Thumbs_up.png" %}" alt="Thumbs up" style="width:3%;float:left;">
-								16 </p>
+								{{restaurant.highest_rated_dish.get_average_rating}} </p>
 						</div>
 					</div>
 					<hr>
@@ -212,7 +216,7 @@
                 </div>
                 <div class="col-sm-6">
                   <p><strong><a href = "{% url "dish" dish.id %}">{{dish.name}}</a></strong></p>
-                  <p> S$3.50 </p>
+                  <p> $ {{dish.price}} </p>
                   <p class="rate"> <img src="{% static "images/Thumbs_up.png" %}" alt="Thumbs up" style="width:15%;float:left;">
     								{{dish.get_average_rating}} </p>
                   <!-- Add Dish Rating -->
@@ -253,12 +257,12 @@
         <!-- Reviews tab -->
 				<div id="reviews" class="tab-pane fade">
           <!-- Sorting, to be done -->
-			    <div class="row">
+			    <!-- <div class="row">
 						<p class="words" style="margin:15px;"> Sort by:
 							<span style="font-weight:bold;margin:15px;"> Highest Rated </span>
 							<a href=#> Recent </a>
 						</p>
-					</div>
+					</div> -->
           <!-- Restaurant Reviews -->
           {% for review in restaurant.get_restaurant_reviews %}
   					<div class="row reviewBox">
