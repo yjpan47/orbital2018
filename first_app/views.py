@@ -11,6 +11,7 @@ from itertools import chain
 # Create your views here.
 
 def index(request):
+    print(request.session.get_expiry_age())
     return render(request, 'first_app/index.html')
 
 def user_signup(request):
@@ -59,7 +60,7 @@ def user_login(request):
 
         if user:
             if remember_me == None:
-                request.session.set_expiry(300)
+                request.session.set_expiry(600)
             login(request, user)
             return render(request, 'first_app/login_success.html')
         else:
@@ -151,7 +152,7 @@ def edit_dish_review(request, pk):
             if request.method == "POST":
                 dish_review.review = request.POST.get("new_dish_review")
                 dish_review.save()
-                return redirect("profile", pk = request.user.id)
+                return HttpResponseRedirect(request.POST.get('next'))
             else:
                 return render(request, "first_app/edit_dish_review.html", {"dish_review": dish_review})
         else:
@@ -165,7 +166,7 @@ def delete_dish_review(request, pk):
         if dish_review in request.user.dishreview_set.all():
             if request.method == "POST":
                 dish_review.delete()
-                return redirect("profile", pk = request.user.id)
+                return HttpResponseRedirect(request.POST.get('next'))
             else:
                 return render(request, "first_app/delete_dish_review.html", {"dish_review": dish_review})
         else:
@@ -301,6 +302,19 @@ def add_dish_review(request, pk):
             return HttpResponseRedirect(request.POST.get('next'))
         else:
             return HttpResponse("You contributed a review already")
+    else:
+        return HttpResponse("Something went wrong")
+
+def add_restaurant_review_rating(request, pk):
+    if (request.method == "POST") and (request.user.is_authenticated):
+        restaurant_review = get_object_or_404(RestaurantReview, id = pk)
+        if request.user not in list(map(lambda obj: obj.user, restaurant_review.restaurantreviewrating_set.all())):
+            restaurant = restaurant_review.restaurant
+            new_restaurant_review_rating = RestaurantReviewRating(rating = int(request.POST.get("restaurant_review_rating")), restaurant_review = restaurant_review, user = request.user)
+            new_restaurant_review_rating.save()
+            return HttpResponseRedirect(request.POST.get('next'))
+        else:
+            return HttpResponse("You already contributed a rating")
     else:
         return HttpResponse("Something went wrong")
 

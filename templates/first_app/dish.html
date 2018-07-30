@@ -160,6 +160,26 @@
             <p class="description"> {{ review.review }} </p>
             <!-- Review Rating -->
             <p class="description"> <strong> Review rating: </strong> {{ review.get_average_rating }} </p>
+
+              <div class="row" style="padding:15px;">
+                {% if user.is_authenticated %}
+                  <p><strong>Rate this review (5 is the highest)</strong>
+                  <form action="{% url "add_dish_review_rating" review.id %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.path }}">
+                    <select name="dish_review_rating">
+                      <option value = 1> 1 </option>
+                      <option value = 2> 2 </option>
+                      <option value = 3> 3 </option>
+                      <option value = 4> 4 </option>
+                      <option value = 5> 5 </option>
+                    </select>
+                    <input type="submit">
+                  </form></p>
+                {% endif %}
+              </div>
+
+
             <!-- Edit/Delete Review -->
             {% if user.id == review.user.id %}
             <button type="button" class="btn btn-info btn-sm" style="background-color: rgb(8, 0, 129);" data-toggle="modal" data-target="#EditDishReview{{review.id}}">Edit Review</button>
