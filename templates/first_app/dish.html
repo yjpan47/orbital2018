@@ -3,82 +3,226 @@
 
 <html lang="en" dir="ltr">
   <head>
+    <title>{{ dish.name }}</title>
     <meta charset="utf-8">
-    <title>Dish</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static "css/dish.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   </head>
   <body>
-    <!-- Dish Name -->
-  <h1><a href = "{% url "dish" dish.id %}">{{ dish.name }}</a></h1>
-    <!-- Restaurant that this dish belongs to -->
-    <p><a href = "{% url "restaurant" dish.restaurant.id %}">{{ dish.restaurant.name }}</a></p>
-    <!-- Dish Profile Picture -->
-    {% if dish.dish_profile_pic.name == "" %}
-      <img src="{% static "images/default-dish-profile.png" %}">
-    {% else %}
-      <img src="{{dish.dish_profile_pic.url}}" style="width:80%;">
-    {% endif %}
-    <!-- Dish Rating -->
-    <p>{{ dish.get_average_rating }}<p>
-    <!-- Dish information -->
-    <p>{{ dish.information }}</p>
 
-    <!-- Add Dish Rating -->
-    {% if user.is_authenticated %}
-      <form action="{% url "add_dish_rating" dish.id %}" method="POST">
-        {% csrf_token %}
-        <input type="hidden" name="next" value="{{ request.path }}">
-        <select name="dish_rating">
-          <option value = 1> 1 </option>
-          <option value = 2> 2 </option>
-          <option value = 3> 3 </option>
-          <option value = 4> 4 </option>
-          <option value = 5> 5 </option>
-        </select>
-        <input type="submit">
-      </form>
-      {% endif %}
+    <div class="container">
+      <div class="row">
+        <!-- MakaNUS logo -->
+				<div class="col-sm-3">
+					<a href="{% url "index" %}" class = "navbar-brand">
+						<img src="{% static "images/logo.png" %}" alt-"MakaNUS logo" width="216" height="60">
+					</a>
+				</div>
+        <!-- Search bar -->
+				<div class="col-sm-6 ">
+					<br>
+					<br>
+					<form action="{% url "search"%}" method="GET">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search by keyword, location, cuisine, etc." name="q">
+              <div class="input-group-btn">
+                <button class="btn btn-default" type="submit">
+                  <i class="glyphicon glyphicon-search"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+				</div>
+        <!-- Show signup/login buttons or user name if signed in -->
+        <div class="col-sm-3" style="padding-top:40px;">
 
-      <!-- Add Dish Review -->
-      {% if user.is_authenticated %}
-        <form action="{% url "add_dish_review" dish.id %}" method="POST">
-          {% csrf_token %}
-          <input type="hidden" name="next" value="{{ request.path }}">
-          <input type="textarea" name="dish_review">
-          <input type="submit">
-        </form>
-        {% endif %}
+          {% if user.is_authenticated %}
 
-    <hr>
+          <div class="dropdown" style="float:right;text-align:right;">
 
-    <!-- Dish Reviews -->
-    {% for review in dish.dishreview_set.all %}
-      <!-- Reviewer's Name -->
-      <p><a href = "{% url "profile" review.user.id %}">{{ review.user.first_name }}</a><p>
-      <p>
-      <!-- Reviewer's Profile Picture -->
-      {% if review.user.userprofile.profile_pic.name == "" %}
-        <img src="{% static "images/default-user-profile.png" %}">
-      {% else %}
-        <img src="{{review.user.userprofile.profile_pic.url}}">
-      {% endif %}
-      </p>
-      <!-- Review -->
-      {{ review.review }}
-      <!-- Review Rating -->
-      {{ review.get_average_rating }}
-      <!-- Edit/Delete Review -->
-      {% if user.id == review.user.id %}
-        <a href="{% url "edit_dish_review" review.id %}">
-        <button type="button" class="btn btn-info btn-sm">Edit Review</button> </a>
-        <a href="{% url "delete_dish_review" review.id %}">
-        <button type="button" class="btn btn-info btn-sm">Delete Review</button> </a>
-      {% endif %}
+            {% if user.userprofile.profile_pic.name == "" %}
+            {% else %}
+              <img src="{{user.userprofile.profile_pic.url}}" style="width:15%;border-radius:50%;">
+            {% endif %}
+            <span style="font-size:16px;text-align:right;"><strong> Welcome, {{user.first_name}}! </strong> <span>
 
+            <!-- Dropdown list -->
+            <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown" style="background-color: rgb(8, 0, 129);">
+            <span class="caret"></span></button>
+            <div class="dropdown-menu dropdown-menu-right">
+              <li><a href="{% url "profile" user.id %}">My Profile</a></li>
+              <li><a href="{% url "logout" %}">Logout</a></li>
+            </div>
 
+          </div>
+
+          {% else %}
+            <a href="{% url "signup" %}">
+            <button type="button" class="btn btn-info pull-right" style="background-color: rgb(8, 0, 129);">Sign Up</button> </a>
+            <a href="{% url "login" %}">
+            <button type="button" class="btn btn-info pull-right" style="background-color: rgb(8, 0, 129);">Login</button> </a>
+          {% endif %}
+
+        </div>
+			</div>
+      <br>
+      <!-- Navigation bar -->
+			<div class="row naviBarBackground" style="margin-bottom:15px;">
+				<a href="{% url "index" %}" class="naviBar"> <span class="glyphicon glyphicon-home"></span> Home</a>
+				<span class="naviBar"> > </span>
+        <a href=# class="naviBar"> Search Results </a>
+        <span class="naviBar"> > </span>
+        <a href="{% url "restaurant" dish.restaurant.id %}" class="naviBar"> {{ dish.restaurant.name }} </a>
+        <span class="naviBar"> > </span>
+				<span class="naviBar"> <strong> {{ dish.name }} </strong></span>
+			</div>
+
+      <!-- Copy up to this point to other pages -->
+
+      <div class="row">
+        <div class="col-sm-3">
+          <!-- Dish Profile Picture -->
+          {% if dish.dish_profile_pic.name == "" %}
+            <img src="{% static "images/default-dish-profile.png" %}" class="img-responsive center-block" style="width:80%;padding:20px;">
+          {% else %}
+            <img src="{{dish.dish_profile_pic.url}}" class="img-responsive center-block" style="width:80%;padding:20px;">
+          {% endif %}
+        </div>
+        <div class="col-sm-9">
+          <h1 style="margin-bottom:20px;">{{ dish.name }} (<a href = "{% url "restaurant" dish.restaurant.id %}">{{ dish.restaurant.name }}</a>)</h1>
+          <p class="description"> <strong> Rating: </strong> {{ dish.get_average_rating }} </p>
+          {% if user.is_authenticated %}
+            <form action="{% url "add_dish_rating" dish.id %}" method="POST">
+              {% csrf_token %}
+              <input type="hidden" name="next" value="{{ request.path }}">
+              <select name="dish_rating">
+                <option value = 1> 1 </option>
+                <option value = 2> 2 </option>
+                <option value = 3> 3 </option>
+                <option value = 4> 4 </option>
+                <option value = 5> 5 </option>
+              </select>
+              <button type="submit" id="submit" class="btn btn-default btn-xs formButton" style="margin:10px;background-color:rgb(8, 0, 129);color:rgb(255, 255, 255);">Rate</button>
+            </form>
+          {% endif %}
+          <p class="description"> <strong> Description: </strong> {{ dish.information }} </p>
+          {% if user.is_authenticated %}
+            <button type="button" class="btn btn-info btn-lg" style="background-color: rgb(90, 123, 255);margin:15px 0px;border:0px;" data-toggle="modal" data-target="#WriteReview">Review Dish</button>
+          {% endif %}
+        </div>
+
+        <!-- Review Modal -->
+        <div class="modal fade" id="WriteReview" role="dialog">
+          <div class="modal-dialog">
+
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title title">Review {{ dish.name }}</h4>
+              </div>
+              <div class="modal-body">
+                <form action="{% url "add_dish_review" dish.id %}" method="post">
+                {% csrf_token %}
+                  <input type="hidden" name="next" value="{{ request.path }}">
+                  <textarea rows="5" style="margin:15px;width:90%;" name="dish_review"></textarea>
+                  <button type="submit" id="submit" class="btn btn-default formButton" style="margin-left:20px;background-color:rgb(8, 0, 129);color:rgb(255, 255, 255);">Submit Review</button>
+                </form>
+                <br>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
       <hr>
-    {% endfor %}
 
+      <!-- Dish Reviews -->
+      <h2 style="margin-bottom:30px;"> Reviews </h2>
+      {% for review in dish.dishreview_set.all %}
+        <div class="row">
+          <div class="col-sm-3">
+            <!-- Reviewer's Profile Picture -->
+            {% if review.user.userprofile.profile_pic.name == "" %}
+              <img src="{% static "images/default-user-profile.png" %}" style="width:90%;margin:15px;">
+            {% else %}
+              <img src="{{review.user.userprofile.profile_pic.url}}" style="width:90%;margin:15px;">
+            {% endif %}
+          </div>
+          <div class="col-sm-9">
+            <!-- Reviewer's Name -->
+            <p class="description"><a href = "{% url "profile" review.user.id %}">{{ review.user.first_name }}</a><p>
+            <!-- Review -->
+            <p class="description"> {{ review.review }} </p>
+            <!-- Review Rating -->
+            <p class="description"> <strong> Review rating: </strong> {{ review.get_average_rating }} </p>
+            <!-- Edit/Delete Review -->
+            {% if user.id == review.user.id %}
+            <button type="button" class="btn btn-info btn-sm" style="background-color: rgb(8, 0, 129);" data-toggle="modal" data-target="#EditDishReview{{review.id}}">Edit Review</button>
+            <button type="button" class="btn btn-info btn-sm" style="background-color: rgb(8, 0, 129);" data-toggle="modal" data-target="#DeleteDishReview{{review.id}}">Delete Review</button>
+            {% endif %}
+          </div>
+        </div>
+        <hr>
+
+        <!-- Edit Review Modal -->
+        <div class="modal fade" id="EditDishReview{{review.id}}" role="dialog">
+          <div class="modal-dialog">
+
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title title">Edit Dish Review</h4>
+              </div>
+              <div class="modal-body">
+                <form action = "{% url "edit_dish_review" review.id %}"method="POST">
+                  {% csrf_token %}
+                  <textarea rows="7" cols="50" style="margin:15px;" name="new_dish_review">{{review.review}}</textarea> <br>
+                  <input type="submit">
+                </form>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Delete Review Modal -->
+        <div class="modal fade" id="DeleteDishReview{{review.id}}" role="dialog">
+          <div class="modal-dialog">
+
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title title">Delete Dish Review</h4>
+              </div>
+              <div class="modal-body">
+                <form action = "{% url "delete_dish_review" review.id %}"method="POST">
+                  {% csrf_token %}
+                  <label>Are you sure you want to delete this review?</label> <br>
+                  <input type="submit" >
+                </form>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      {% endfor %}
+
+      <!-- Page footer -->
+      <br>
+
+      <div>
+        <div class="row naviBarBackground">
+          <span style="font-size:16px;padding:10px;color:RGB(8,0,129);">Line Break</span>
+        </div>
+        <img src="{% static "images/logo.png" %}" alt="MakaNUS logo" class="img-responsive center-block" style="width:144px; height:55px; padding:10px;">
+        <p style="text-align:center;"> © 2018 MakaNUS, all rights reserved. </p>
+      </div>
 
 
   </body>
-</html>
+<html>
