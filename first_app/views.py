@@ -6,6 +6,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator
+from itertools import chain
 
 # Create your views here.
 
@@ -310,10 +311,11 @@ def search(request):
         location_filter = request.GET.get('location')
         page = request.GET.get('page', 1)
         query = request.GET.get("q")
-        names = list(Restaurant.objects.filter(name__icontains = query).order_by("name"))
-        locations = list(Restaurant.objects.filter(location__location_name__icontains = query).order_by("name"))
-        informations = list(Restaurant.objects.filter(information__icontains = query).order_by("name"))
-        restaurants = names + locations + informations
+        names = Restaurant.objects.filter(name__icontains = query).order_by("name")
+        locations = Restaurant.objects.filter(location__location_name__icontains = query).order_by("name")
+        informations = Restaurant.objects.filter(information__icontains = query).order_by("name")
+        restaurants = names | locations | informations
+        restaurants = list(restaurants)
 
         if sort_by == "names":
             restaurants.sort(key = lambda obj: obj.name, reverse = True)

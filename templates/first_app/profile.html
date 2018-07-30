@@ -105,7 +105,7 @@
 
           <!-- If user is the owner of the profile, profile can be edited. -->
           {% if user.id == profile_user.id %}
-            <button type="button" class="btn btn-info btn-sm" style="background-color:rgb(8, 0, 129);margin-top:10px;" disabled><a href = "{% url "edit_profile" user.id %}">Edit Profile</a></button>
+            <button type="button" class="btn btn-info btn-sm" style="background-color:rgb(8, 0, 129);margin-top:10px;"><a href = "{% url "edit_profile" user.id %}">Edit Profile</a></button>
           {% endif %}
 
         </div>
