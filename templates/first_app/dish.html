@@ -63,15 +63,17 @@
       {% endif %}
       </p>
       <!-- Review -->
-      {{ review.review }}
+      <p>{{ review.review }}</p>
       <!-- Review Rating -->
-      {{ review.get_average_rating }}
+      <p>{{ review.get_average_rating }}</p>
       <!-- Edit/Delete Review -->
+      <p>
       {% if user.id == review.user.id %}
         <a href="{% url "edit_dish_review" review.id %}">
         <button type="button" class="btn btn-info btn-sm">Edit Review</button> </a>
         <a href="{% url "delete_dish_review" review.id %}">
         <button type="button" class="btn btn-info btn-sm">Delete Review</button> </a>
+      </p>
       {% endif %}
 
 
