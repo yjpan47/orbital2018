@@ -1,4 +1,4 @@
-## (Orbital Milestone 3
+## Orbital Milestone 3
 - Group: Team GGEZ
 - Members: PAN YONGJING, YOON KI HYUN
 - Level of Achievement: Apollo 11
@@ -46,7 +46,7 @@ MakaNUS is an food information and review website that contains information abou
 - Estimated Waiting Time is computed by the average of all users' inputs for the past 30 minutes from current time.
 - Crowd condition also takes into consideration the average of users' inputs for the past 30 minutes from current time.
 
-### View Website
+### View Website (via localhost)
 
 - Clone repository
 - Install Python 3.6 (make sure to add python to PATH)
@@ -57,8 +57,8 @@ MakaNUS is an food information and review website that contains information abou
 
 ### Website Deployment
 
-- We are planning on deploying our website using pythonanywhere.com web hosting service. However, we just into some last minute issues with the web hosting site. We will fix it ASAP.
-- Nonetheless, the domain site is masterggez.pythonanywhere.com
+- We are planning on deploying our website using pythonanywhere.com web hosting service. However, we ran into some last minute issues with the web hosting site. We will fix it ASAP.
+- Nonetheless, the domain site is masterggez.pythonanywhere.com in the event we solve the issue.
 
 ### Plans after Milestone 3
 
