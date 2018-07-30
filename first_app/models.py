@@ -84,7 +84,8 @@ class Restaurant(models.Model):
     def highest_rated_dish(self):
         dishes_list = list(self.dish_set.all())
         dishes_list.sort(key = lambda obj: obj.get_average_rating(), reverse = True)
-        return dishes_list[0]
+        if dishes_list:
+            return dishes_list[0]
 
     def get_opening_hours_today(self):
         if localtime().weekday() == 0:

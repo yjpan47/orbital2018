@@ -116,8 +116,9 @@
             <a href=#> Techno Edge </a>
           </p> -->
           <!-- Restaurant location -->
-          <p><strong>Rating: </strong>{{restaurant.get_average_rating}}   <em>({{restaurant.number_of_reviews}} reviews)</em>
-            <form action="{% url "add_restaurant_rating" restaurant.id %}" method="post">
+          <p><strong>Rating: </strong>{{restaurant.get_average_rating}}   <em>({{restaurant.number_of_reviews}} reviews)</em></p>
+            {% if user.is_authenticated %}
+            <p><form action="{% url "add_restaurant_rating" restaurant.id %}" method="post">
               {% csrf_token %}
               <select name="restaurant_rating">
                 <option value = 1> 1 </option>
@@ -128,6 +129,7 @@
               </select>
               <button type="submit" id="submit" class="btn btn-default btn-xs formButton" style="margin-right:20px;background-color:rgb(8, 0, 129);color:rgb(255, 255, 255);">Rate</button>
             </form></p>
+            {% endif %}
           <p><strong> Location: </strong>{{restaurant.location}}</p>
           <p><strong>Address:</strong></p> <p>{{restaurant.address}} </p>
           <p><strong>Information: </strong></p> <p>{{restaurant.information}} </p>
@@ -240,25 +242,28 @@
           <!-- To be done -->
 			    <h3 class="words"><strong>Most Popular</strong></h3>
 					<hr>
-			    <div class="row">
-						<!-- <div class="col-sm-3">
-              {% if restaurant.highest_rated_dish.dish_profile_pic.name == "" %}
-                <img src="{% static "images/default-dish-profile.png" %}" style="width:80%;">
-              {% else %}
-                <img src="{{restaurant.highest_rated_dish.dish_profile_pic.url}}" style="width:80%;">
+  			    <div class="row">
+              {% if restaurant.highest_rated_dish %}
+    						<div class="col-sm-3">
+                  {% if restaurant.highest_rated_dish.dish_profile_pic.name == "" %}
+                    <img src="{% static "images/default-dish-profile.png" %}" style="width:80%;">
+                  {% else %}
+                    <img src="{{restaurant.highest_rated_dish.dish_profile_pic.url}}" style="width:80%;">
+                  {% endif %}
+    						</div>
+    						<div class="col-sm-3">
+    							<h3 class="words" style="line-height: 1.8;"> <strong><a href="{% url "dish" restaurant.highest_rated_dish.id %}"> {{restaurant.highest_rated_dish.name}} </a></strong> <br> {{restaurant.highest_rated_dish.price}} </h3>
+    							<p class="rate"> <img src="{% static "images/Thumbs_up.png" %}" alt="Thumbs up" style="width:10%;float:left;">
+    								{{restaurant.highest_rated_dish.get_average_rating}} </p>
+    						</div>
               {% endif %}
-						</div>
-						<div class="col-sm-3">
-							<h3 class="words" style="line-height: 1.8;"> <strong><a href="{% url "dish" restaurant.highest_rated_dish.id %}"> {{restaurant.highest_rated_dish.name}} </a></strong> <br> {{restaurant.highest_rated_dish.price}} </h3>
-							<p class="rate"> <img src="{% static "images/Thumbs_up.png" %}" alt="Thumbs up" style="width:10%;float:left;">
-								{{restaurant.highest_rated_dish.get_average_rating}} </p>
-						</div> -->
-            <div class="col-sm-6">
-              <p> Is the menu you are looking for missing?
-                <a href="{% url "add_dish" restaurant.id %}">
-                <button type="button" class="btn btn-info btn-lg" style="background-color: rgb(90, 123, 255);margin:15px;border:0px;">Add to Menu</button></a></p>
-            </div>
-					</div>
+              <div class="col-sm-6">
+                <p> Is the menu you are looking for missing?
+                  <a href="{% url "add_dish" restaurant.id %}">
+                  <button type="button" class="btn btn-info btn-lg" style="background-color: rgb(90, 123, 255);margin:15px;border:0px;">Add to Menu</button></a></p>
+              </div>
+  					</div>
+
 					<hr>
           <div class="row">
             {% for dish in restaurant.get_verified_dishes %}
