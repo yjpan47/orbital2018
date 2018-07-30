@@ -31,6 +31,7 @@ urlpatterns = [
     path('dish_edit_review/<int:pk>', views.edit_dish_review, name = "edit_dish_review"),
     path('dish_delete_review/<int:pk>', views.delete_dish_review, name = "delete_dish_review"),
     path('delete_restaurant_photo/<int:pk>', views.delete_restaurant_photo, name = "delete_restaurant_photo"),
+    path('add_restaurant_photo/<int:pk>', views.add_restaurant_photo, name = "add_restaurant_photo"),
     path('restaurant/<int:pk>', views.restaurant_page, name = "restaurant"),
     path('restaurant_add_rating/<int:pk>', views.add_restaurant_rating, name = "add_restaurant_rating"),
     path('restaurant_add_review/<int:pk>', views.add_restaurant_review, name = "add_restaurant_review"),

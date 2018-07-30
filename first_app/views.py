@@ -148,6 +148,16 @@ def delete_restaurant_photo(request, pk):
     else:
             return HttpResponse("FAILED")
 
+def add_restaurant_photo(request, pk):
+    if (request.method == "POST") and (request.user.is_authenticated):
+        restaurant = get_object_or_404(Restaurant, id = pk)
+        photo = request.FILES.get("restaurant_photo")
+        restaurant_photo = RestaurantPhoto(photo = photo, restaurant = restaurant, user = request.user)
+        restaurant_photo.save()
+        return redirect("restaurant", pk = restaurant.id)
+    else:
+        return HttpResponse("FAILED")
+
 def restaurant_page(request, pk):
     restaurant = get_object_or_404(Restaurant, id = pk)
     return render(request, "first_app/restaurant.html", {"restaurant": restaurant})

@@ -109,28 +109,31 @@
         </div>
         <div class="col-sm-7">
           <!-- Category, to be done -->
-          <p> <strong>Category:</strong>
+          <!-- <p> <strong>Category:</strong>
             <a href=#> Western </a>
             <a href=#> Canteen </a>
             <a href=#> Techno Edge </a>
-          </p>
+          </p> -->
           <!-- Restaurant location -->
+          <p> <strong>Rating: </strong>{{  restaurant.get_average_rating  }} <a href="#" class="reviewWord"><em>{{ restaurant.number_of_reviews }} reviews</em> </a></p>
           <p> <strong> Location: </strong>{{restaurant.location}}</p>
+          <p> <strong>Address:</strong></p> <p>{{restaurant.address}} </p>
+          <p> <strong>Information: </strong></p> <p>{{restaurant.information}} </p>
           <!-- Score & number of reviews, to be done -->
-          <p> <strong>Rating: </strong>{{  restaurant.get_average_rating  }} <a href="#" class="reviewWord"><strong>{{ restaurant.number_of_reviews }} Reviews </strong></a> </p>
+
           <!-- When authenticated, review and upload photo form -->
           <div class="row">
             {% if user.is_authenticated %}
               <button type="button" class="btn btn-info btn-lg" style="background-color: rgb(90, 123, 255);margin:15px;border:0px;" data-toggle="modal" data-target="#RateReview">Rate & Review</button>
-              <button type="button" class="btn btn-info btn-lg" style="background-color: rgb(214, 165, 25);margin:15px;border:0px;" data-toggle="modal" data-target="#PhotoUpload" disabled>Upload a photo</button>
-            {% endif %}
+              <button type="button" class="btn btn-info btn-lg" style="background-color: rgb(214, 165, 25);margin:15px;border:0px;" data-toggle="modal" data-target="#PhotoUpload">Upload a Photo</button>
+              {% endif %}
           </div>
         </div>
         <!--Waiting time & crowd condition -->
         <div class="col-sm-2">
           <img src="{% static "images/clock.png" %}" alt="clock" class="img-responsive center-block" width="60%">
           <p class="time" style="text-align:center;"> Estimated waiting time: {{ restaurant.get_waiting_time }} </p>
-          <p class="time" style="text-align:center;"> {{ restaurant.get_crowd_condition }} </p>
+          <p class="time" style="text-align:center;"> Crowd Condition:{{ restaurant.get_crowd_condition }} </p>
         </div>
       </div>
       <hr>
@@ -176,10 +179,10 @@
             <li><span style="font-size:16px;line-height:30px;">Sunday: {{restaurant.openinghours.sunday_from}} to {{restaurant.openinghours.sunday_to}}</span></li>
           </ul>
           <!-- To be done -->
-		      <p> <strong>Price:</strong> ~S$4 per pax </p>
+		      <!-- <p> <strong>Price:</strong> ~S$4 per pax </p>
 		      <p> <strong>Method of Payment:</strong> Cash, PayLah </p>
 		      <p> <strong>Address:</strong> {{restaurant.address}} </p>
-		      <p> <strong>Closed on:</strong> Sundays, public holidays </p>
+		      <p> <strong>Closed on:</strong> Sundays, public holidays </p> -->
 			  </div>
         <!-- Menu tab -->
 			  <div id="menu" class="tab-pane fade">
@@ -238,6 +241,14 @@
 			  <div id="photos" class="tab-pane fade">
           <h3 class="words"><strong>Uploaded Photos</strong></h3>
 					<hr>
+          {% for restaurant_photo in restaurant.restaurantphoto_set.all %}
+            <p><img src="{{restaurant_photo.photo.url}}"></p>
+            <!-- Delete photo -->
+            {% if user.id == restaurant_photo.user.id %}
+              <p><a href="{% url "delete_restaurant_photo" restaurant_photo.id %}">Delete</a></p>
+            {% endif %}
+          <hr>
+          {% endfor %}
 			  </div>
         <!-- Reviews tab -->
 				<div id="reviews" class="tab-pane fade">
@@ -259,18 +270,22 @@
                   <img src="{{review.user.userprofile.profile_pic.url}}" style="margin:10px;width:100%;">
                 {% endif %}
   							<a href=# style="font-size:18px;"> {{review.user.first_name}} </a>
-  							<p style="font-size:12px;"><i> Certified reviewer </i></p>
+  							<!-- <p style="font-size:12px;"><i> Certified reviewer </i></p> -->
   						</div>
 
   						<div class="col-sm-10 words">
                 <!-- Review title & Score given & Number of endorsement, to be done -->
   							<div class="row">
-  								<p style="text-indent:20px;"> <strong> Great food at great price! </strong> {{review.get_average_rating}}
-  									<span style="font-size:12px;text-decoration:underline;"> 17 users have endorsed this review </span>
+  								<!-- <p style="text-indent:20px;"> <strong> Great food at great price! </strong> {{review.get_average_rating}} -->
+  									<!-- <span style="font-size:12px;text-decoration:underline;"> 17 users have endorsed this review </span> -->
   								</p>
   							</div>
                 <!-- Review -->
   							<p> {{review.review}} </p>
+                <hr>
+                <!-- Review Rating -->
+                <p><em>This review is rated <strong>{{review.get_average_rating}} / 5.0</strong></em> </p>
+
                 <!-- Date & Time of posting -->
   							<p style="color:grey;font-size:12px;"> {{review.get_time}} </p>
                 <!-- Give Review Rating -->
@@ -303,6 +318,25 @@
 
 			  </div>
 			</div>
+
+      <div class="modal fade" id="PhotoUpload" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title title">Upload a Photo</h4>
+            </div>
+            <div class="modal-body">
+              <form action="{% url "add_restaurant_photo" restaurant.id %}" method="POST">
+                {% csrf_token %}
+                <p><input type="file" name="pic" accept="image/*"></p>
+                <p><input type="submit" value="Submit"></p>
+              </form>
+            </div>
+          </div>
+
+        </div>
+      </div>
 
       <!-- Review Modal -->
       <div class="modal fade" id="RateReview" role="dialog">
