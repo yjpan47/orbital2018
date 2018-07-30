@@ -43,11 +43,11 @@ MakaNUS is an food information and review website that contains information abou
 ### Estimated Waiting Time and Crowd Condition
 
 - Users who are present at food places can provide real-time updates about the estimated waiting time and crowd condition at that particular location. This could help deter people from going to a extremely packed food place, and potentially prevent overcrowding, especially during peak periods.
-- Estimated Waiting Time
+- Estimated Waiting Time is computed by the average of all users' inputs for the past 30 minutes from current time.
+- Crowd condition also takes into consideration the average of users' inputs for the past 30 minutes from current time.
 
+## Plans after Milestone 3
 
-### Search Feature
-
-
-
-## Final Reflection
+- Importing of all (if not most) NUS food places into our database
+- Improving UI for some error pages
+- Improving UI of some input forms
