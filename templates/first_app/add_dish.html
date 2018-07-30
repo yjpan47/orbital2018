@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Add to Menu</title>
+  </head>
+  <body>
+    <h1>Add to Menu</h1>
+    <hr>
+    <form action="{% url "add_dish" restaurant.id %}" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <p><label>Name of Dish</label>
+      <p><input type="text" name="name" required></p>
+      <p><label>Price</label><p>
+      <p>$ <input type="number" min="0.00" max="20.00" step="0.05" name="price"></p>
+      <p><label>Information</label><p>
+      <p><input type="textarea" name="information"></p>
+      <p><label>Picture</label><p>
+      <p><input type="file" name="picture"></p>
+      <p><input type="submit" value="Submit"></p>
+    </form>
+
+
+  </body>
+</html>

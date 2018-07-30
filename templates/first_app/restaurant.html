@@ -256,7 +256,7 @@
 					</div>
 					<hr>
           <div class="row">
-            {% for dish in restaurant.dish_set.all %}
+            {% for dish in restaurant.get_verified_dishes %}
               <div class="col-sm-4" style="padding:15px;">
                 <div class="col-sm-6">
                   {% if dish.dish_profile_pic.name == "" %}
@@ -291,6 +291,7 @@
               </div>
             {% endfor %}
           </div>
+          <a href="{% url "add_dish" restaurant.id %}"><button type="button" name="button">Add to Menu</button><a>
 			  </div>
         <!-- Photos tab, to be done -->
 			  <div id="photos" class="tab-pane fade">

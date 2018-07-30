@@ -112,6 +112,12 @@ class Restaurant(models.Model):
         else:
             return False
 
+    def get_verified_dishes(self):
+        dishes = list(self.dish_set.all())
+        dishes = list(filter(lambda obj: obj.verified == True, dishes))
+        print(dishes[-1].verified)
+        return dishes
+
 class OpeningHours(models.Model):
     restaurant = models.OneToOneField(Restaurant, on_delete = models.CASCADE)
     monday_from = models.TimeField()
@@ -201,6 +207,7 @@ class Dish(models.Model):
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
     price = models.DecimalField(decimal_places=2, max_digits=4)
     information = models.TextField(blank=True)
+    verified = models.BooleanField(default = True)
 
     def __str__(self):
             return self.name

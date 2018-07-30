@@ -278,7 +278,6 @@ def add_dish_review_rating(request, pk):
 
 def dish_page(request, pk):
     dish = get_object_or_404(Dish, id = pk)
-    print("Test", dish)
     return render(request, "first_app/dish.html", {"dish": dish})
 
 def add_dish_rating(request, pk):
@@ -302,6 +301,25 @@ def add_dish_review(request, pk):
             return HttpResponseRedirect(request.POST.get('next'))
         else:
             return HttpResponse("You contributed a review already")
+    else:
+        return HttpResponse("Something went wrong")
+
+def add_dish(request, pk):
+    if (request.user.is_authenticated):
+        restaurant = get_object_or_404(Restaurant, id = pk)
+        if (request.method == "POST"):
+            name = request.POST.get("name")
+            price = request.POST.get("price")
+            print(name)
+            print(price)
+            information = request.POST.get("information")
+            picture = request.FILES.get("picture")
+            new_dish = Dish(name = name, dish_profile_pic = picture, restaurant = restaurant, price = price, information = information)
+            new_dish.verified = False
+            new_dish.save()
+        else:
+            return render(request, "first_app/add_dish.html", {"restaurant": restaurant})
+        return redirect("restaurant", pk = pk)
     else:
         return HttpResponse("Something went wrong")
 
