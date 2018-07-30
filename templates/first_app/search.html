@@ -189,18 +189,18 @@
   					<div class="resultBox">
   						<div class="col-sm-3">
                 {% if restaurant.restaurant_profile_pic.name == "" %}
-                  <img src="{% static "images/default-restaurant-profile.png" %}" class="img-responsive">
+                  <img src="{% static "images/default-restaurant-profile.png" %}" width="100%" class="img-responsive">
                 {% else %}
-                  <img src="{{restaurant.restaurant_profile_pic.url}}">
+                  <img src="{{restaurant.restaurant_profile_pic.url}}" width="100%">
                 {% endif %}
-                <p class="words" style="text-align:center;padding:15px;font-size:18px;"><strong>Rating: {{  restaurant.get_average_rating  }}</strong></p>
+                <p class="words" style="text-align:center;padding:15px 0px 0px;font-size:18px;"><strong>Rating: {{  restaurant.get_average_rating  }}</strong></p>
   						</div>
   						<div class="col-sm-9">
   							<a href="{% url "restaurant" restaurant.id %}" class="words restaurantName">{{restaurant.name}}</a>
                 {% if restaurant.is_open %}
-                  <img src="{% static "images/open.png" %}" alt="open" class="topRight img-responsive" style="width:10%;">
+                  <img src="{% static "images/open.png" %}" alt="open" class="topRight img-responsive" style="width:15%;">
                 {% else %}
-                  <img src="{% static "images/close.png" %}" alt="close" class="topRight img-responsive" style="width:10%;">
+                  <img src="{% static "images/close.png" %}" alt="close" class="topRight img-responsive" style="width:15%;">
                 {% endif %}
                 <p class="words"> {{restaurant.location}} </p>
                 <!-- Number of reviews -->
