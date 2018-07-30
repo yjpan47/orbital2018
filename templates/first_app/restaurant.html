@@ -31,7 +31,7 @@
 					<br>
 					<form action="{% url "search"%}" method="GET">
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="Search by keyword, location, genre, etc." name="q">
+              <input type="text" class="form-control" placeholder="Search by keyword, location, cuisine, etc." name="q">
               <div class="input-group-btn">
                 <button class="btn btn-default" type="submit">
                   <i class="glyphicon glyphicon-search"></i>
@@ -72,10 +72,7 @@
 
         </div>
 			</div>
-
       <br>
-
-
       <!-- Navigation bar -->
 			<div class="row naviBarBackground" style="margin-bottom:15px;">
 				<a href="{% url "index" %}" class="naviBar"> <span class="glyphicon glyphicon-home"></span> Home</a>
@@ -115,25 +112,70 @@
             <a href=#> Techno Edge </a>
           </p> -->
           <!-- Restaurant location -->
-          <p> <strong>Rating: </strong>{{  restaurant.get_average_rating  }} <a href="#" class="reviewWord"><em>{{ restaurant.number_of_reviews }} reviews</em> </a></p>
-          <p> <strong> Location: </strong>{{restaurant.location}}</p>
-          <p> <strong>Address:</strong></p> <p>{{restaurant.address}} </p>
-          <p> <strong>Information: </strong></p> <p>{{restaurant.information}} </p>
+          <p><strong>Rating: </strong>{{  restaurant.get_average_rating  }} <a href="#" class="reviewWord"><em>{{ restaurant.number_of_reviews }} reviews</em> </a>
+            <form action="{% url "add_restaurant_rating" restaurant.id %}" method="post">
+              {% csrf_token %}
+              <select name="restaurant_rating">
+                <option value = 1> 1 </option>
+                <option value = 2> 2 </option>
+                <option value = 3> 3 </option>
+                <option value = 4> 4 </option>
+                <option value = 5> 5 </option>
+              </select>
+              <button type="submit" id="submit" class="btn btn-default btn-xs formButton" style="margin-right:20px;background-color:rgb(8, 0, 129);color:rgb(255, 255, 255);">Rate</button>
+            </form></p>
+          <p><strong> Location: </strong>{{restaurant.location}}</p>
+          <p><strong>Address:</strong></p> <p>{{restaurant.address}} </p>
+          <p><strong>Information: </strong></p> <p>{{restaurant.information}} </p>
           <!-- Score & number of reviews, to be done -->
 
           <!-- When authenticated, review and upload photo form -->
           <div class="row">
             {% if user.is_authenticated %}
-              <button type="button" class="btn btn-info btn-lg" style="background-color: rgb(90, 123, 255);margin:15px;border:0px;" data-toggle="modal" data-target="#RateReview">Rate & Review</button>
+              <button type="button" class="btn btn-info btn-lg" style="background-color: rgb(90, 123, 255);margin:15px;border:0px;" data-toggle="modal" data-target="#WriteReview">Review</button>
               <button type="button" class="btn btn-info btn-lg" style="background-color: rgb(214, 165, 25);margin:15px;border:0px;" data-toggle="modal" data-target="#PhotoUpload">Upload a Photo</button>
               {% endif %}
           </div>
         </div>
         <!--Waiting time & crowd condition -->
-        <div class="col-sm-2">
-          <img src="{% static "images/clock.png" %}" alt="clock" class="img-responsive center-block" width="60%">
-          <p class="time" style="text-align:center;"> Estimated waiting time: {{ restaurant.get_waiting_time }} </p>
-          <p class="time" style="text-align:center;"> Crowd Condition:{{ restaurant.get_crowd_condition }} </p>
+        <div class="col-sm-2" style="border:1px solid;border-radius:5px;padding:15px;">
+          <img src="{% static "images/clock.png" %}" alt="clock" class="img-responsive center-block" width="40%">
+          <p class="time" style="margin-top:15px;font-size:14px;text-align:center;"> Estimated waiting time: {{ restaurant.get_waiting_time }} </p>
+          <form id="sliderForm" action="{% url "add_waiting_time" restaurant.id %}" method="POST">
+            {% csrf_token %}
+            <div class="slidecontainer">
+              <input type="range" class="slider" id="waiting_time" name="waiting_time" min="0" max="15" value="0">
+            </div>
+            <p style="font-size:14px;margin:5px;">Minutes: <span id="currentValue"></span></p>
+            <button type="submit" id="submit" class="btn btn-default btn-xs formButton" style="background-color:rgb(8, 0, 129);color:rgb(255, 255, 255);">Submit waiting time</button>
+          </form>
+
+          <!-- javascript for displaying the value of range form -->
+          <script>
+            var oForm;
+            oForm = document.getElementById("sliderForm");
+            var slider = oForm.elements['waiting_time'];
+            var output = document.getElementById("currentValue");
+
+            output.innerHTML = slider.value;
+
+            slider.oninput = function() {
+              output.innerHTML = this.value;
+            }
+          </script>
+
+          <hr>
+
+          <p class="time" style="margin-top:15px;font-size:16px;text-align:center;"> Crowd Condition:{{ restaurant.get_crowd_condition }} </p>
+          <form action="{% url "add_crowd_condition" restaurant.id %}" method="POST">
+            {% csrf_token %}
+            <select name="crowd_condition">
+              <option value = 1> Not busy </option>
+              <option value = 2> Fairly busy </option>
+              <option value = 3> Busy </option>
+            </select>
+            <button type="submit" id="submit" class="btn btn-default btn-xs formButton" style="margin:5px;background-color:rgb(8, 0, 129);color:rgb(255, 255, 255);">Submit</button>
+          </form>
         </div>
       </div>
       <hr>
@@ -339,93 +381,21 @@
       </div>
 
       <!-- Review Modal -->
-      <div class="modal fade" id="RateReview" role="dialog">
+      <div class="modal fade" id="WriteReview" role="dialog">
         <div class="modal-dialog">
 
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title title">Rate & Review</h4>
+              <h4 class="modal-title title">Review</h4>
             </div>
             <div class="modal-body">
-              <form action=# method="post">
-                <div class="form-group row" style="margin-left:20px;">
-                  <label for="restaurantRate">Rate: </label>
-                  <select id="restaurantRate" name="restaurant_rating">
-                    <option value = 1> 1 </option>
-                    <option value = 2> 2 </option>
-                    <option value = 3> 3 </option>
-                    <option value = 4> 4 </option>
-                    <option value = 5> 5 </option>
-                  </select>
-                </div>
-                <div class="form-group row" style="margin-left:20px;">
-                  <p style="font-size:14px;color:black;"><strong> Review: </strong><textarea rows="5" style="margin:15px;width:90%;" name="restaurant_review"></textarea></p>
-                </div>
-                <div class="form-group row" style="margin-left:15px;">
-                  <div class="col-sm-6">
-                    <label for="waitingTime">Estimated waiting time: </label>
-                    <input type="range" id="waitingTime" name="waiting_time" min="0" max="15">
-                  </div>
-                  <div class="col-sm-6">
-                    <label for="crowdCondition"> Crowd condition: </label>
-                    <select id="crowdCondition" name="crowd_condition">
-                      <option value = 1> Not crowded </option>
-                      <option value = 2> Fairly busy </option>
-                      <option value = 3> Very busy </option>
-                    </select>
-                  </div>
-                </div>
-                <div class="row"  style="margin-left:20px;">
-                  <button type="submit" id="submit" class="btn btn-default formButton pull-right" style="margin-right:20px;background-color:rgb(8, 0, 129);color:rgb(255, 255, 255);">Submit</button>
-                </div>
-              </form>
-
-              <!--
-              <form action="{% url "add_restaurant_rating" restaurant.id %}" method="post">
-                {% csrf_token %}
-                <select name="restaurant_rating">
-                  <option value = 1> 1 </option>
-                  <option value = 2> 2 </option>
-                  <option value = 3> 3 </option>
-                  <option value = 4> 4 </option>
-                  <option value = 5> 5 </option>
-                </select>
-                <input type="submit">
-              </form>
-
-              <h4 class="modal-title title">Contribute Review</h4>
               <form action="{% url "add_restaurant_review" restaurant.id %}" method="post">
               {% csrf_token %}
-                <input type="textarea" name="restaurant_review">
-                <input type="submit">
+                <textarea rows="5" style="margin:15px;width:90%;" name="restaurant_review"></textarea>
+                <button type="submit" id="submit" class="btn btn-default formButto" style="margin-left:20px;background-color:rgb(8, 0, 129);color:rgb(255, 255, 255);">Submit Review</button>
               </form>
-
-              <h4 class="modal-title title">Contribute to Estimated Waiting Time</h4>
-              <form action="{% url "add_waiting_time" restaurant.id %}" method="POST">
-                {% csrf_token %}
-                <select name="waiting_time">
-                  <option value = 1> 1 minute </option>
-                  <option value = 2> 2 minute </option>
-                  <option value = 3> 3 minute </option>
-                  <option value = 4> 4 minute </option>
-                  <option value = 5> 5 minute </option>
-                </select>
-                <input type="submit">
-              </form>
-
-              <h4 class="modal-title title">Contribute to Crowd Condition</h4>
-              <form action="{% url "add_crowd_condition" restaurant.id %}" method="POST">
-                {% csrf_token %}
-                <select name="crowd_condition">
-                  <option value = 1> 1 minute </option>
-                  <option value = 2> 2 minute </option>
-                  <option value = 3> 3 minute </option>
-                  <option value = 4> 4 minute </option>
-                  <option value = 5> 5 minute </option>
-                </select>
-                <input type="submit">
-              </form> -->
+              <br
             </div>
           </div>
 
