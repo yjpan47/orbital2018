@@ -37,6 +37,16 @@ class Restaurant(models.Model):
         reviews_list.sort(key = lambda obj: obj.get_average_rating(), reverse = True)
         return reviews_list
 
+    def get_restaurant_reviews_most_recent(self):
+        reviews_list = list(self.restaurantreview_set.all())
+        reviews_list.sort(key = lambda obj: obj.created_at, reverse = True)
+        return reviews_list
+
+    def get_restaurant_photos(self):
+        photos_list = list(self.restaurantphoto_set.all())
+        photos_list.sort(key = lambda obj: obj.created_at, reverse = True)
+        return photos_list
+
     def get_restaurant_reviews(self):
         reviews_list = list(self.restaurantreview_set.all())
         reviews_list.sort(key = lambda obj: obj.get_average_rating(), reverse = True)

@@ -193,19 +193,25 @@
           <!-- To be done -->
 					<div class="row">
 		        <div class="col-sm-5 textBox">
-		          <h3 class="words"><strong>Most recent reviews</strong></h3>
+		          <h3 class="words"><strong>Most Recent Reviews</strong></h3>
 		          <hr>
-              {% for review in restaurant.get_restaurant_reviews|slice:":2" %}
+              {% for review in restaurant.get_restaurant_reviews_most_recent|slice:":2" %}
                 <div style="margin:20px;padding:20px;border:1px solid;border-radius:8px;border-color:RGB(230,230,230);" >
                   <h5> <a href=# style="font-size:18px;"> {{review.user.first_name}} </a> </h5>
                   <p style="font-size:14px;"> {{review.review}} </p>
+                  <p style="font-size:14px;"><em> {{review.get_time}} </em></p>
                 </div>
               {% endfor %}
 		        </div>
 		        <div class="col-sm-5 col-sm-offset-1 textBox">
-		          <h3 class="words"><strong>Most recent photos</strong></h3>
+		          <h3 class="words"><strong>Most Recent Photos</strong></h3>
 		          <hr>
-              <p style="font-size:14px;"> No pictures have been uploaded </p>
+              {% for restaurant_photo in restaurant.get_restaurant_photos|slice:":2" %}
+                <div style="margin:20px;padding:20px;border:1px solid;border-radius:8px;border-color:RGB(230,230,230);" >
+                  <p><img src="{{restaurant_photo.photo.url}}"></p>
+                  <p style="font-size:14px;"><em>{{restaurant_photo.get_time}}</em></p>
+                </div>
+              {% endfor %}
 		        </div>
 		      </div>
 		      <br>
@@ -288,6 +294,7 @@
 					<hr>
           {% for restaurant_photo in restaurant.restaurantphoto_set.all %}
             <p><img src="{{restaurant_photo.photo.url}}"></p>
+            <p><em>Uploaded by <a href="{% url "profile" restaurant_photo.user.id %}">{{restaurant_photo.user}}</a></em> </p>
             <!-- Delete photo -->
             {% if user.id == restaurant_photo.user.id %}
               <p><a href="{% url "delete_restaurant_photo" restaurant_photo.id %}">Delete</a></p>
