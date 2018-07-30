@@ -112,13 +112,7 @@
             <a href=#> Techno Edge </a>
           </p> -->
           <!-- Restaurant location -->
-<<<<<<< HEAD
-          <p> <strong>Rating: </strong>{{  restaurant.get_average_rating  }} <em>({{ restaurant.number_of_reviews }} reviews)</em></p>
-          <p> <strong>Location: </strong>{{restaurant.location}}</p>
-          <p> <strong>Address:</strong></p> <p>{{restaurant.address}} </p>
-          <p> <strong>Information: </strong></p> <p>{{restaurant.information}} </p>
-=======
-          <p><strong>Rating: </strong>{{  restaurant.get_average_rating  }} <a href="#" class="reviewWord"><em>{{ restaurant.number_of_reviews }} reviews</em> </a>
+          <p><strong>Rating: </strong>{{restaurant.get_average_rating}}   <em>({{restaurant.number_of_reviews}} reviews)</em>
             <form action="{% url "add_restaurant_rating" restaurant.id %}" method="post">
               {% csrf_token %}
               <select name="restaurant_rating">
@@ -133,8 +127,6 @@
           <p><strong> Location: </strong>{{restaurant.location}}</p>
           <p><strong>Address:</strong></p> <p>{{restaurant.address}} </p>
           <p><strong>Information: </strong></p> <p>{{restaurant.information}} </p>
->>>>>>> cfb85612de60a55812d07d0c3079f87cd2fbc010
-          <!-- Score & number of reviews, to be done -->
 
           <!-- When authenticated, review and upload photo form -->
           <div class="row">
@@ -382,7 +374,7 @@
             <div class="modal-body">
               <form action="{% url "add_restaurant_photo" restaurant.id %}" method="POST">
                 {% csrf_token %}
-                <p><input type="file" name="pic" accept="image/*"></p>
+                <p><input type="file" name="restaurant_photo" accept="image/*"></p>
                 <p><input type="submit" value="Submit"></p>
               </form>
             </div>

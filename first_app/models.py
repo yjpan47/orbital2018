@@ -47,7 +47,7 @@ class Restaurant(models.Model):
 
     def get_average_rating(self):
         lst = list(map(lambda x: x.rating, (self.restaurantrating_set.all())))
-        return sum(lst)/len(lst) if lst else 0
+        return round(sum(lst)/len(lst), 1) if lst else 0
 
     def get_waiting_time_objects(self, mins = 10):
         start, end = localtime() - timedelta(seconds = mins), localtime()
