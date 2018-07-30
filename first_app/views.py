@@ -152,9 +152,9 @@ def add_restaurant_photo(request, pk):
     if (request.method == "POST") and (request.user.is_authenticated):
         restaurant = get_object_or_404(Restaurant, id = pk)
         photo = request.FILES.get("restaurant_photo")
-        print("HELLO", photo == None)
         restaurant_photo = RestaurantPhoto(photo = photo, restaurant = restaurant, user = request.user)
         restaurant_photo.save()
+        print(restaurant_photo.photo.url)
         return redirect("restaurant", pk = restaurant.id)
     else:
         return HttpResponse("FAILED")
