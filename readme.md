@@ -20,7 +20,7 @@ Username: superadmin23
 
 Password: orbitalpasswordadmin
 
-** PLEASE DO NOT DELETE OUR DATABASE **
+**PLEASE DO NOT DELETE OUR DATABASE**
 
 
 ## Website Application: MakaNUS
