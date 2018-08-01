@@ -4,7 +4,7 @@
 - Level of Achievement: Apollo 11
 - Type of Project: Website Application
 
-Temporary web server:
+## **[Click Here to view our website](https://masterggez.pythonanywhere.com)**
 
 ## Website Application: MakaNUS
 
@@ -62,7 +62,7 @@ MakaNUS is an food information and review website that contains information abou
 ~~We are planning on deploying our website using pythonanywhere.com web hosting service. However, we ran into some last minute issues with the web hosting site. We will fix it ASAP. Nonetheless, the domain site is masterggez.pythonanywhere.com in the event we solve the issue.~~
 
 - Made use of free web hosting service from pythonanywhere.com to deploy our website.
-- Website is **[masterggez.pythonanywhere.com](masterggez.pythonanywhere.com)**.
+- View our  website at **[https://masterggez.pythonanywhere.com](https://masterggez.pythonanywhere.com)**.
 
 ### Plans after Milestone 3
 
