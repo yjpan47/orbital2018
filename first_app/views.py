@@ -112,9 +112,9 @@ def edit_profile(request, pk):
             else:
                 return render(request, "first_app/edit_profile.html", {"user": user})
         else:
-            return HttpResponse("Oops something went wrong")
+            return HttpResponse("You are not authorized to edit this profile")
     else:
-        return HttpResponse("Oops something went wrong")
+        return HttpResponse("Please login first!")
 
 def edit_restaurant_review(request, pk):
     if request.user.is_authenticated:
@@ -127,9 +127,9 @@ def edit_restaurant_review(request, pk):
             else:
                 return render(request, "first_app/edit_restaurant_review.html", {"restaurant_review": restaurant_review})
         else:
-            return HttpResponse("FAILED")
+            return HttpResponse("The review that you are trying to edit does not exist!")
     else:
-            return HttpResponse("FAILED")
+            return HttpResponse("Please login first!")
 
 def delete_restaurant_review(request, pk):
     if request.user.is_authenticated:
@@ -141,9 +141,9 @@ def delete_restaurant_review(request, pk):
             else:
                 return render(request, "first_app/delete_restaurant_review.html", {"restaurant_review": restaurant_review})
         else:
-            return HttpResponse("FAILED")
+            return HttpResponse("The review that you are trying to delete does not exist!")
     else:
-            return HttpResponse("FAILED")
+            return HttpResponse("Please login first!")
 
 def edit_dish_review(request, pk):
     if request.user.is_authenticated:
@@ -156,9 +156,9 @@ def edit_dish_review(request, pk):
             else:
                 return render(request, "first_app/edit_dish_review.html", {"dish_review": dish_review})
         else:
-            return HttpResponse("FAILED")
+            return HttpResponse("The review that you are trying to edit does not exist!")
     else:
-            return HttpResponse("FAILED")
+            return HttpResponse("Please login first!")
 
 def delete_dish_review(request, pk):
     if request.user.is_authenticated:
@@ -170,9 +170,9 @@ def delete_dish_review(request, pk):
             else:
                 return render(request, "first_app/delete_dish_review.html", {"dish_review": dish_review})
         else:
-            return HttpResponse("FAILED")
+            return HttpResponse("The review that you are trying to delete does not exist!")
     else:
-            return HttpResponse("FAILED")
+            return HttpResponse("Please login first!")
 
 def delete_restaurant_photo(request, pk):
     if request.user.is_authenticated:
@@ -184,9 +184,9 @@ def delete_restaurant_photo(request, pk):
             else:
                 return render(request, "first_app/delete_restaurant_photo.html", {"restaurant_photo": restaurant_photo})
         else:
-            return HttpResponse("FAILED")
+            return HttpResponse("The photo that you are trying to delete does not exist!")
     else:
-            return HttpResponse("FAILED")
+            return HttpResponse("Please login first!")
 
 def add_restaurant_photo(request, pk):
     if (request.method == "POST") and (request.user.is_authenticated):
@@ -197,7 +197,7 @@ def add_restaurant_photo(request, pk):
         print(restaurant_photo.photo.url)
         return redirect("restaurant", pk = restaurant.id)
     else:
-        return HttpResponse("FAILED")
+        return HttpResponse("Please login first!")
 
 def restaurant_page(request, pk):
     restaurant = get_object_or_404(Restaurant, id = pk)
@@ -211,9 +211,9 @@ def add_restaurant_rating(request, pk):
             new_restaurant_rating.save()
             return redirect("restaurant", pk = pk)
         else:
-            return HttpResponse("You already contributed a rating")
+            return HttpResponse("You rated this restaurant already!!")
     else:
-        return HttpResponse("Something went wrong")
+        return HttpResponse("Please login first!!")
 
 def add_restaurant_review(request, pk):
     if (request.method == "POST") and (request.user.is_authenticated):
@@ -223,9 +223,9 @@ def add_restaurant_review(request, pk):
             new_review.save()
             return redirect("restaurant", pk = pk)
         else:
-            return HttpResponse("You contributed a review already")
+            return HttpResponse("You contributed a review for this restaurant already!")
     else:
-        return HttpResponse("Something went wrong")
+        return HttpResponse("Please login first!!")
 
 def add_restaurant_waiting_time(request, pk):
     if (request.method == "POST") and (request.user.is_authenticated):
@@ -235,9 +235,9 @@ def add_restaurant_waiting_time(request, pk):
             new_waiting_time.save()
             return redirect("restaurant", pk = pk)
         else:
-            return HttpResponse("You contributed a waiting time already")
+            return HttpResponse("You contributed a waiting time in the pass 30 minutes already!")
     else:
-        return HttpResponse("Something went wrong")
+        return HttpResponse("Please login first!!")
 
 def add_restaurant_crowd_condition(request, pk):
     if (request.method == "POST") and (request.user.is_authenticated):
@@ -247,9 +247,9 @@ def add_restaurant_crowd_condition(request, pk):
             new_crowd_condition.save()
             return redirect("restaurant", pk = pk)
         else:
-            return HttpResponse("You contributed a crowd condition already")
+            return HttpResponse("You contributed a crowd condition in the pass 30 minutes already!")
     else:
-        return HttpResponse("Something went wrong")
+        return HttpResponse("Please login first!!")
 
 def add_restaurant_review_rating(request, pk):
     if (request.method == "POST") and (request.user.is_authenticated):
@@ -260,9 +260,9 @@ def add_restaurant_review_rating(request, pk):
             new_restaurant_review_rating.save()
             return HttpResponseRedirect(request.POST.get('next'))
         else:
-            return HttpResponse("You already contributed a rating")
+            return HttpResponse("You already rated this review!")
     else:
-        return HttpResponse("Something went wrong")
+        return HttpResponse("Please login first!!")
 
 def add_dish_review_rating(request, pk):
     if (request.method == "POST") and (request.user.is_authenticated):
@@ -273,9 +273,9 @@ def add_dish_review_rating(request, pk):
             new_dish_review_rating.save()
             return HttpResponseRedirect(request.POST.get('next'))
         else:
-            return HttpResponse("You already contributed a rating")
+            return HttpResponse("You already rated this review!")
     else:
-        return HttpResponse("Something went wrong")
+        return HttpResponse("Please login first!!")
 
 def dish_page(request, pk):
     dish = get_object_or_404(Dish, id = pk)
@@ -289,9 +289,9 @@ def add_dish_rating(request, pk):
             new_dish_rating.save()
             return HttpResponseRedirect(request.POST.get('next'))
         else:
-            return HttpResponse("You already contributed a rating")
+            return HttpResponse("You already rated this dish!")
     else:
-        return HttpResponse("Something went wrong")
+        return HttpResponse("Please login first!!")
 
 def add_dish_review(request, pk):
     if (request.method == "POST") and (request.user.is_authenticated):
@@ -303,7 +303,7 @@ def add_dish_review(request, pk):
         else:
             return HttpResponse("You contributed a review already")
     else:
-        return HttpResponse("Something went wrong")
+        return HttpResponse("Please login first!!")
 
 def add_restaurant_review_rating(request, pk):
     if (request.method == "POST") and (request.user.is_authenticated):
@@ -314,9 +314,9 @@ def add_restaurant_review_rating(request, pk):
             new_restaurant_review_rating.save()
             return HttpResponseRedirect(request.POST.get('next'))
         else:
-            return HttpResponse("You already contributed a rating")
+            return HttpResponse("You already rated this review!")
     else:
-        return HttpResponse("Something went wrong")
+        return HttpResponse("Please login first!!")
 
 def add_dish(request, pk):
     if (request.user.is_authenticated):
@@ -335,7 +335,7 @@ def add_dish(request, pk):
             return render(request, "first_app/add_dish.html", {"restaurant": restaurant})
         return redirect("restaurant", pk = pk)
     else:
-        return HttpResponse("Something went wrong")
+        return HttpResponse("Please login first!!")
 
 def search(request):
     if "q" in request.GET:
@@ -360,4 +360,4 @@ def search(request):
         restaurants = paginator.page(page)
         return render(request, "first_app/search.html", {"restaurants": restaurants, "q": query})
     else:
-        return HttpResponse("Something went wrong")
+        return HttpResponse("Oops something went wrong! Please go back and try again!")
