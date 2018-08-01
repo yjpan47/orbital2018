@@ -7,15 +7,15 @@
 ## **[Click Here to view our website](https://masterggez.pythonanywhere.com)**
 
 ### Dumpy Account
-- Username: thomasjohnson23
-- Password: orbitalpassword
+Username: thomasjohnson23
+Password: orbitalpassword
 
 ## **[Click Here to access admin site](https://masterggez.pythonanywhere.com/admin)**
 
-### Admin account
-- Username: superadmin23
-- Password: orbitalpasswordadmin
-
+### Admin Account
+Username: superadmin23
+Password: orbitalpasswordadmin
+** PLEASE DO NOT DELETE ANY OUR DATABASE **
 
 
 ## Website Application: MakaNUS
