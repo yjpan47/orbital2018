@@ -4,6 +4,8 @@
 - Level of Achievement: Apollo 11
 - Type of Project: Website Application
 
+Temporary web server: 
+
 ## Website Application: MakaNUS
 
 Food and dining forms an important part of life in university. Apart from being a necessary mean of survival, food bring pleasure to our lives and in many instances, acts as a mean for us to gather and socialize. This is especially apparent in the NUS campus, where there are a myriad of food options consisting of cuisines from all around the world. Therefore, there exist a need for platforms where NUS students and staffs can easily look up food places on campus, as well as be provided information about the various outlets.
@@ -57,8 +59,10 @@ MakaNUS is an food information and review website that contains information abou
 
 ### Website Deployment
 
-- We are planning on deploying our website using pythonanywhere.com web hosting service. However, we ran into some last minute issues with the web hosting site. We will fix it ASAP.
-- Nonetheless, the domain site is masterggez.pythonanywhere.com in the event we solve the issue.
+~~We are planning on deploying our website using pythonanywhere.com web hosting service. However, we ran into some last minute issues with the web hosting site. We will fix it ASAP. Nonetheless, the domain site is masterggez.pythonanywhere.com in the event we solve the issue.~~
+
+- Made use of free web hosting service from pythonanywhere.com to deploy our website.
+- Website is **[masterggez.pythonanywhere.com]** (masterggez.pythonanywhere.com).
 
 ### Plans after Milestone 3
 
