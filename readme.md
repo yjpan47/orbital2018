@@ -9,13 +9,14 @@
 ### Dumpy Account
 Username: thomasjohnson23
 Password: orbitalpassword
+Alternatively, you can sign up to create your own account!
 
 ## **[Click Here to access admin site](https://masterggez.pythonanywhere.com/admin)**
 
 ### Admin Account
 Username: superadmin23
 Password: orbitalpasswordadmin
-** PLEASE DO NOT DELETE ANY OUR DATABASE **
+** PLEASE DO NOT DELETE OUR DATABASE **
 
 
 ## Website Application: MakaNUS
