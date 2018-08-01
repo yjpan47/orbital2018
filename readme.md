@@ -6,6 +6,18 @@
 
 ## **[Click Here to view our website](https://masterggez.pythonanywhere.com)**
 
+### Dumpy Account
+- Username: thomasjohnson23
+- Password: orbitalpassword
+
+## **[Click Here to access admin site](https://masterggez.pythonanywhere.com/admin)**
+
+### Admin account
+- Username: superadmin23
+- Password: orbitalpasswordadmin
+
+
+
 ## Website Application: MakaNUS
 
 Food and dining forms an important part of life in university. Apart from being a necessary mean of survival, food bring pleasure to our lives and in many instances, acts as a mean for us to gather and socialize. This is especially apparent in the NUS campus, where there are a myriad of food options consisting of cuisines from all around the world. Therefore, there exist a need for platforms where NUS students and staffs can easily look up food places on campus, as well as be provided information about the various outlets.
