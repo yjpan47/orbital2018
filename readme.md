@@ -6,7 +6,7 @@
 
 ## **[Click Here to view our website](https://masterggez.pythonanywhere.com)**
 
-### Dumpy Account
+### Dummy Account
 Username: thomasjohnson23
 
 Password: orbitalpassword
@@ -86,3 +86,40 @@ MakaNUS is an food information and review website that contains information abou
 - Importing of all (if not most) NUS food places into our database
 - Improving UI for some error pages
 - Improving UI of some input forms
+
+<pre>
+### Project Log
+Orbitee 1: Pan Yong Jing (Back End developer, web hosting), Orbitee 2: Yoon Ki Hyun (Front End developer)
+___________________________________________________________________________________________________
+| Orbitee 1(hrs) | Orbitee 2(hrs) |   Date   |                      Task                           |
+|________________|________________|__________|____________________________________________________ |
+|      43        |       44       |          |                    Milestone 1                      |
+|      31        |       36       |          |                    Milestone 2                      |
+|       6        |                |  30/06   |              Setting up back end (django)           |
+|      10        |        8       |  01/07   |Setting up back end&combining back end with front end|
+|       4        |                |  03/07   |               Setting up database                   |
+|       1        |        2       |  04/07   |    Input of randomised values for testing & design  |
+|                |        3       |  06/07   |            Design changes to the website            |
+|      10        |       10       |  08/07   |    Discussion & Major front end & back end update   |
+|       2        |                |  09/07   |                    Debugging                        |      
+|       1        |                |  10/07   |                    Debugging                        |
+|       2        |        4       |  11/07   |          Debugging & Redesign of the website        |
+|                |        3       |  12/07   |          HTML/CSS styling & commenting              |
+|       7        |        4       |  14/07   |        Major front end & back end update            |
+|      10        |       10       |  15/07   |        Major front end & back end update            |
+|       4        |        4       |  16/07   |            Git practice with our mentor             |
+|       6        |        4       |  18/07   |  Git practice with our mentor + backend development |
+|       3        |                |  19/07   |     Back end (restaurant page, search, pagination)  |
+|       2        |                |  21/07   |           Back end (profile page skeleton)          |
+|                |        6       |  22/07   |                    Front end                        |
+|       2        |        1       |  23/07   |                  Minor back end                     |
+|                |        3       |  24/07   |                    Front end                        |
+|                |        2       |  26/07   |               Front end (Modal)                     |
+|       2        |                |  27/07   |                 Work on database                    |
+|       6        |        4       |  28/07   |          Front end & back end edits                 |
+|                |       10       |  29/07   |           Front end javascript & styling            |
+|      12        |        6       |  30/07   |Major back end update & front end styling&MILESTONE 3|
+|       2        |                |  31/07   |              Minor back end & web hosting           |
+---------------------------------------------------------------------------------------------------
+|      166       |       164      |          |                    Grand Total                      |
+</pre>
