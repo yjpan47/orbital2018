@@ -87,6 +87,7 @@ MakaNUS is an food information and review website that contains information abou
 - Improving UI for some error pages
 - Improving UI of some input forms
 
+<pre>
 ### Project Log
 Orbitee 1: Pan Yong Jing (Back End developer, web hosting), Orbitee 2: Yoon Ki Hyun (Front End developer)
 ___________________________________________________________________________________________________
@@ -121,3 +122,4 @@ ________________________________________________________________________________
 |       2        |                |  31/07   |              Minor back end & web hosting           |
 ---------------------------------------------------------------------------------------------------
 |      166       |       164      |          |                    Grand Total                      |
+</pre>
