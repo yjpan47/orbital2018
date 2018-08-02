@@ -125,7 +125,7 @@ def edit_restaurant_review(request, pk):
                 restaurant_review.save()
                 return redirect("profile", pk = request.user.id)
             else:
-                return render(request, "first_app/edit_restaurant_review.html", {"restaurant_review": restaurant_review})
+                return HttpResponseRedirect(request.POST.get('next'))
         else:
             return HttpResponse("The review that you are trying to edit does not exist!")
     else:
@@ -139,7 +139,7 @@ def delete_restaurant_review(request, pk):
                 restaurant_review.delete()
                 return redirect("profile", pk = request.user.id)
             else:
-                return render(request, "first_app/delete_restaurant_review.html", {"restaurant_review": restaurant_review})
+                return HttpResponseRedirect(request.POST.get('next'))
         else:
             return HttpResponse("The review that you are trying to delete does not exist!")
     else:
