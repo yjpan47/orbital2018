@@ -6,7 +6,7 @@
 
 ## **[Click Here to view our website](https://masterggez.pythonanywhere.com)**
 
-### Dumpy Account
+### Dummy Account
 Username: thomasjohnson23
 
 Password: orbitalpassword
