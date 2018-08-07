@@ -49,7 +49,7 @@ MakaNUS is an food information and review website that contains information abou
 - Username provided by the user has to be unique. Password confirmation is required.
 - Passwords are hashed to for security purposes, and even administrators will not be able to see users' passwords.
 - Login is required for users to be able to rate, contribute reviews and upload photos.
-- One login session is 600 seconds (10 minutes) if 'remember me' is checked and 1209600 seconds (14 days) if 'remember me' is checked
+- One login session is 600 seconds (10 minutes) if 'remember me' is not checked and 1209600 seconds (14 days) if 'remember me' is checked
 
 ### Administrator
 
