@@ -76,17 +76,8 @@ MakaNUS is an food information and review website that contains information abou
 
 ### Website Deployment
 
-~~We are planning on deploying our website using pythonanywhere.com web hosting service. However, we ran into some last minute issues with the web hosting site. We will fix it ASAP. Nonetheless, the domain site is masterggez.pythonanywhere.com in the event we solve the issue.~~
-
 - Made use of free web hosting service from pythonanywhere.com to deploy our website.
 - View our  website at **[https://masterggez.pythonanywhere.com](https://masterggez.pythonanywhere.com)**.
-
-### Plans after Milestone 3
-
-- Importing of all (if not most) NUS food places into our database
-- Improving UI for some error pages
-- Improving UI of some input forms
-
 
 ### Project Log
 <pre>
